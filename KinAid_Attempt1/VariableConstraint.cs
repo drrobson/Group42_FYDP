@@ -10,6 +10,9 @@ namespace KinAid_Attempt1
         int order;
         double timeout;
 
-        int verify(LimbOrientation prevOrientation, LimbOrientation currOrientation);
+        int verify(LimbOrientation prevOrientation, LimbOrientation currOrientation)
+        {
+            return 0;
+        }
     }
 }
