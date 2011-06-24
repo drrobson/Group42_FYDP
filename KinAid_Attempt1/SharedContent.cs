@@ -32,7 +32,7 @@ namespace KinAid_Attempt1
             {JointID.FootRight, new SolidColorBrush(Color.FromRgb(77,  109, 243))}
         };
 
-        enum Progression
+        public enum Progression
         {
             Completing,
             Failed,
