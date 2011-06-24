@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace KinAid_Attempt1
+{
+    public class GlobalConstraint
+    {
+        LimbOrientation[][] constraint;
+        double[] constraintAngle;
+        double[] allowableDeviation;
+    }
+}
