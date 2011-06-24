@@ -216,7 +216,7 @@ namespace KinAid_Attempt1
                         jointLine.X1 = jointPos.X - 3;
                         jointLine.X2 = jointLine.X1 + 6;
                         jointLine.Y1 = jointLine.Y2 = jointPos.Y;
-                        jointLine.Stroke = SharedContent.jointColors[joint.ID];
+                        jointLine.Stroke = SharedContent.JointColors[joint.ID];
                         jointLine.StrokeThickness = 6;
                         skeleton.Children.Add(jointLine);
                     }

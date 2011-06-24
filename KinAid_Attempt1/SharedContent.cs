@@ -9,7 +9,7 @@ namespace KinAid_Attempt1
 {
     public static class SharedContent
     {
-        public static Dictionary<JointID, Brush> jointColors = new Dictionary<JointID, Brush>() { 
+        public static Dictionary<JointID, Brush> JointColors = new Dictionary<JointID, Brush>() { 
             {JointID.HipCenter, new SolidColorBrush(Color.FromRgb(169, 176, 155))},
             {JointID.Spine, new SolidColorBrush(Color.FromRgb(169, 176, 155))},
             {JointID.ShoulderCenter, new SolidColorBrush(Color.FromRgb(168, 230, 29))},
@@ -31,6 +31,7 @@ namespace KinAid_Attempt1
             {JointID.AnkleRight, new SolidColorBrush(Color.FromRgb(245, 228, 156))},
             {JointID.FootRight, new SolidColorBrush(Color.FromRgb(77,  109, 243))}
         };
+        public static double AllowableDeviation = 0.3;
 
         public enum Progression
         {

@@ -55,6 +55,13 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Exercise.cs" />
+    <Compile Include="ExerciseFactory.cs" />
+    <Compile Include="GlobalConstraint.cs" />
+    <Compile Include="PoseConstraint.cs" />
+    <Compile Include="Routine.cs" />
+    <Compile Include="SharedContent.cs" />
+    <Compile Include="VariableConstraint.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -63,6 +70,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExerciseState.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
