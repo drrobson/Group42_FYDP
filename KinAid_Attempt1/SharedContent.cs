@@ -7,9 +7,9 @@ using Microsoft.Research.Kinect.Nui;
 
 namespace KinAid_Attempt1
 {
-    static public class SharedContent
+    public static class SharedContent
     {
-        static Dictionary<JointID, Brush> jointColors = new Dictionary<JointID, Brush>() { 
+        public static Dictionary<JointID, Brush> jointColors = new Dictionary<JointID, Brush>() { 
             {JointID.HipCenter, new SolidColorBrush(Color.FromRgb(169, 176, 155))},
             {JointID.Spine, new SolidColorBrush(Color.FromRgb(169, 176, 155))},
             {JointID.ShoulderCenter, new SolidColorBrush(Color.FromRgb(168, 230, 29))},
