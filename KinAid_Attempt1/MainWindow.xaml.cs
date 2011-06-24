@@ -13,8 +13,6 @@ using System.Windows.Shapes;
 
 using Microsoft.Research.Kinect.Nui;
 
-using KinAid_Attempt1.SharedContent;
-
 namespace KinAid_Attempt1
 {
     /// <summary>
@@ -218,7 +216,7 @@ namespace KinAid_Attempt1
                         jointLine.X1 = jointPos.X - 3;
                         jointLine.X2 = jointLine.X1 + 6;
                         jointLine.Y1 = jointLine.Y2 = jointPos.Y;
-                        jointLine.Stroke = jointColors[joint.ID];
+                        jointLine.Stroke = SharedContent.jointColors[joint.ID];
                         jointLine.StrokeThickness = 6;
                         skeleton.Children.Add(jointLine);
                     }
