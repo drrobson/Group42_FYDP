@@ -31,13 +31,32 @@ namespace KinAid_Attempt1
             {JointID.AnkleRight, new SolidColorBrush(Color.FromRgb(245, 228, 156))},
             {JointID.FootRight, new SolidColorBrush(Color.FromRgb(77,  109, 243))}
         };
+
         public static double AllowableDeviation = 0.3;
+
+        public enum LimbID
+        {
+            LeftHand,
+            LeftForearm,
+            LeftArm,
+            RightHand,
+            RightForearm,
+            RightArm,
+            Neck,
+            MainBody,
+            LeftThigh,
+            LeftCalf,
+            LeftFoot,
+            RightThigh,
+            RightCalf,
+            RightFoot,
+        }
 
         public enum Progression
         {
-            Completing,
-            Failed,
-            Completed
-        };
+            Failed = -1,
+            Start = 0,
+            Completed = 100,
+        }
     }
 }

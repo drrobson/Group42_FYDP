@@ -2,12 +2,23 @@
 using System.Collections.Generic;
 using System.Text;
 
+using Microsoft.Research.Kinect.Nui;
+
 namespace KinAid_Attempt1
 {
-    public class GlobalConstraint
+    /// <summary>
+    /// This class defines a global constraint, which is a constraint that must hold throughout an exercise.
+    /// </summary>
+    public class GlobalConstraint : IConstraint
     {
-        LimbOrientation[][] constraint;
-        double[] constraintAngle;
-        double[] allowableDeviation;
+        SharedContent.LimbID constraintLimb1; // One of the limbs to which the constraint applies
+        SharedContent.LimbID constraintLimb2; // One of the limbs to which the constraint applies
+        double constraintAngle; // The allowable angle between both limbs in the pair
+        double allowableDeviation; // The allowable deviation for the angle between two limbs in the pair
+
+        public SharedContent.Progression verify(SkeletonData currData, SkeletonData newData = null)
+        {
+            return 0;
+        }
     }
 }

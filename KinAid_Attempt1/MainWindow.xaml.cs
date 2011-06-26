@@ -23,14 +23,20 @@ namespace KinAid_Attempt1
         public MainWindow()
         {
             InitializeComponent();
+
+            LimbOrientation[] limb1 = {new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 90, 180, 90)};
+            prevLimb = limb1[0];
+            PoseConstraint pc = new PoseConstraint(limb1);
+            ex1 = new Exercise(null, pc, null, null);
         }
 
         Runtime nui;
         int totalFrames = 0;
         int lastFrames = 0;
         DateTime lastTime = DateTime.MaxValue;
-        double lastAngle = 0;
         bool startExercise = false;
+        Exercise ex1;
+        LimbOrientation prevLimb;
 
         // We want to control how depth data gets converted into false-color data
         // for more intuitive visualization, so we keep 32-bit color frame buffer versions of
@@ -221,6 +227,16 @@ namespace KinAid_Attempt1
                         skeleton.Children.Add(jointLine);
                     }
 
+                    LimbOrientation limb = new LimbOrientation(data.Joints[JointID.ShoulderLeft], data.Joints[JointID.ElbowLeft]);
+                    if (LimbOrientation.checkLimbProgression(prevLimb, limb, new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 90, 180, 90)))
+                    {
+                        exerciseCorrect.Text = "Progressing!";
+                    }
+                    else
+                    {
+                        exerciseCorrect.Text = "Not Progressing!";
+                    }
+                    prevLimb = limb;
                     if (startExercise)
                     {
                         checkExercise1(data);
@@ -246,28 +262,20 @@ namespace KinAid_Attempt1
 
         private void checkExercise1(SkeletonData data)
         {
-            Point shoulderJoint = getDisplayPosition(data.Joints[JointID.ShoulderCenter]);
-            Point hipJoint = getDisplayPosition(data.Joints[JointID.HipCenter]);
-            Point wristJoint = getDisplayPosition(data.Joints[JointID.WristLeft]);
-            System.Windows.Vector limb = new System.Windows.Vector(wristJoint.X - shoulderJoint.X, wristJoint.Y - shoulderJoint.Y);
-            System.Windows.Vector body = new System.Windows.Vector(hipJoint.X - shoulderJoint.X, hipJoint.Y - shoulderJoint.Y);
-
-            double currentAngle = System.Windows.Vector.AngleBetween(body, limb);
-            //double straightAngle = 
-            if (currentAngle - lastAngle > 0)
+            if (ex1.initialConstraint.verify(data) == SharedContent.Progression.Completed)
             {
-                exerciseCorrect.Text = "Good!";
+                exerciseCorrect.Text = "Good Pose!";
             }
             else
             {
-                exerciseCorrect.Text = "Bad!";
+                exerciseCorrect.Text = "Bad Pose!";
             }
-            lastAngle = currentAngle;
         }
 
         private void start_Click(object sender, RoutedEventArgs e)
         {
             startExercise = true;
+            ex1.startExercise();
         }
     }
 }

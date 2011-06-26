@@ -11,8 +11,31 @@ namespace KinAid_Attempt1
     public class LimbOrientation
     {
         private Vector3D pivotToMovable;
-        private JointID pivotID, movableID;
-        public double xAngle, yAngle, zAngle;
+        public JointID pivotID
+        {
+            get;
+            private set;
+        }
+        public JointID movableID
+        {
+            get;
+            private set;
+        }
+        public double xAngle
+        {
+            get;
+            private set;
+        }
+        public double yAngle
+        {
+            get;
+            private set;
+        }
+        public double zAngle
+        {
+            get;
+            private set;
+        }
 
         public LimbOrientation(Joint pivot, Joint movable)
         {
@@ -59,19 +82,17 @@ namespace KinAid_Attempt1
             return false;
         }
 
+        public static bool areOrientationsEqual(LimbOrientation limbOrientation1, Joint limb2pivot, Joint limb2movable)
+        {
+            return areOrientationsEqual(limbOrientation1, new LimbOrientation(limb2pivot, limb2movable));
+        }
+
         public static bool checkLimbProgression(LimbOrientation previousLimbOrientation, LimbOrientation progressingLimbOrientation,
             LimbOrientation futureLimbOrientation)
         {
-            if (
-                ((previousLimbOrientation.xAngle - (previousLimbOrientation.xAngle * SharedContent.AllowableDeviation)) < progressingLimbOrientation.xAngle &&
-                 (futureLimbOrientation.xAngle + (futureLimbOrientation.xAngle * SharedContent.AllowableDeviation)) > progressingLimbOrientation.xAngle)
-                &&
-                ((previousLimbOrientation.yAngle - (previousLimbOrientation.yAngle * SharedContent.AllowableDeviation)) < progressingLimbOrientation.yAngle &&
-                 (futureLimbOrientation.yAngle + (futureLimbOrientation.yAngle * SharedContent.AllowableDeviation)) > progressingLimbOrientation.yAngle)
-                &&
-                ((previousLimbOrientation.zAngle - (previousLimbOrientation.zAngle * SharedContent.AllowableDeviation)) < progressingLimbOrientation.zAngle &&
-                 (futureLimbOrientation.zAngle + (futureLimbOrientation.zAngle * SharedContent.AllowableDeviation)) > progressingLimbOrientation.zAngle)
-                )
+            double delta1 = futureLimbOrientation.yAngle - previousLimbOrientation.yAngle;
+            double delta2 = futureLimbOrientation.yAngle - progressingLimbOrientation.yAngle;
+            if (delta2 < delta1)
             {
                 return true;
             }

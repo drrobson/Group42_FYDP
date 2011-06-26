@@ -58,6 +58,7 @@
     <Compile Include="Exercise.cs" />
     <Compile Include="ExerciseFactory.cs" />
     <Compile Include="GlobalConstraint.cs" />
+    <Compile Include="IConstraint.cs" />
     <Compile Include="LimbOrientation.cs" />
     <Compile Include="PoseConstraint.cs" />
     <Compile Include="Routine.cs" />
