@@ -54,6 +54,7 @@ namespace KinAid_Attempt1
 
         public enum Progression
         {
+            NotStarted = -2,
             Failed = -1,
             Start = 0,
             Completed = 100,

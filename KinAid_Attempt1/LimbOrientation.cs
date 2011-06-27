@@ -87,16 +87,36 @@ namespace KinAid_Attempt1
             return areOrientationsEqual(limbOrientation1, new LimbOrientation(limb2pivot, limb2movable));
         }
 
-        public static bool checkLimbProgression(LimbOrientation previousLimbOrientation, LimbOrientation progressingLimbOrientation,
-            LimbOrientation futureLimbOrientation)
+        public static SharedContent.Progression checkLimbProgression(LimbOrientation curLimbOrientation, 
+            LimbOrientation newLimbOrientation,
+            LimbOrientation endLimbOrientation)
         {
-            double delta1 = futureLimbOrientation.yAngle - previousLimbOrientation.yAngle;
-            double delta2 = futureLimbOrientation.yAngle - progressingLimbOrientation.yAngle;
-            if (delta2 < delta1)
-            {
-                return true;
+            double prevXDelta = endLimbOrientation.xAngle - curLimbOrientation.xAngle;
+            double progXDelta = endLimbOrientation.xAngle - newLimbOrientation.xAngle;
+            double prevYDelta = endLimbOrientation.yAngle - curLimbOrientation.yAngle;
+            double progYDelta = endLimbOrientation.yAngle - newLimbOrientation.yAngle;
+            double prevZDelta = endLimbOrientation.zAngle - curLimbOrientation.zAngle;
+            double progZDelta = endLimbOrientation.zAngle - newLimbOrientation.zAngle;
+
+            if (progXDelta > progYDelta && progXDelta > progZDelta && prevXDelta > progXDelta)
+            { // Rotating mostly around the x axis
+                return (SharedContent.Progression) (newLimbOrientation.xAngle / endLimbOrientation.xAngle * 
+                    (double) SharedContent.Progression.Completed);
             }
-            return false;
+
+            if (progYDelta > progZDelta && prevYDelta > progYDelta)
+            { // Rotating mostly around the y axis
+                return (SharedContent.Progression) (newLimbOrientation.yAngle / endLimbOrientation.yAngle * 
+                    (double)SharedContent.Progression.Completed);
+            }
+
+            if (prevZDelta > progZDelta)
+            { // Rotating mostly around the z axis
+                return (SharedContent.Progression) (newLimbOrientation.zAngle / endLimbOrientation.zAngle * 
+                    (double)SharedContent.Progression.Completed);
+            }
+
+            return SharedContent.Progression.Failed;
         }
     }
 }

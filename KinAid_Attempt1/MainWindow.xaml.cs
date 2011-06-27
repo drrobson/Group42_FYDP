@@ -25,9 +25,11 @@ namespace KinAid_Attempt1
             InitializeComponent();
 
             LimbOrientation[] limb1 = {new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 90, 180, 90)};
-            prevLimb = limb1[0];
             PoseConstraint pc = new PoseConstraint(limb1);
-            ex1 = new Exercise(null, pc, null, null);
+            LimbOrientation limb2 = new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 180, 90, 90);
+            GlobalConstraint[] gcs = { };
+            VariableConstraint[] vcs = {new VariableConstraint("TEST", new TimeSpan(0, 0, 10), limb2)};
+            ex1 = new Exercise(null, pc, gcs, vcs);
         }
 
         Runtime nui;
@@ -36,7 +38,6 @@ namespace KinAid_Attempt1
         DateTime lastTime = DateTime.MaxValue;
         bool startExercise = false;
         Exercise ex1;
-        LimbOrientation prevLimb;
 
         // We want to control how depth data gets converted into false-color data
         // for more intuitive visualization, so we keep 32-bit color frame buffer versions of
@@ -227,19 +228,10 @@ namespace KinAid_Attempt1
                         skeleton.Children.Add(jointLine);
                     }
 
-                    LimbOrientation limb = new LimbOrientation(data.Joints[JointID.ShoulderLeft], data.Joints[JointID.ElbowLeft]);
-                    if (LimbOrientation.checkLimbProgression(prevLimb, limb, new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 90, 180, 90)))
-                    {
-                        exerciseCorrect.Text = "Progressing!";
-                    }
-                    else
-                    {
-                        exerciseCorrect.Text = "Not Progressing!";
-                    }
-                    prevLimb = limb;
                     if (startExercise)
                     {
-                        checkExercise1(data);
+                        ex1.updateExercise(data);
+                        displayExercise1(data);
                     }
                 }
                 iSkeleton++;
@@ -260,15 +252,25 @@ namespace KinAid_Attempt1
             Environment.Exit(0);
         }
 
-        private void checkExercise1(SkeletonData data)
+        private void displayExercise1(SkeletonData data)
         {
-            if (ex1.initialConstraint.verify(data) == SharedContent.Progression.Completed)
+            switch (ex1.progression)
             {
-                exerciseCorrect.Text = "Good Pose!";
-            }
-            else
-            {
-                exerciseCorrect.Text = "Bad Pose!";
+                case SharedContent.Progression.NotStarted:
+                    exerciseCorrect.Text = "Looking for pose";
+                    break;
+                case SharedContent.Progression.Start:
+                    exerciseCorrect.Text = "Start the exercise";
+                    break;
+                case SharedContent.Progression.Completed:
+                    exerciseCorrect.Text = "Exercise Complete";
+                    break;
+                case SharedContent.Progression.Failed:
+                    exerciseCorrect.Text = "Exercise Failed";
+                    break;
+                default:
+                    exerciseCorrect.Text = String.Format("Exercise {0}% complete", ex1.progression);
+                    break;
             }
         }
 

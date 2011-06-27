@@ -28,7 +28,14 @@ namespace KinAid_Attempt1
 
         public SharedContent.Progression verify(SkeletonData currData, SkeletonData newData)
         {
-            return 0;
+            LimbOrientation currOrientation = new LimbOrientation(currData.Joints[endingOrientation.pivotID], currData.Joints[endingOrientation.movableID]);
+            LimbOrientation newOrientation = new LimbOrientation(newData.Joints[endingOrientation.pivotID], newData.Joints[endingOrientation.movableID]);
+            if (LimbOrientation.areOrientationsEqual(endingOrientation, newOrientation))
+            {
+                return SharedContent.Progression.Completed;
+            }
+
+            return LimbOrientation.checkLimbProgression(currOrientation, newOrientation, endingOrientation);
         }
     }
 }
