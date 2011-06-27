@@ -14,17 +14,15 @@ namespace KinAid_Attempt1
         JointID firstJoint; // The pivot joint in the first limb
         JointID secondJoint; // The movable joint of the first limb/pivot joint of the second limb
         JointID thirdJoint; // The movable joint of the second limb
-        SharedContent.Axis axis;
         double constraintAngle; // The allowable angle between both limbs in the pair
         double allowableDeviation; // The allowable deviation for the angle between two limbs in the pair
 
         public GlobalConstraint(JointID firstJoint, JointID secondJoint, JointID thirdJoint, 
-            SharedContent.Axis axis, double constraintAngle, double allowableDeviation)
+            double constraintAngle, double allowableDeviation)
         {
             this.firstJoint = firstJoint;
             this.secondJoint = secondJoint;
             this.thirdJoint = thirdJoint;
-            this.axis = axis;
             this.constraintAngle = constraintAngle;
             this.allowableDeviation = allowableDeviation;
         }
