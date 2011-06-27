@@ -32,7 +32,7 @@ namespace KinAid_Attempt1
             {JointID.FootRight, new SolidColorBrush(Color.FromRgb(77,  109, 243))}
         };
 
-        public static double AllowableDeviation = 0.3;
+        public static double AllowableDeviation = 15;
 
         public enum LimbID
         {
@@ -56,7 +56,7 @@ namespace KinAid_Attempt1
         {
             NotStarted = -2,
             Failed = -1,
-            Start = 0,
+            Started = 0,
             Completed = 100,
         }
     }

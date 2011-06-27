@@ -16,6 +16,12 @@ namespace KinAid_Attempt1
         double constraintAngle; // The allowable angle between both limbs in the pair
         double allowableDeviation; // The allowable deviation for the angle between two limbs in the pair
 
+        /// <summary>
+        /// Verifies that the orientation of the limb(s) defined in this instance occur in the SkeletonData that is passed in
+        /// </summary>
+        /// <param name="currData"></param>
+        /// <param name="newData"></param>
+        /// <returns></returns>
         public SharedContent.Progression verify(SkeletonData currData, SkeletonData newData = null)
         {
             return 0;

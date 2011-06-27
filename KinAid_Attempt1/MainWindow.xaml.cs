@@ -22,13 +22,14 @@ namespace KinAid_Attempt1
     {
         public MainWindow()
         {
+            numFramesSinceStep = frameStep;
             InitializeComponent();
 
-            LimbOrientation[] limb1 = {new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 90, 180, 90)};
-            PoseConstraint pc = new PoseConstraint(limb1);
-            LimbOrientation limb2 = new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 180, 90, 90);
+            LimbOrientation[] initialPoseLimbOrientationConstraints = {new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 90, 180, 90)};
+            PoseConstraint pc = new PoseConstraint(initialPoseLimbOrientationConstraints);
+            LimbOrientation finalUpperArmOrientation = new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 180, 90, 90);
             GlobalConstraint[] gcs = { };
-            VariableConstraint[] vcs = {new VariableConstraint("TEST", new TimeSpan(0, 0, 10), limb2)};
+            VariableConstraint[] vcs = {new VariableConstraint("TEST", new TimeSpan(0, 0, 4), initialPoseLimbOrientationConstraints[0], finalUpperArmOrientation)};
             ex1 = new Exercise(null, pc, gcs, vcs);
         }
 
@@ -36,7 +37,11 @@ namespace KinAid_Attempt1
         int totalFrames = 0;
         int lastFrames = 0;
         DateTime lastTime = DateTime.MaxValue;
-        bool startExercise = false;
+
+        bool exerciseInProgress = false;
+        bool leftInitialPose = false;
+        int frameStep = 1;
+        int numFramesSinceStep;
         Exercise ex1;
 
         // We want to control how depth data gets converted into false-color data
@@ -192,6 +197,15 @@ namespace KinAid_Attempt1
 
         void nui_SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
+            if (++numFramesSinceStep < frameStep)
+            {
+                return;
+            }
+            else
+            {
+                numFramesSinceStep = 0;
+            }
+
             SkeletonFrame skeletonFrame = e.SkeletonFrame;
             int iSkeleton = 0;
             Brush[] brushes = new Brush[6];
@@ -228,10 +242,41 @@ namespace KinAid_Attempt1
                         skeleton.Children.Add(jointLine);
                     }
 
-                    if (startExercise)
+                    if (exerciseInProgress)
                     {
-                        ex1.updateExercise(data);
-                        displayExercise1(data);
+                        if (ex1.progression == SharedContent.Progression.NotStarted)
+                        {
+                            if (ex1.startExercise(data))
+                            {
+                                Console.WriteLine("Initial pose constraint for exercise satisfied...analyzing exercise performance");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Initial pose constraint for exercise not yet satisfied");
+                            }
+                        }
+                        else
+                        {
+                            
+                            // Check if user has left initial pose yet
+                            if (!leftInitialPose && ex1.initialConstraint.verify(data) != SharedContent.Progression.Completed)
+                            {
+                                leftInitialPose = true;
+                            }
+                            
+                            if (leftInitialPose && ex1.updateExercise(data) == SharedContent.Progression.Completed)
+                            {
+                                Console.WriteLine("Exercise complete!");
+                                exerciseInProgress = false;
+                                start.IsEnabled = true;
+                            }
+                            else if (ex1.progression == SharedContent.Progression.Failed)
+                            {
+                                exerciseInProgress = false;
+                                start.IsEnabled = true;
+                            }
+                            displayExercise1(data);
+                        }
                     }
                 }
                 iSkeleton++;
@@ -259,7 +304,7 @@ namespace KinAid_Attempt1
                 case SharedContent.Progression.NotStarted:
                     exerciseCorrect.Text = "Looking for pose";
                     break;
-                case SharedContent.Progression.Start:
+                case SharedContent.Progression.Started:
                     exerciseCorrect.Text = "Start the exercise";
                     break;
                 case SharedContent.Progression.Completed:
@@ -276,8 +321,11 @@ namespace KinAid_Attempt1
 
         private void start_Click(object sender, RoutedEventArgs e)
         {
-            startExercise = true;
-            ex1.startExercise();
+            exerciseInProgress = true;
+            ex1.progression = SharedContent.Progression.NotStarted;
+            start.IsEnabled = false;
+            Console.WriteLine("Attempting exercise");
+            displayExercise1(null);
         }
     }
 }

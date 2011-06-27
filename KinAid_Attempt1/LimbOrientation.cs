@@ -67,14 +67,14 @@ namespace KinAid_Attempt1
         public static bool areOrientationsEqual(LimbOrientation limbOrientation1, LimbOrientation limbOrientation2)
         {
             if (
-                ((limbOrientation1.xAngle + (limbOrientation1.xAngle * SharedContent.AllowableDeviation)) > limbOrientation2.xAngle &&
-                 (limbOrientation1.xAngle - (limbOrientation1.xAngle * SharedContent.AllowableDeviation)) < limbOrientation2.xAngle)
+                ((limbOrientation1.xAngle < limbOrientation2.xAngle && (limbOrientation1.xAngle + SharedContent.AllowableDeviation) > limbOrientation2.xAngle) ||
+                 (limbOrientation1.xAngle > limbOrientation2.xAngle && (limbOrientation1.xAngle - SharedContent.AllowableDeviation) < limbOrientation2.xAngle))
                 &&
-                ((limbOrientation1.yAngle + (limbOrientation1.yAngle * SharedContent.AllowableDeviation)) > limbOrientation2.yAngle &&
-                 (limbOrientation1.yAngle - (limbOrientation1.yAngle * SharedContent.AllowableDeviation)) < limbOrientation2.yAngle)
+                ((limbOrientation1.yAngle < limbOrientation2.yAngle && (limbOrientation1.yAngle + SharedContent.AllowableDeviation) > limbOrientation2.yAngle) ||
+                 (limbOrientation1.yAngle > limbOrientation2.yAngle && (limbOrientation1.yAngle - SharedContent.AllowableDeviation) < limbOrientation2.yAngle))
                 &&
-                ((limbOrientation1.zAngle + (limbOrientation1.zAngle * SharedContent.AllowableDeviation)) > limbOrientation2.zAngle &&
-                 (limbOrientation1.zAngle - (limbOrientation1.zAngle * SharedContent.AllowableDeviation)) < limbOrientation2.zAngle)
+                ((limbOrientation1.zAngle < limbOrientation2.zAngle && (limbOrientation1.zAngle + SharedContent.AllowableDeviation) > limbOrientation2.zAngle) ||
+                 (limbOrientation1.zAngle > limbOrientation2.zAngle && (limbOrientation1.zAngle - SharedContent.AllowableDeviation) < limbOrientation2.zAngle))
                 )
             {
                 return true;
@@ -87,36 +87,59 @@ namespace KinAid_Attempt1
             return areOrientationsEqual(limbOrientation1, new LimbOrientation(limb2pivot, limb2movable));
         }
 
-        public static SharedContent.Progression checkLimbProgression(LimbOrientation curLimbOrientation, 
-            LimbOrientation newLimbOrientation,
+        public static SharedContent.Progression checkLimbProgression(LimbOrientation startLimbOrientation, 
+            LimbOrientation curLimbOrientation,
             LimbOrientation endLimbOrientation)
         {
-            double prevXDelta = endLimbOrientation.xAngle - curLimbOrientation.xAngle;
-            double progXDelta = endLimbOrientation.xAngle - newLimbOrientation.xAngle;
-            double prevYDelta = endLimbOrientation.yAngle - curLimbOrientation.yAngle;
-            double progYDelta = endLimbOrientation.yAngle - newLimbOrientation.yAngle;
-            double prevZDelta = endLimbOrientation.zAngle - curLimbOrientation.zAngle;
-            double progZDelta = endLimbOrientation.zAngle - newLimbOrientation.zAngle;
+            /*
+            double prevXAngle = endLimbOrientation.xAngle - curLimbOrientation.xAngle;
+            double progXAngle = endLimbOrientation.xAngle - newLimbOrientation.xAngle;
+            double prevYAngle = endLimbOrientation.yAngle - curLimbOrientation.yAngle;
+            double progYAngle = endLimbOrientation.yAngle - newLimbOrientation.yAngle;
+            double prevZAngle = endLimbOrientation.zAngle - curLimbOrientation.zAngle;
+            double progZAngle = endLimbOrientation.zAngle - newLimbOrientation.zAngle;
 
-            if (progXDelta > progYDelta && progXDelta > progZDelta && prevXDelta > progXDelta)
+            if (progXAngle > progYAngle && progXAngle > progZAngle && prevXAngle > progXAngle)
             { // Rotating mostly around the x axis
                 return (SharedContent.Progression) (newLimbOrientation.xAngle / endLimbOrientation.xAngle * 
                     (double) SharedContent.Progression.Completed);
             }
 
-            if (progYDelta > progZDelta && prevYDelta > progYDelta)
+            if (progYAngle > progZAngle && prevYAngle > progYAngle)
             { // Rotating mostly around the y axis
                 return (SharedContent.Progression) (newLimbOrientation.yAngle / endLimbOrientation.yAngle * 
                     (double)SharedContent.Progression.Completed);
             }
 
-            if (prevZDelta > progZDelta)
+            if (prevZAngle > progZAngle)
             { // Rotating mostly around the z axis
                 return (SharedContent.Progression) (newLimbOrientation.zAngle / endLimbOrientation.zAngle * 
                     (double)SharedContent.Progression.Completed);
             }
+             * */
+            double totalRequiredDisplacement, totalRemainingDisplacement;
 
-            return SharedContent.Progression.Failed;
+            totalRequiredDisplacement = Math.Abs(endLimbOrientation.xAngle - startLimbOrientation.xAngle) + Math.Abs(endLimbOrientation.yAngle - startLimbOrientation.yAngle)
+                + Math.Abs(endLimbOrientation.zAngle - startLimbOrientation.zAngle);
+
+            totalRemainingDisplacement = Math.Min(Math.Abs(endLimbOrientation.xAngle - curLimbOrientation.xAngle), Math.Abs(endLimbOrientation.xAngle - startLimbOrientation.xAngle))
+                + Math.Min(Math.Abs(endLimbOrientation.yAngle - curLimbOrientation.yAngle), Math.Abs(endLimbOrientation.yAngle - startLimbOrientation.yAngle))
+                + Math.Min(Math.Abs(endLimbOrientation.zAngle - curLimbOrientation.zAngle), Math.Abs(endLimbOrientation.zAngle - startLimbOrientation.zAngle));
+
+            // For axes where the expected displacement is 0, if the actual displacement exceeds some global error threshold, we consider it an incorrectly performed exercise
+            if (
+                (endLimbOrientation.xAngle - startLimbOrientation.xAngle == 0 && Math.Abs(endLimbOrientation.xAngle - curLimbOrientation.xAngle) > SharedContent.AllowableDeviation)
+                || (endLimbOrientation.yAngle - startLimbOrientation.yAngle == 0 && Math.Abs(endLimbOrientation.yAngle - curLimbOrientation.yAngle) > SharedContent.AllowableDeviation)
+                || (endLimbOrientation.zAngle - startLimbOrientation.zAngle == 0 && Math.Abs(endLimbOrientation.zAngle - curLimbOrientation.zAngle) > SharedContent.AllowableDeviation)
+               )
+            {
+                Console.WriteLine("Performed exercise incorrectly! Attempt failed");
+                return SharedContent.Progression.Failed;
+            }
+
+            return (SharedContent.Progression)((totalRemainingDisplacement / totalRequiredDisplacement) * (double)SharedContent.Progression.Completed);
+
+            //return SharedContent.Progression.Failed;
         }
     }
 }

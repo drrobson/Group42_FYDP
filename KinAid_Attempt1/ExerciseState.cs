@@ -19,7 +19,7 @@ namespace KinAid_Attempt1
         }
 
         SkeletonData currentData; // current orientation of each limb
-        SharedContent.Progression totalProgression = SharedContent.Progression.Start; // percentage of progression in this particular state
+        SharedContent.Progression totalProgression = SharedContent.Progression.Started; // percentage of progression in this particular state
         public DateTime timeStarted // the time at  which the user started the exercise to make sure he isn't going over the timeout period
         {
             get;
@@ -38,16 +38,19 @@ namespace KinAid_Attempt1
         /// <returns>A SharedContent.Progression value indicating the status of the exercise</returns>
         public SharedContent.Progression updateState(SkeletonData newData)
         {
+            double overallProgress = (double)SharedContent.Progression.Started;
+
             foreach (VariableConstraint constraint in variableConstraints)
             {
-                if (currentData == null) break;
-
-                SharedContent.Progression tempProgression = constraint.verify(currentData, newData);
-                totalProgression = SharedContent.Progression.Completed;
-                if (tempProgression < totalProgression)
-                { // the progress of the constraint furthest from completion 
-                    totalProgression = tempProgression;
+                //if (currentData == null) break;
+                SharedContent.Progression currentProgress = constraint.verify(currentData, newData);
+                if (currentProgress == SharedContent.Progression.NotStarted)
+                {
+                    continue;
                 }
+
+                overallProgress += (int)currentProgress;
+
                 if (DateTime.Now - timeStarted > constraint.timeout)
                 { // if any constraint times out, then the exercise is not completed
                     return SharedContent.Progression.Failed;
@@ -55,6 +58,7 @@ namespace KinAid_Attempt1
             }
             currentData = newData;
 
+            totalProgression = (SharedContent.Progression)(Math.Min((double)SharedContent.Progression.Completed, overallProgress / variableConstraints.Length));
             return totalProgression;
         }
     }
