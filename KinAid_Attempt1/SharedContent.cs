@@ -52,6 +52,21 @@ namespace KinAid_Attempt1
             RightFoot,
         }
 
+        public enum ExerciseType
+        {
+            MoveAndHold,
+            MoveAndBack,
+            MoveOnly,
+            HoldOnly,
+        }
+
+        public enum Axis
+        {
+            X,
+            Y,
+            Z
+        }
+
         public enum Progression
         {
             NotStarted = -2,

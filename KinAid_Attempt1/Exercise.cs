@@ -11,7 +11,7 @@ namespace KinAid_Attempt1
     /// </summary>
     public class Exercise
     {
-        public int[] limbs // the limbs involved in the exercise
+        public SharedContent.LimbID[] limbs // the limbs involved in the exercise
         {
             get;
             private set;
@@ -38,7 +38,7 @@ namespace KinAid_Attempt1
             set;
         }
 
-        public Exercise(int[] limbs, 
+        public Exercise(SharedContent.LimbID[] limbs, 
             PoseConstraint initialConstraint, 
             GlobalConstraint[] globalConstraints, 
             VariableConstraint[] variableConstraints)
@@ -87,6 +87,23 @@ namespace KinAid_Attempt1
         public SharedContent.Progression nextState()
         {
             return 0;
+        }
+
+        public string printState()
+        {
+            switch (progression)
+            {
+                case SharedContent.Progression.NotStarted:
+                    return "Looking for pose";
+                case SharedContent.Progression.Start:
+                    return "Start the exercise";
+                case SharedContent.Progression.Completed:
+                    return "Exercise Complete";
+                case SharedContent.Progression.Failed:
+                    return "Exercise Failed";
+                default:
+                    return String.Format("Exercise {0}% complete", progression);
+            }
         }
     }
 }
