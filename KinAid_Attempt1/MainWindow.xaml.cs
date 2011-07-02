@@ -42,10 +42,10 @@ namespace KinAid_Attempt1
         // We want to control how depth data gets converted into false-color data
         // for more intuitive visualization, so we keep 32-bit color frame buffer versions of
         // these, to be updated whenever we receive and process a 16-bit frame.
-        const int RED_IDX = 2;
+        /*const int RED_IDX = 2;
         const int GREEN_IDX = 1;
         const int BLUE_IDX = 0;
-        byte[] depthFrame32 = new byte[320 * 240 * 4];
+        byte[] depthFrame32 = new byte[320 * 240 * 4];*/
 
         private void Window_Loaded(object sender, EventArgs e)
         {
@@ -75,14 +75,15 @@ namespace KinAid_Attempt1
 
             lastTime = DateTime.Now;
 
-            nui.DepthFrameReady += new EventHandler<ImageFrameReadyEventArgs>(nui_DepthFrameReady);
-            nui.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(nui_SkeletonFrameReady);
+            //nui.DepthFrameReady += new EventHandler<ImageFrameReadyEventArgs>(nui_DepthFrameReady);
+            //nui.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(nui_SkeletonFrameReady);
             nui.VideoFrameReady += new EventHandler<ImageFrameReadyEventArgs>(nui_ColorFrameReady);
         }
 
+        /// We aren't going to use the depth data for now
         // Converts a 16-bit grayscale depth frame which includes player indexes into a 32-bit frame
         // that displays different players in different colors
-        byte[] convertDepthFrame(byte[] depthFrame16)
+        /*byte[] convertDepthFrame(byte[] depthFrame16)
         {
             for (int i16 = 0, i32 = 0; i16 < depthFrame16.Length && i32 < depthFrame32.Length; i16 += 2, i32 += 4)
             {
@@ -140,6 +141,7 @@ namespace KinAid_Attempt1
             return depthFrame32;
         }
 
+        
         void nui_DepthFrameReady(object sender, ImageFrameReadyEventArgs e)
         {
             PlanarImage Image = e.ImageFrame.Image;
@@ -147,20 +149,10 @@ namespace KinAid_Attempt1
 
             depth.Source = BitmapSource.Create(
                 Image.Width, Image.Height, 96, 96, PixelFormats.Bgr32, null, convertedDepthFrame, Image.Width * 4);
+        }*/
 
-            ++totalFrames;
-
-            DateTime cur = DateTime.Now;
-            if (cur.Subtract(lastTime) > TimeSpan.FromSeconds(1))
-            {
-                int frameDiff = totalFrames - lastFrames;
-                lastFrames = totalFrames;
-                lastTime = cur;
-                frameRate.Text = frameDiff.ToString() + " fps";
-            }
-        }
-
-        private Point getDisplayPosition(Joint joint)
+        /// Skeleton data is for debug use only
+        /*private Point getDisplayPosition(Joint joint)
         {
             float depthX, depthY;
             nui.SkeletonEngine.SkeletonToDepthImage(joint.Position, out depthX, out depthY);
@@ -190,6 +182,7 @@ namespace KinAid_Attempt1
             return polyline;
         }
 
+        
         void nui_SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
             SkeletonFrame skeletonFrame = e.SkeletonFrame;
@@ -236,7 +229,7 @@ namespace KinAid_Attempt1
                 }
                 iSkeleton++;
             } // for each skeleton
-        }
+        }*/
 
         void nui_ColorFrameReady(object sender, ImageFrameReadyEventArgs e)
         {
@@ -244,6 +237,16 @@ namespace KinAid_Attempt1
             PlanarImage Image = e.ImageFrame.Image;
             video.Source = BitmapSource.Create(
                 Image.Width, Image.Height, 96, 96, PixelFormats.Bgr32, null, Image.Bits, Image.Width * Image.BytesPerPixel);
+            ++totalFrames;
+
+            /*DateTime cur = DateTime.Now;
+            if (cur.Subtract(lastTime) > TimeSpan.FromSeconds(1))
+            {
+                int frameDiff = totalFrames - lastFrames;
+                lastFrames = totalFrames;
+                lastTime = cur;
+                frameRate.Text = frameDiff.ToString() + " fps";
+            }*/
         }
 
         private void Window_Closed(object sender, EventArgs e)
