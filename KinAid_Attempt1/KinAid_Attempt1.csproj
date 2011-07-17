@@ -57,6 +57,9 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="CalibratingView.xaml.cs">
+      <DependentUpon>CalibratingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Exercise.cs" />
     <Compile Include="ExerciseFactory.cs" />
     <Compile Include="ExerciseSelector.xaml.cs">
@@ -79,6 +82,10 @@
       <DependentUpon>ExerciseView.xaml</DependentUpon>
     </Compile>
     <Compile Include="VariableConstraint.cs" />
+    <Page Include="CalibratingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ExerciseSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

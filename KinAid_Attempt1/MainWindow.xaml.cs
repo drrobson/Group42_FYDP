@@ -39,11 +39,6 @@ namespace KinAid_Attempt1
             this.LayoutRoot.Children.Add(screen.element);
         }
 
-        public void exerciseSelected(int id)
-        {
-            setScreen(new ExerciseView());
-        }
-
         private void Window_Loaded(object sender, EventArgs e)
         {
             ScreenManager.setHost(this);
@@ -60,7 +55,7 @@ namespace KinAid_Attempt1
             catch (InvalidOperationException)
             {
                 System.Windows.MessageBox.Show("Runtime initialization failed. Please make sure Kinect device is plugged in.");
-                return;
+                Environment.Exit(-1);
             }
 
             try
@@ -71,7 +66,7 @@ namespace KinAid_Attempt1
             catch (InvalidOperationException)
             {
                 System.Windows.MessageBox.Show("Failed to open stream. Please make sure to specify a supported image type and resolution.");
-                return;
+                Environment.Exit(-1);
             }
         }
 

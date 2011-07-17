@@ -18,10 +18,5 @@ namespace KinAid_Attempt1
         {
             Host.setScreen(screen);
         }
-
-        public static void exerciseSelected(int id)
-        {
-            Host.exerciseSelected(id);
-        }
     }
 }
