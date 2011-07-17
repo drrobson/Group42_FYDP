@@ -73,7 +73,6 @@
     <Compile Include="BodyPartOrientation.cs" />
     <Compile Include="IScreen.cs" />
     <Compile Include="IScreenHost.cs" />
-    <Compile Include="LimbOrientation-old.cs" />
     <Compile Include="ExercisePreview.xaml.cs">
       <DependentUpon>ExercisePreview.xaml</DependentUpon>
     </Compile>
