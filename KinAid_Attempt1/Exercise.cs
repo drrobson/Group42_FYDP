@@ -115,7 +115,7 @@ namespace KinAid_Attempt1
             {
                 case SharedContent.Progression.NotStarted:
                     return "Looking for pose";
-                case SharedContent.Progression.Start:
+                case SharedContent.Progression.Started:
                     return "Start the exercise";
                 case SharedContent.Progression.Completed:
                     return "Exercise Complete";

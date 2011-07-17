@@ -76,7 +76,7 @@ namespace KinAid_Attempt1
             PoseConstraint pc = new PoseConstraint(limb1);
             LimbOrientation limb2 = new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 180, 90, 90);
             GlobalConstraint[] gcs = { new GlobalConstraint(JointID.ShoulderLeft, JointID.ElbowLeft, JointID.WristLeft, 90, 15) };
-            VariableConstraint[] vcs = { new VariableConstraint("TEST", new TimeSpan(0, 0, 10), limb2) };
+            VariableConstraint[] vcs = { new VariableConstraint("TEST", new TimeSpan(0, 0, 10), limb1[0], limb2) };
             Exercise ex1 = new Exercise(null, pc, gcs, vcs);
 
             return new Exercise[] { ex1 };

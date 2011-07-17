@@ -29,7 +29,7 @@ namespace KinAid_Attempt1
 
         }
 
-        private void Element_MediaOpened(object source, EventArgs e)
+        private void Element_MediaEnded(object source, EventArgs e)
         {
 
         }
