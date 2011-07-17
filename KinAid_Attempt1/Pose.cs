@@ -40,6 +40,9 @@ namespace KinAid_Attempt1
             }
         }
 
-        public bool IsInPose(
+        public bool IsInPose(SkeletonData poseData)
+        {
+
+        }
     }
 }

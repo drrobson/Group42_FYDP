@@ -10,7 +10,5 @@ namespace KinAid_Attempt1
         }
 
         void setScreen(IScreen screen);
-
-        void exerciseSelected(int id);
     }
 }
