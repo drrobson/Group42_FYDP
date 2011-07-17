@@ -34,6 +34,8 @@ namespace KinAid_Attempt1
 
         public static double AllowableDeviation = 15;
 
+        public static Runtime Nui;
+
         public enum LimbID
         {
             LeftHand,
@@ -52,12 +54,32 @@ namespace KinAid_Attempt1
             RightFoot,
         }
 
+        public enum ExerciseType
+        {
+            MoveAndHold,
+            MoveAndBack,
+            MoveOnly,
+            HoldOnly,
+        }
+
         public enum Progression
         {
             NotStarted = -2,
             Failed = -1,
             Started = 0,
             Completed = 100,
+        }
+
+        public static Exercise[] GetExercises()
+        {
+            LimbOrientation[] limb1 = { new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 90, 180, 90) };
+            PoseConstraint pc = new PoseConstraint(limb1);
+            LimbOrientation limb2 = new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 180, 90, 90);
+            GlobalConstraint[] gcs = { new GlobalConstraint(JointID.ShoulderLeft, JointID.ElbowLeft, JointID.WristLeft, 90, 15) };
+            VariableConstraint[] vcs = { new VariableConstraint("TEST", new TimeSpan(0, 0, 10), limb2) };
+            Exercise ex1 = new Exercise(null, pc, gcs, vcs);
+
+            return new Exercise[] { ex1 };
         }
     }
 }
