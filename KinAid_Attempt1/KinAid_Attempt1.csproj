@@ -57,6 +57,9 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="ExerciseFeedback.xaml.cs">
+      <DependentUpon>ExerciseFeedback.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LimbOrientation-old.cs" />
     <Compile Include="LimbOrientation.cs" />
     <Compile Include="CalibratingView.xaml.cs">
@@ -87,6 +90,10 @@
     <Compile Include="TorsoOrientation.cs" />
     <Compile Include="VariableConstraint.cs" />
     <Page Include="CalibratingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExerciseFeedback.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

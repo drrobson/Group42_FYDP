@@ -25,6 +25,8 @@ namespace KinAid_Attempt1
         int lastFrames = 0;
         DateTime lastTime = DateTime.MaxValue;
 
+        Exercise ex;
+
         public UIElement element
         {
             get
