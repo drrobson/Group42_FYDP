@@ -17,8 +17,16 @@ namespace KinAid_Attempt1
     /// <summary>
     /// Interaction logic for ExercisePreview.xaml
     /// </summary>
-    public partial class ExercisePreview : Page
+    public partial class ExercisePreview : UserControl, IScreen
     {
+        public UIElement element
+        {
+            get
+            {
+                return this;
+            }
+        }
+
         public ExercisePreview()
         {
             InitializeComponent();
