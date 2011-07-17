@@ -80,37 +80,6 @@ namespace KinAid_Attempt1
             SharedContent.Nui.Uninitialize();
             Environment.Exit(0);
         }
-
-        /*private void displayExercise1(SkeletonData data)
-        {
-            switch (ex1.progression)
-            {
-                case SharedContent.Progression.NotStarted:
-                    exerciseCorrect.Text = "Looking for pose";
-                    break;
-                case SharedContent.Progression.Started:
-                    exerciseCorrect.Text = "Start the exercise";
-                    break;
-                case SharedContent.Progression.Completed:
-                    exerciseCorrect.Text = "Exercise Complete";
-                    break;
-                case SharedContent.Progression.Failed:
-                    exerciseCorrect.Text = "Exercise Failed";
-                    break;
-                default:
-                    exerciseCorrect.Text = String.Format("Exercise {0}% complete", ex1.progression);
-                    break;
-            }
-        }
-
-        private void start_Click(object sender, RoutedEventArgs e)
-        {
-            exerciseInProgress = true;
-            ex1.progression = SharedContent.Progression.NotStarted;
-            start.IsEnabled = false;
-            Console.WriteLine("Attempting exercise");
-            displayExercise1(null);
-        }*/
     }
 
 }
