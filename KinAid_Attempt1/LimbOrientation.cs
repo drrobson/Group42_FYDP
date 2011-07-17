@@ -49,6 +49,11 @@ namespace KinAid_Attempt1
                     middleJointPosition = neutralOrientationData.Joints[JointID.KneeLeft].Position;
                     lowerJointPosition = neutralOrientationData.Joints[JointID.FootLeft].Position;
                     break;
+                default:
+                    upperJointPosition = new Vector();
+                    middleJointPosition = new Vector();
+                    lowerJointPosition = new Vector();
+                    break;
             }
 
             NeutralUpperLimbOrientations[(int)limbID] = new Vector3D(middleJointPosition.X - upperJointPosition.X, middleJointPosition.Y - upperJointPosition.Y, middleJointPosition.Z - upperJointPosition.Z);
