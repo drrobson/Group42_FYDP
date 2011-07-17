@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded" Closed="Window_Closed"
-        Icon="Kinaid.ico">
-        <StackPanel>
-            <Image Width="400" Height="300" Name="video" Margin="10 0 10 10"/>
-        </StackPanel>
+        Icon="Kinaid.ico" xmlns:my="clr-namespace:KinAid_Attempt1">
+    <Grid Name="LayoutRoot">
+        <my:ExerciseSelector HorizontalAlignment="Left" x:Name="exerciseSelector1" VerticalAlignment="Top" />
+    </Grid>
 </Window>
