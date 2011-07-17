@@ -34,17 +34,32 @@ namespace KinAid_Attempt1
 
         private void Element_MediaOpened(object source, EventArgs e)
         {
-
+            // no use for this (yet ?)
         }
 
         private void Element_MediaEnded(object source, EventArgs e)
         {
-
+            exercisePreview.Stop();
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private void selectedPlay(object sender, RoutedEventArgs e)
         {
+            exercisePreview.Play();
+        }
 
+        private void selectedPause(object sender, RoutedEventArgs e)
+        {
+            exercisePreview.Pause();
+        }
+
+        private void selectedStop(object sender, RoutedEventArgs e)
+        {
+            exercisePreview.Stop();
+        }
+
+        private void selectedContinue(object sender, RoutedEventArgs e)
+        {
+            ScreenManager.setScreen(new ExerciseView());
         }
     }
 }

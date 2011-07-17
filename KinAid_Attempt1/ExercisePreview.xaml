@@ -8,11 +8,16 @@
     <StackPanel>
         <!-- To interactively stop, pause, and play the media, the LoadedBehavior 
            property of the MediaElement must be set to "Manual". -->
-        <MediaElement Source="media\numbers.wmv" Name="myMediaElement" 
+        <MediaElement Source="C:\Users\Public\Videos\Sample Videos\Wildlife.wmv" Name="exercisePreview" 
             Width="450" Height="250" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" 
             MediaOpened="Element_MediaOpened" MediaEnded="Element_MediaEnded"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="450">
-            
-        </StackPanel>
+        <Grid Width="450" Height="50">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Play" HorizontalAlignment="Left" Click="selectedPlay" />
+                <Button Content="Pause" HorizontalAlignment="Left" Click="selectedPause" />
+                <Button Content="Stop" HorizontalAlignment="Left" Click="selectedStop" />
+            </StackPanel>
+            <Button Content="Continue" HorizontalAlignment="Right" Click="selectedContinue" />
+        </Grid>
     </StackPanel>
 </UserControl>
