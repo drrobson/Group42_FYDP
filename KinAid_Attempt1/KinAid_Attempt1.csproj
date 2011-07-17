@@ -57,17 +57,20 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="LimbOrientation.cs" />
     <Compile Include="Exercise.cs" />
     <Compile Include="ExerciseFactory.cs" />
     <Compile Include="ExerciseSelector.xaml.cs">
       <DependentUpon>ExerciseSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlobalConstraint.cs" />
+    <Compile Include="HeadOrientation.cs" />
     <Compile Include="IConstraint.cs" />
     <Compile Include="IKinectFrames.cs" />
+    <Compile Include="BodyPartOrientation.cs" />
     <Compile Include="IScreen.cs" />
     <Compile Include="IScreenHost.cs" />
-    <Compile Include="LimbOrientation.cs" />
+    <Compile Include="LimbOrientation-old.cs" />
     <Compile Include="ExercisePreview.xaml.cs">
       <DependentUpon>ExercisePreview.xaml</DependentUpon>
     </Compile>
@@ -78,6 +81,7 @@
     <Compile Include="ExerciseView.xaml.cs">
       <DependentUpon>ExerciseView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TorsoOrientation.cs" />
     <Compile Include="VariableConstraint.cs" />
     <Page Include="ExerciseSelector.xaml">
       <Generator>MSBuild:Compile</Generator>

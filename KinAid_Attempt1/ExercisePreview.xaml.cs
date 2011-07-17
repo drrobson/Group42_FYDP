@@ -33,5 +33,10 @@ namespace KinAid_Attempt1
         {
 
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -29,9 +29,9 @@ namespace KinAid_Attempt1
 
         public SharedContent.Progression verify(SkeletonData currData, SkeletonData newData = null)
         {
-            LimbOrientation limb1 = new LimbOrientation(currData.Joints[firstJoint], currData.Joints[secondJoint]);
-            LimbOrientation limb2 = new LimbOrientation(currData.Joints[secondJoint], currData.Joints[thirdJoint]);
-            if (Math.Abs(LimbOrientation.angleBetweenLimbs(limb1, limb2) - constraintAngle) < allowableDeviation)
+            LimbOrientationOld limb1 = new LimbOrientationOld(currData.Joints[firstJoint], currData.Joints[secondJoint]);
+            LimbOrientationOld limb2 = new LimbOrientationOld(currData.Joints[secondJoint], currData.Joints[thirdJoint]);
+            if (Math.Abs(LimbOrientationOld.angleBetweenLimbs(limb1, limb2) - constraintAngle) < allowableDeviation)
             {
                 return SharedContent.Progression.Completed;
             }

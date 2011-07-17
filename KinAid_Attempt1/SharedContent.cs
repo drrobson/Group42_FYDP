@@ -38,20 +38,10 @@ namespace KinAid_Attempt1
 
         public enum LimbID
         {
-            LeftHand,
-            LeftForearm,
-            LeftArm,
-            RightHand,
-            RightForearm,
-            RightArm,
-            Neck,
-            MainBody,
-            LeftThigh,
-            LeftCalf,
-            LeftFoot,
-            RightThigh,
-            RightCalf,
-            RightFoot,
+            RightArm = 0,
+            LeftArm = 1,
+            RightLeg = 2,
+            LeftLeg = 3
         }
 
         public enum ExerciseType
@@ -72,9 +62,9 @@ namespace KinAid_Attempt1
 
         public static Exercise[] GetExercises()
         {
-            LimbOrientation[] limb1 = { new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 90, 180, 90) };
+            LimbOrientationOld[] limb1 = { new LimbOrientationOld(JointID.ShoulderLeft, JointID.ElbowLeft, 90, 180, 90) };
             PoseConstraint pc = new PoseConstraint(limb1);
-            LimbOrientation limb2 = new LimbOrientation(JointID.ShoulderLeft, JointID.ElbowLeft, 180, 90, 90);
+            LimbOrientationOld limb2 = new LimbOrientationOld(JointID.ShoulderLeft, JointID.ElbowLeft, 180, 90, 90);
             GlobalConstraint[] gcs = { new GlobalConstraint(JointID.ShoulderLeft, JointID.ElbowLeft, JointID.WristLeft, 90, 15) };
             VariableConstraint[] vcs = { new VariableConstraint("TEST", new TimeSpan(0, 0, 10), limb1[0], limb2) };
             Exercise ex1 = new Exercise(null, pc, gcs, vcs);

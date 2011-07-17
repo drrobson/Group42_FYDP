@@ -8,138 +8,62 @@ using Microsoft.Research.Kinect.Nui;
 
 namespace KinAid_Attempt1
 {
-    public class LimbOrientation
+    public class LimbOrientation : BodyPartOrientation
     {
-        private Vector3D pivotToMovable;
-        public JointID pivotID
+        public SharedContent.LimbID limbID;
+        public Vector3D upperLimbOrientation;
+        public double bendInLimb;
+
+        //Initialize neutral limb orientations to ideal neutral pose (arms at sides, feet below hips)
+        public static Vector3D[] NeutralUpperLimbOrientations = new Vector3D[] { new Vector3D(0, 180, 0), new Vector3D(0, 180, 0), new Vector3D(0, 180, 0), new Vector3D(0, 180, 0) };
+        public static double[] NeutralBendInLimbs = new double[] { 0, 0, 0, 0 };
+
+        public LimbOrientation(SharedContent.LimbID limbID)
         {
-            get;
-            private set;
-        }
-        public JointID movableID
-        {
-            get;
-            private set;
-        }
-        public double xAngle
-        {
-            get;
-            private set;
-        }
-        public double yAngle
-        {
-            get;
-            private set;
-        }
-        public double zAngle
-        {
-            get;
-            private set;
+            this.limbID = limbID;
         }
 
-        public LimbOrientation(Joint pivot, Joint movable)
+        public void CalibrateNeutral(SkeletonData neutralOrientationData)
         {
-            this.pivotToMovable = new Vector3D(movable.Position.X - pivot.Position.X,
-                movable.Position.Y - pivot.Position.Y, movable.Position.Z - pivot.Position.Z);
-            this.pivotID = pivot.ID;
-            this.movableID = movable.ID;
-
-            xAngle = Vector3D.AngleBetween(new Vector3D(1, 0, 0), pivotToMovable);
-            yAngle = Vector3D.AngleBetween(new Vector3D(0, 1, 0), pivotToMovable);
-            zAngle = Vector3D.AngleBetween(new Vector3D(0, 0, 1), pivotToMovable);
-        }
-
-        public LimbOrientation(JointID pivotID, JointID movableID, double xAngle, double yAngle, double zAngle)
-        {
-            this.pivotID = pivotID;
-            this.movableID = movableID;
-
-            this.xAngle = xAngle;
-            this.yAngle = yAngle;
-            this.zAngle = zAngle;
-        }
-
-        public static double angleBetweenLimbs(LimbOrientation limb1, LimbOrientation limb2)
-        {
-            return Vector3D.AngleBetween(limb1.pivotToMovable, limb2.pivotToMovable);
-        }
-
-        public static bool areOrientationsEqual(LimbOrientation limbOrientation1, LimbOrientation limbOrientation2)
-        {
-            if (
-                ((limbOrientation1.xAngle < limbOrientation2.xAngle && (limbOrientation1.xAngle + SharedContent.AllowableDeviation) > limbOrientation2.xAngle) ||
-                 (limbOrientation1.xAngle > limbOrientation2.xAngle && (limbOrientation1.xAngle - SharedContent.AllowableDeviation) < limbOrientation2.xAngle))
-                &&
-                ((limbOrientation1.yAngle < limbOrientation2.yAngle && (limbOrientation1.yAngle + SharedContent.AllowableDeviation) > limbOrientation2.yAngle) ||
-                 (limbOrientation1.yAngle > limbOrientation2.yAngle && (limbOrientation1.yAngle - SharedContent.AllowableDeviation) < limbOrientation2.yAngle))
-                &&
-                ((limbOrientation1.zAngle < limbOrientation2.zAngle && (limbOrientation1.zAngle + SharedContent.AllowableDeviation) > limbOrientation2.zAngle) ||
-                 (limbOrientation1.zAngle > limbOrientation2.zAngle && (limbOrientation1.zAngle - SharedContent.AllowableDeviation) < limbOrientation2.zAngle))
-                )
+            Vector upperJointPosition, middleJointPosition, lowerJointPosition;
+            
+            switch (limbID)
             {
-                return true;
+                case SharedContent.LimbID.RightArm:
+                    upperJointPosition = neutralOrientationData.Joints[JointID.ShoulderRight].Position;
+                    middleJointPosition = neutralOrientationData.Joints[JointID.ElbowRight].Position;
+                    lowerJointPosition = neutralOrientationData.Joints[JointID.HandRight].Position;
+                    break;
+                case SharedContent.LimbID.LeftArm:
+                    upperJointPosition = neutralOrientationData.Joints[JointID.ShoulderLeft].Position;
+                    middleJointPosition = neutralOrientationData.Joints[JointID.ElbowLeft].Position;
+                    lowerJointPosition = neutralOrientationData.Joints[JointID.HandLeft].Position;
+                    break;
+                case SharedContent.LimbID.RightLeg:
+                    upperJointPosition = neutralOrientationData.Joints[JointID.HipRight].Position;
+                    middleJointPosition = neutralOrientationData.Joints[JointID.KneeRight].Position;
+                    lowerJointPosition = neutralOrientationData.Joints[JointID.FootRight].Position;
+                    break;
+                case SharedContent.LimbID.LeftLeg:
+                    upperJointPosition = neutralOrientationData.Joints[JointID.HipLeft].Position;
+                    middleJointPosition = neutralOrientationData.Joints[JointID.KneeLeft].Position;
+                    lowerJointPosition = neutralOrientationData.Joints[JointID.FootLeft].Position;
+                    break;
             }
-            return false;
+
+            NeutralUpperLimbOrientations[(int)limbID] = new Vector3D(middleJointPosition.X - upperJointPosition.X, middleJointPosition.Y - upperJointPosition.Y, middleJointPosition.Z - upperJointPosition.Z);
+
+            Vector3D lowerLimbOrientation = new Vector3D(lowerJointPosition.X - middleJointPosition.X, lowerJointPosition.Y - middleJointPosition.Y, lowerJointPosition.Z - middleJointPosition.Z);
+            NeutralBendInLimbs[(int)limbID] = Vector3D.AngleBetween(lowerLimbOrientation, NeutralUpperLimbOrientations[(int)limbID]);
         }
 
-        public static bool areOrientationsEqual(LimbOrientation limbOrientation1, Joint limb2pivot, Joint limb2movable)
+        public static LimbOrientation GetNeutralOrientation(SharedContent.LimbID limbID)
         {
-            return areOrientationsEqual(limbOrientation1, new LimbOrientation(limb2pivot, limb2movable));
-        }
+            LimbOrientation neutralOrientation = new LimbOrientation(limbID);
+            neutralOrientation.upperLimbOrientation = LimbOrientation.NeutralUpperLimbOrientations[(int)limbID];
+            neutralOrientation.bendInLimb = LimbOrientation.NeutralBendInLimbs[(int)limbID];
 
-        public static SharedContent.Progression checkLimbProgression(LimbOrientation startLimbOrientation, 
-            LimbOrientation curLimbOrientation,
-            LimbOrientation endLimbOrientation)
-        {
-            /*
-            double prevXAngle = endLimbOrientation.xAngle - curLimbOrientation.xAngle;
-            double progXAngle = endLimbOrientation.xAngle - newLimbOrientation.xAngle;
-            double prevYAngle = endLimbOrientation.yAngle - curLimbOrientation.yAngle;
-            double progYAngle = endLimbOrientation.yAngle - newLimbOrientation.yAngle;
-            double prevZAngle = endLimbOrientation.zAngle - curLimbOrientation.zAngle;
-            double progZAngle = endLimbOrientation.zAngle - newLimbOrientation.zAngle;
-
-            if (progXAngle > progYAngle && progXAngle > progZAngle && prevXAngle > progXAngle)
-            { // Rotating mostly around the x axis
-                return (SharedContent.Progression) (newLimbOrientation.xAngle / endLimbOrientation.xAngle * 
-                    (double) SharedContent.Progression.Completed);
-            }
-
-            if (progYAngle > progZAngle && prevYAngle > progYAngle)
-            { // Rotating mostly around the y axis
-                return (SharedContent.Progression) (newLimbOrientation.yAngle / endLimbOrientation.yAngle * 
-                    (double)SharedContent.Progression.Completed);
-            }
-
-            if (prevZAngle > progZAngle)
-            { // Rotating mostly around the z axis
-                return (SharedContent.Progression) (newLimbOrientation.zAngle / endLimbOrientation.zAngle * 
-                    (double)SharedContent.Progression.Completed);
-            }
-             * */
-            double totalRequiredDisplacement, totalRemainingDisplacement;
-
-            totalRequiredDisplacement = Math.Abs(endLimbOrientation.xAngle - startLimbOrientation.xAngle) + Math.Abs(endLimbOrientation.yAngle - startLimbOrientation.yAngle)
-                + Math.Abs(endLimbOrientation.zAngle - startLimbOrientation.zAngle);
-
-            totalRemainingDisplacement = Math.Min(Math.Abs(endLimbOrientation.xAngle - curLimbOrientation.xAngle), Math.Abs(endLimbOrientation.xAngle - startLimbOrientation.xAngle))
-                + Math.Min(Math.Abs(endLimbOrientation.yAngle - curLimbOrientation.yAngle), Math.Abs(endLimbOrientation.yAngle - startLimbOrientation.yAngle))
-                + Math.Min(Math.Abs(endLimbOrientation.zAngle - curLimbOrientation.zAngle), Math.Abs(endLimbOrientation.zAngle - startLimbOrientation.zAngle));
-
-            // For axes where the expected displacement is 0, if the actual displacement exceeds some global error threshold, we consider it an incorrectly performed exercise
-            if (
-                (endLimbOrientation.xAngle - startLimbOrientation.xAngle == 0 && Math.Abs(endLimbOrientation.xAngle - curLimbOrientation.xAngle) > SharedContent.AllowableDeviation)
-                || (endLimbOrientation.yAngle - startLimbOrientation.yAngle == 0 && Math.Abs(endLimbOrientation.yAngle - curLimbOrientation.yAngle) > SharedContent.AllowableDeviation)
-                || (endLimbOrientation.zAngle - startLimbOrientation.zAngle == 0 && Math.Abs(endLimbOrientation.zAngle - curLimbOrientation.zAngle) > SharedContent.AllowableDeviation)
-               )
-            {
-                Console.WriteLine("Performed exercise incorrectly! Attempt failed");
-                return SharedContent.Progression.Failed;
-            }
-
-            return (SharedContent.Progression)((totalRemainingDisplacement / totalRequiredDisplacement) * (double)SharedContent.Progression.Completed);
-
-            //return SharedContent.Progression.Failed;
+            return neutralOrientation;
         }
     }
 }

@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="450"
-	Title="ExercisePreview">
+	Title="ExercisePreview" Loaded="Page_Loaded">
     <StackPanel>
         <!-- To interactively stop, pause, and play the media, the LoadedBehavior 
            property of the MediaElement must be set to "Manual". -->

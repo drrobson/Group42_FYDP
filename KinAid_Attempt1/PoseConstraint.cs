@@ -8,9 +8,9 @@ namespace KinAid_Attempt1
 {
     public class PoseConstraint : IConstraint
     {
-        LimbOrientation[] limbsToCheck;
+        LimbOrientationOld[] limbsToCheck;
 
-        public PoseConstraint(LimbOrientation[] limbsToCheck)
+        public PoseConstraint(LimbOrientationOld[] limbsToCheck)
         {
             this.limbsToCheck = limbsToCheck;
         }
@@ -25,9 +25,9 @@ namespace KinAid_Attempt1
         /// limb orientations</returns>
         public SharedContent.Progression verify(SkeletonData currData, SkeletonData newData = null)
         {
-            foreach (LimbOrientation limb in limbsToCheck)
+            foreach (LimbOrientationOld limb in limbsToCheck)
             {
-                if (!LimbOrientation.areOrientationsEqual(limb, currData.Joints[limb.pivotID], currData.Joints[limb.movableID]))
+                if (!LimbOrientationOld.areOrientationsEqual(limb, currData.Joints[limb.pivotID], currData.Joints[limb.movableID]))
                 {
                     return SharedContent.Progression.Failed;
                 }
