@@ -45,13 +45,8 @@ namespace KinAid_Attempt1
             ScreenManager.setHost(this);
 
             SharedContent.Nui = new Runtime();
-
-            if (SharedContent.Ri == null)
-            {
-                MessageBox.Show(
-                    "Could not find speech recognizer: {0}. Please refer to the application requirements.", SharedContent.RecognizerId);
-                Environment.Exit(-1);
-            }
+            SharedContent.Sr = new SpeechRecognizer();
+            SharedContent.Sr.initialize();
 
             try
             {
