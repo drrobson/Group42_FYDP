@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using Microsoft.Research.Kinect.Nui;
+using Microsoft.Research.Kinect.Audio;
 
 namespace KinAid_Attempt1
 {
@@ -45,6 +46,13 @@ namespace KinAid_Attempt1
 
             SharedContent.Nui = new Runtime();
 
+            if (SharedContent.Ri == null)
+            {
+                MessageBox.Show(
+                    "Could not find speech recognizer: {0}. Please refer to the application requirements.", SharedContent.RecognizerId);
+                Environment.Exit(-1);
+            }
+
             try
             {
                 SharedContent.Nui.Initialize(
@@ -54,7 +62,7 @@ namespace KinAid_Attempt1
             }
             catch (InvalidOperationException)
             {
-                System.Windows.MessageBox.Show("Runtime initialization failed. Please make sure Kinect device is plugged in.");
+                MessageBox.Show("Runtime initialization failed. Please make sure Kinect device is plugged in.");
                 Environment.Exit(-1);
             }
 
@@ -65,7 +73,7 @@ namespace KinAid_Attempt1
             }
             catch (InvalidOperationException)
             {
-                System.Windows.MessageBox.Show("Failed to open stream. Please make sure to specify a supported image type and resolution.");
+                MessageBox.Show("Failed to open stream. Please make sure to specify a supported image type and resolution.");
                 Environment.Exit(-1);
             }
         }

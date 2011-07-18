@@ -17,11 +17,29 @@ namespace KinAid_Attempt1
     /// <summary>
     /// Interaction logic for ExerciseFeedback.xaml
     /// </summary>
-    public partial class ExerciseFeedback : UserControl
+    public partial class ExerciseFeedback : UserControl, IScreen
     {
+        public UIElement element
+        {
+            get
+            {
+                return this;
+            }
+        }
+
         public ExerciseFeedback()
         {
             InitializeComponent();
+        }
+
+        private void selectedRetry(object sender, RoutedEventArgs e)
+        {
+            ScreenManager.setScreen(new ExercisePreview());
+        }
+
+        private void selectedBack(object sender, RoutedEventArgs e)
+        {
+            ScreenManager.setScreen(new ExerciseSelector());
         }
     }
 }

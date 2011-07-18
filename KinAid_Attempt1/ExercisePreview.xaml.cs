@@ -30,6 +30,9 @@ namespace KinAid_Attempt1
         public ExercisePreview()
         {
             InitializeComponent();
+
+            SharedContent.RegisterSpeechCommands(new string[] { "play", "pause", "stop", "continue" },
+                new SpeechCommandReceived[] { selectedPlay, selectedPause, selectedStop, selectedContinue });
         }
 
         private void Element_MediaOpened(object source, EventArgs e)
@@ -44,22 +47,43 @@ namespace KinAid_Attempt1
 
         private void selectedPlay(object sender, RoutedEventArgs e)
         {
+            selectedPlay();
+        }
+
+        private void selectedPlay()
+        {
             exercisePreview.Play();
         }
 
         private void selectedPause(object sender, RoutedEventArgs e)
+        {
+            selectedPause();
+        }
+
+        private void selectedPause()
         {
             exercisePreview.Pause();
         }
 
         private void selectedStop(object sender, RoutedEventArgs e)
         {
+            selectedStop();
+        }
+
+        private void selectedStop()
+        {
             exercisePreview.Stop();
         }
 
         private void selectedContinue(object sender, RoutedEventArgs e)
         {
+            selectedContinue();
+        }
+
+        private void selectedContinue()
+        {
             ScreenManager.setScreen(new ExerciseView());
+            SharedContent.StopListeningCommands();
         }
     }
 }

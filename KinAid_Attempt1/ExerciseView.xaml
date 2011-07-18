@@ -9,9 +9,10 @@
         <Image Name="video" Height="284"/>
         <Grid>
             <Label Content="FPS:" Name="fpsLabel" HorizontalAlignment="Left" />
-            <StackPanel HorizontalAlignment="Center">
-                <Image Source="Checkbox.bmp" Name="statusImage" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Image Source="Checkbox.bmp" Name="statusImage" Stretch="None" StretchDirection="DownOnly" />
                 <Label Content="TEST ME BITCH" Name="statusText" />
+                <!--Button Content=""-->
             </StackPanel>
         </Grid>
     </StackPanel>

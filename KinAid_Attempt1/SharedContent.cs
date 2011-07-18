@@ -1,12 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Media;
+using System.IO;
 
 using Microsoft.Research.Kinect.Nui;
+using Microsoft.Research.Kinect.Audio;
+using Microsoft.Speech.Recognition;
+using Microsoft.Speech.AudioFormat;
 
 namespace KinAid_Attempt1
 {
+    public delegate void SpeechCommandReceived();
+
     public static class SharedContent
     {
         public static Dictionary<JointID, Brush> JointColors = new Dictionary<JointID, Brush>() { 
@@ -35,6 +43,8 @@ namespace KinAid_Attempt1
         public static double AllowableDeviation = 15;
 
         public static Runtime Nui;
+        public const string RecognizerId = "SR_MS_en-US_Kinect_10.0";
+        public static RecognizerInfo Ri = SpeechRecognitionEngine.InstalledRecognizers().Where(r => r.Id == RecognizerId).FirstOrDefault();
 
         public enum LimbID
         {
@@ -70,6 +80,65 @@ namespace KinAid_Attempt1
             Exercise ex1 = new Exercise(null, pc, gcs, vcs);
 
             return new Exercise[] { ex1 };
+        }
+
+        private static SpeechCommandReceived[] CommandDelegates;
+        private static string[] Commands;
+        private static KinectAudioSource AudioSource;
+        private static SpeechRecognitionEngine Sre;
+
+        public static void RegisterSpeechCommands(string[] commands, SpeechCommandReceived[] commandDelegates)
+        {
+            CommandDelegates = commandDelegates;
+            Commands = commands;
+
+            Choices choices = new Choices();
+            foreach (string command in commands)
+            {
+                choices.Add(command);
+            }
+
+            GrammarBuilder gb = new GrammarBuilder();
+            gb.Culture = SharedContent.Ri.Culture;
+            gb.Append(choices);
+
+            Grammar g = new Grammar(gb);
+
+            Sre = new SpeechRecognitionEngine(SharedContent.Ri.Id);
+            Sre.LoadGrammar(g);
+            Sre.SpeechRecognized += WireSpeechToCommand;
+
+            Thread speechRecoThread = new Thread(StartSpeechRecognitionThread);
+            speechRecoThread.Start();
+        }
+
+        private static void StartSpeechRecognitionThread()
+        {
+            AudioSource = new KinectAudioSource();
+            AudioSource.FeatureMode = true;
+            AudioSource.AutomaticGainControl = false;
+            AudioSource.SystemMode = SystemMode.OptibeamArrayOnly;
+            AudioSource.MicArrayMode = MicArrayMode.MicArrayAdaptiveBeam;
+            Stream s = AudioSource.Start();
+            Sre.SetInputToAudioStream(s, new SpeechAudioFormatInfo(EncodingFormat.Pcm, 16000, 16, 1, 32000, 2, null));
+            Sre.RecognizeAsync(RecognizeMode.Multiple);
+        }
+
+        public static void StopListeningCommands()
+        {
+            Sre.RecognizeAsyncCancel();
+            Sre.RecognizeAsyncStop();
+        }
+
+        public static void WireSpeechToCommand(object source, SpeechRecognizedEventArgs e)
+        {
+            for (int i = 0; i < Commands.Length; i++)
+            {
+                if (Commands[i] == e.Result.Text)
+                {
+                    CommandDelegates[i]();
+                }
+            }
         }
     }
 }
