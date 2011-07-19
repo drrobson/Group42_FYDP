@@ -73,8 +73,6 @@ namespace KinAid_Attempt1
             return CommandStrings[(int)command];
         }
 
-        public static ExerciseFactory Ef;
-
         /// <summary>
         /// Back-end shared content
         /// </summary>
