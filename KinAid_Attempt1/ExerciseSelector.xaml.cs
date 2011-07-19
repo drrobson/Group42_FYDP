@@ -51,11 +51,6 @@ namespace KinAid_Attempt1
             ScreenManager.setScreen(new ExercisePreview());
         }
 
-        private void selectedCalibrate(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void selectedAddExercise(object sender, RoutedEventArgs e)
         {
 
