@@ -73,6 +73,47 @@ namespace KinAid_Attempt1
 
         public abstract void CalibrateOrientation(SkeletonData bodyPartData);
         public abstract bool IsBodyPartInOrientation(SkeletonData bodyPartData);
-        public abstract bool IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation);
+        public abstract int IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation);
+
+        /// <summary>
+        /// Checks whether: 1) the vector to check is approximately in the plane created by the other vectors, where it is approximately in the plane if
+        /// the angle between it and its projection in the plane is less than or equal to the allowable deviation in degrees, and 2) the vector to check's
+        /// projection in the plane yields a vector that segments the interior angle of the angle between the other vectors. Returns the percentage of the angular
+        /// distance between the first plane-defining vector and the second plane-defining vector that the vector to check has traveled
+        /// </summary>
+        /// <param name="vectorToCheck"></param>
+        /// <param name="firstVector"></param>
+        /// <param name="secondVector"></param>
+        /// <returns>-1 if vector does satisfy requirements. -2 if there is a negligable (less than allowable deviation) angle between the first plane vector
+        /// and the second plane vector</returns>
+        public static int IsVectorOnPathInPlane(Vector3D vectorToCheck, Vector3D firstPlaneVector, Vector3D secondPlaneVector)
+        {
+            double totalDisplacementToTravel = Vector3D.AngleBetween(firstPlaneVector, secondPlaneVector);
+            if (totalDisplacementToTravel <= SharedContent.AllowableDeviationInDegrees) return -2;
+
+            Vector3D normalToPlane = Vector3D.CrossProduct(firstPlaneVector, secondPlaneVector);
+            normalToPlane.Normalize();
+            Vector3D projectionOfInclIntoNormal = Vector3D.DotProduct(vectorToCheck, normalToPlane) * normalToPlane;
+            Vector3D projectionOfInclIntoPlane = vectorToCheck - projectionOfInclIntoNormal;
+
+            //Verifies that the deviation from the plane defined by the initial and final orientations is less than the allowable deviation
+            if (Vector3D.AngleBetween(projectionOfInclIntoPlane, vectorToCheck) > SharedContent.AllowableDeviationInDegrees)
+            {
+                return -1;
+            }
+
+            //Verifies that this orientation instance falls between the initial and final orientations in the interior angle give or take the allowable deviation
+            if ((Vector3D.AngleBetween(projectionOfInclIntoPlane, secondPlaneVector) > Vector3D.AngleBetween(secondPlaneVector, firstPlaneVector) && 
+                Vector3D.AngleBetween(projectionOfInclIntoPlane,firstPlaneVector) > SharedContent.AllowableDeviationInDegrees) ||
+                (Vector3D.AngleBetween(projectionOfInclIntoPlane, firstPlaneVector) > Vector3D.AngleBetween(secondPlaneVector, firstPlaneVector) &&
+                Vector3D.AngleBetween(projectionOfInclIntoPlane, secondPlaneVector) > SharedContent.AllowableDeviationInDegrees))
+            {
+                return -1;
+            }
+
+            double currentDisplacementTraveled = Vector3D.AngleBetween(projectionOfInclIntoPlane, firstPlaneVector);
+
+            return (int)(100 * (currentDisplacementTraveled / totalDisplacementToTravel));
+        }
     }
 }

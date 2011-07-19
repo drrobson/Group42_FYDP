@@ -57,19 +57,12 @@ namespace KinAid_Attempt1
             return true;
         }
 
-        public override bool IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
+        public override int IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
         {
-            HeadOrientation initialHeadOr = (HeadOrientation)initialOrientation;
-            HeadOrientation finalHeadOr = (HeadOrientation)finalOrientation;
-            //double xDelta, yDelta, zDelta;
+            HeadOrientation initialHeadOrientation = (HeadOrientation)initialOrientation;
+            HeadOrientation finalHeadOrientation = (HeadOrientation)finalOrientation;
 
-            //Vector3D normalizedInitialIncl = initialHeadOr.calibratedInclination;
-            //Vector3D normalizedFinalIncl = finalHeadOr.calibratedInclination.Normalize();
-
-            //xDelta = normalizedFinalIncl.X - normalizedInitialIncl.X;
-            //yDelta = normalizedFinalIncl.Y - normalizedInitialIncl.Y;
-            //zDelta = normalizedFinalIncl.Z - normalizedInitialIncl.Z;
-            return false;
+            return BodyPartOrientation.IsVectorOnPathInPlane(this.calibratedInclination, initialHeadOrientation.calibratedInclination, finalHeadOrientation.calibratedInclination);
         }
     }
 }

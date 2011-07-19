@@ -12,36 +12,17 @@ namespace KinAid_Attempt1
     public class Exercise
     {
         public Pose[] exercisePoses;
+        public ExerciseStep[] exerciseSteps;
         //Array of exercise steps
         string name, description;
 
-        public Exercise(Pose[] exercisePoses)
+        public Exercise(string name, string description, Pose[] exercisePoses, ExerciseStep[] exerciseSteps)
         {
-            
+            this.name = name;
+            this.description = description;
+            this.exercisePoses = exercisePoses;
+            this.exerciseSteps = exerciseSteps;
         }
-
-        /*
-        /// <summary>
-        /// Asserts the initial pose constraint; if the user's limb orientations as defined in the SkeletonData satisfy the initial
-        /// pose constraint of the exercise then the exercise is considered to be started
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns>Bool indicating whether the exercise has been successfully started (i.e. the SkeletonData satisfies the initial pose constraint
-        /// for the exercise</returns>
-        public bool startExercise(SkeletonData data)
-        {
-            if (initialConstraint.verify(data) == SharedContent.Progression.Completed)
-            {
-                currentState.timeStarted = DateTime.Now;
-                this.progression = SharedContent.Progression.Started;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-         * */
 
         public SharedContent.Progression updateExercise(SkeletonData data)
         {

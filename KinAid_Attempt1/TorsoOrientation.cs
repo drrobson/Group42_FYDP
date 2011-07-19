@@ -96,9 +96,58 @@ namespace KinAid_Attempt1
             return true;
         }
 
-        public override bool IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
+        public override int IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
         {
-            throw new NotImplementedException();
+            TorsoOrientation initialTorsoOrientation = (TorsoOrientation)initialOrientation;
+            TorsoOrientation finalTorsoOrientation = (TorsoOrientation)finalOrientation;
+
+            int percentInclinationTraveled = BodyPartOrientation.IsVectorOnPathInPlane(this.calibratedInclination, initialTorsoOrientation.calibratedInclination, finalTorsoOrientation.calibratedInclination);
+            if (percentInclinationTraveled == -1) return -1;
+
+            double currentRotationTraveled = Math.Abs(this.calibratedRotation - initialTorsoOrientation.calibratedRotation);
+            double totalRotationToTravel = Math.Abs(finalTorsoOrientation.calibratedRotation - initialTorsoOrientation.calibratedRotation);
+            if (totalRotationToTravel <= SharedContent.AllowableDeviationInDegrees)
+            {
+                if (percentInclinationTraveled == -2) return -2;
+                else return percentInclinationTraveled;
+            }
+
+            if (finalTorsoOrientation.calibratedRotation < initialTorsoOrientation.calibratedRotation)
+            {
+                if (this.calibratedRotation > initialTorsoOrientation.calibratedRotation + SharedContent.AllowableDeviationInDegrees ||
+                    this.calibratedRotation < initialTorsoOrientation.calibratedRotation - SharedContent.AllowableDeviationInDegrees)
+                {
+                    return -1;
+                }
+                if (this.calibratedRotation > initialTorsoOrientation.calibratedRotation) currentRotationTraveled = 0;
+            }
+            else
+            {
+                if (this.calibratedRotation < initialTorsoOrientation.calibratedRotation - SharedContent.AllowableDeviationInDegrees ||
+                    this.calibratedRotation > finalTorsoOrientation.calibratedRotation + SharedContent.AllowableDeviationInDegrees)
+                {
+                    return -1;
+                }
+                if (this.calibratedRotation < initialTorsoOrientation.calibratedRotation) currentRotationTraveled = 0;
+            }
+
+            int percentRotationTraveled;
+            if (totalRotationToTravel == 0)
+            {
+                percentRotationTraveled = percentInclinationTraveled;
+            }
+            else
+            {
+                percentRotationTraveled = (int)(100 * (currentRotationTraveled / totalRotationToTravel));
+            }
+
+            if (Math.Abs(percentInclinationTraveled - percentRotationTraveled) > SharedContent.AllowableDeviationInPercent)
+            {
+                return -1;
+            }
+
+            //Return the average percent complete
+            return (int)((percentInclinationTraveled + percentRotationTraveled) / 2.0);
         }
     }
 }

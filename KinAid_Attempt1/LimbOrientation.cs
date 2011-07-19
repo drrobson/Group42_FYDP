@@ -18,13 +18,6 @@ namespace KinAid_Attempt1
         public Vector3D calibratedLowerLimbInclination;
         public double bendInLimb;
         public double calibratedBendInLimb;
-        
-        /*
-        public static Vector3D[] IdealNeutralUpperLimbOrientations = new Vector3D[] { new Vector3D(0, -1, 0), new Vector3D(0, -1, 0), new Vector3D(0, -1, 0), new Vector3D(0, -1, 0) };
-        public static double[] IdealNeutralBendInLimbs = new double[] { 0, 0, 0, 0 };
-        public static Vector3D[] ActualNeutralUpperLimbOrientations = new Vector3D[4];
-        public static double[] ActualNeutralBendInLimbs = new double[4];
-         * */
 
         public LimbOrientation(SharedContent.BodyPartID limbID, SkeletonData bodyPartData)
         {
@@ -33,7 +26,7 @@ namespace KinAid_Attempt1
             this.upperLimbInclination.Normalize();
             this.lowerLimbInclination = LimbOrientation.CalculateLowerLimbInclination(limbID, bodyPartData);
             this.lowerLimbInclination.Normalize();
-            this.bendInLimb = LimbOrientation.CalculateBendInLimb(limbID, bodyPartData);
+            this.bendInLimb = Vector3D.AngleBetween(this.upperLimbInclination, this.lowerLimbInclination);
 
             this.calibratedUpperLimbInclination = this.upperLimbInclination;
             this.calibratedLowerLimbInclination = this.lowerLimbInclination;
@@ -52,15 +45,6 @@ namespace KinAid_Attempt1
             this.calibratedBendInLimb = this.bendInLimb;
         }
 
-        public static double CalculateBendInLimb(SharedContent.BodyPartID limbID, SkeletonData bodyPartData)
-        {
-            Vector[] limbJoints = LimbOrientation.GetLimbJoints(limbID, bodyPartData);
-
-            Vector3D upperLimbIncl = LimbOrientation.CalculateUpperLimbInclination(limbID, bodyPartData);
-            Vector3D lowerLimbIncl = new Vector3D(limbJoints[2].X - limbJoints[1].X, limbJoints[2].Y - limbJoints[1].Y, limbJoints[2].Z - limbJoints[1].Z);
-            return Vector3D.AngleBetween(lowerLimbIncl, upperLimbIncl);
-        }
-
         public static Vector3D CalculateLowerLimbInclination(SharedContent.BodyPartID limbID, SkeletonData bodyPartData)
         {
             Vector[] limbJoints = LimbOrientation.GetLimbJoints(limbID, bodyPartData);
@@ -77,9 +61,9 @@ namespace KinAid_Attempt1
 
         public override void CalibrateOrientation(SkeletonData bodyPartData)
         {
-            this.calibratedBendInLimb = LimbOrientation.CalculateBendInLimb(this.limbID, bodyPartData);
             this.calibratedLowerLimbInclination = LimbOrientation.CalculateLowerLimbInclination(this.limbID, bodyPartData);
             this.calibratedUpperLimbInclination = LimbOrientation.CalculateUpperLimbInclination(this.limbID, bodyPartData);
+            this.calibratedBendInLimb = Vector3D.AngleBetween(this.calibratedUpperLimbInclination, this.calibratedLowerLimbInclination);
         }
 
         /// <summary>
@@ -134,21 +118,81 @@ namespace KinAid_Attempt1
                 return false;
             }
 
-            /*
-            double currentBendInLimb = LimbOrientation.CalculateBendInLimb(this.limbID, bodyPartData);
+            double currentBendInLimb = Vector3D.AngleBetween(currentUpperLimbInclination, currentLowerLimbInclination);
 
             if (Math.Abs(currentBendInLimb - this.calibratedBendInLimb) > SharedContent.AllowableDeviationInDegrees)
             {
                 return false;
             }
-             * */
 
             return true;
         }
 
-        public override bool IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
+        public override int IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
         {
-            throw new NotImplementedException();
+            LimbOrientation initialLimbOrientation = (LimbOrientation)initialOrientation;
+            LimbOrientation finalLimbOrientation = (LimbOrientation)finalOrientation;
+
+            int percentUpperLimbInclinationTraveled = BodyPartOrientation.IsVectorOnPathInPlane(this.calibratedUpperLimbInclination, initialLimbOrientation.calibratedUpperLimbInclination,
+                finalLimbOrientation.calibratedUpperLimbInclination);
+            if (percentUpperLimbInclinationTraveled == -1) return -1;
+
+            int percentLowerLimbInclinationTraveled = BodyPartOrientation.IsVectorOnPathInPlane(this.calibratedLowerLimbInclination, initialLimbOrientation.calibratedLowerLimbInclination,
+                finalLimbOrientation.calibratedLowerLimbInclination);
+            if (percentLowerLimbInclinationTraveled == -1) return -1;
+
+            double currentChangeInBendInLimb = Math.Abs(this.calibratedBendInLimb - initialLimbOrientation.calibratedBendInLimb);
+            double totalChangeInBendInLimb = Math.Abs(finalLimbOrientation.calibratedBendInLimb - initialLimbOrientation.calibratedBendInLimb);
+
+            if (finalLimbOrientation.calibratedBendInLimb < initialLimbOrientation.calibratedBendInLimb)
+            {
+                if (this.calibratedBendInLimb > initialLimbOrientation.calibratedBendInLimb + SharedContent.AllowableDeviationInDegrees ||
+                    this.calibratedBendInLimb < finalLimbOrientation.calibratedBendInLimb - SharedContent.AllowableDeviationInDegrees)
+                {
+                    return -1;
+                }
+                if (this.calibratedBendInLimb > initialLimbOrientation.calibratedBendInLimb) currentChangeInBendInLimb = 0;
+            }
+            else
+            {
+                if (this.calibratedBendInLimb < initialLimbOrientation.calibratedBendInLimb - SharedContent.AllowableDeviationInDegrees ||
+                    this.calibratedBendInLimb > finalLimbOrientation.calibratedBendInLimb + SharedContent.AllowableDeviationInDegrees)
+                {
+                    return -1;
+                }
+                if (this.calibratedBendInLimb < initialLimbOrientation.calibratedBendInLimb) currentChangeInBendInLimb = 0;
+            }
+
+            int percentChangeInBendInLimbTraveled;
+            if (totalChangeInBendInLimb < SharedContent.AllowableDeviationInDegrees)
+            {
+                percentChangeInBendInLimbTraveled = -2;
+            }
+            else
+            {
+                percentChangeInBendInLimbTraveled = (int)(100 * (currentChangeInBendInLimb / totalChangeInBendInLimb));
+            }
+
+            List<int> nonNegligableChanges = new List<int>();
+            if (percentChangeInBendInLimbTraveled != -2) nonNegligableChanges.Add(percentChangeInBendInLimbTraveled);
+            if (percentLowerLimbInclinationTraveled != -2) nonNegligableChanges.Add(percentLowerLimbInclinationTraveled);
+            if (percentUpperLimbInclinationTraveled != -2) nonNegligableChanges.Add(percentUpperLimbInclinationTraveled);
+
+            if (nonNegligableChanges.Count == 0)
+            {
+                return -2;
+            }
+            else
+            {
+                if (nonNegligableChanges.Max() - nonNegligableChanges.Min() > SharedContent.AllowableDeviationInPercent)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return (int)(nonNegligableChanges.Average());
+                }
+            }
         }
     }
 }

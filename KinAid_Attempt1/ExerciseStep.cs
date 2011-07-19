@@ -53,7 +53,12 @@ namespace KinAid_Attempt1
                     }
                     else
                     {
-
+                        int percentComplete = this.IsUserPerformingStepCorrectly(userData);
+                        if (percentComplete == -1)
+                        {
+                            this.stepStatus = ExerciseStepStatus.Failed;
+                        }
+                        Console.WriteLine("Exercise step is {0} percent complete", percentComplete);
                     }
                     break;
             }
@@ -73,11 +78,17 @@ namespace KinAid_Attempt1
             }
         }
 
-        public bool IsUserPerformingStepCorrectly(SkeletonData userData)
+        /// <summary>
+        /// Determines whether the user is performing the exercise correctly. Returns -1 if the user has failed to maintain proper form, else returns the approximate percentage
+        /// of the exercise step that the user has completed
+        /// </summary>
+        /// <param name="userData"></param>
+        /// <returns></returns>
+        public int IsUserPerformingStepCorrectly(SkeletonData userData)
         {
             Pose currentPose = new Pose(userData, initialPose.bodyPartsOfInterest);
 
-            return false;
+            return currentPose.IsInBetweenPoses(initialPose, finalPose);
         }
     }
 
