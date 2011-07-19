@@ -20,6 +20,11 @@ namespace KinAid_Attempt1
             
         }
 
+        public int getNumCalibrations()
+        {
+            return 0;
+        }
+
         /*
         /// <summary>
         /// Asserts the initial pose constraint; if the user's limb orientations as defined in the SkeletonData satisfy the initial
