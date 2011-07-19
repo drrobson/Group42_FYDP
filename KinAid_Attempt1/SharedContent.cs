@@ -54,6 +54,8 @@ namespace KinAid_Attempt1
             "continue",
             "retry",
             "back",
+            "yes",
+            "no",
             // Exercise Commands
             // ...
         };
@@ -68,6 +70,8 @@ namespace KinAid_Attempt1
             Continue,
             Retry,
             Back,
+            Yes,
+            No,
             // Exercise Commands
             // ...
         }

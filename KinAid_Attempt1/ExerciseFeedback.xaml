@@ -2,19 +2,35 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:audioui="AudioUI"
+             xmlns:buttonui="ButtonUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
-        <Grid>
+        <Grid Height="30">
             <Label Content="STATUS HERE" Name="statusLabel" HorizontalAlignment="Center" />
         </Grid>
-        <ScrollViewer Height="251" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300">
+        <ScrollViewer Height="240" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300">
             <WrapPanel Orientation="Horizontal" Name="stepPanel" />
         </ScrollViewer>
         <Grid>
-            <Button Content="Retry" Click="selectedRetry" HorizontalAlignment="Left" />
-            <Button Content="Back to List" Click="selectedBack" HorizontalAlignment="Right" />
+            <mc:AlternateContent>
+                <mc:Choice Requires="audioui">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Image Source="Voice.bmp" />
+                        <Label Content="Retry" BorderBrush="Black" BorderThickness="1" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Image Source="Voice.bmp" />
+                        <Label Content="Back"  BorderBrush="Black" BorderThickness="1" />
+                    </StackPanel>
+                </mc:Choice>
+                <mc:Choice Requires="buttonui">
+                    <Button Content="Retry" Click="selectedRetry" HorizontalAlignment="Left" />
+                    <Button Content="Back to List" Click="selectedBack" HorizontalAlignment="Right" />
+                </mc:Choice>
+            </mc:AlternateContent>
         </Grid>
     </StackPanel>
 </UserControl>

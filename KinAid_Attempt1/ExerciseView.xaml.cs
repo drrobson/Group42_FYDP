@@ -68,6 +68,8 @@ namespace KinAid_Attempt1
             bottomPanel.Children.Insert(0, fpsLabel);
 #endif
 
+            //SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Stop, );
+
             //SharedContent.Nui.DepthFrameReady += new EventHandler<ImageFrameReadyEventArgs>(nuiDepthFrameReady);
             SharedContent.Nui.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(nuiSkeletonFrameReady);
             SharedContent.Nui.VideoFrameReady += new EventHandler<ImageFrameReadyEventArgs>(nuiColorFrameReady);

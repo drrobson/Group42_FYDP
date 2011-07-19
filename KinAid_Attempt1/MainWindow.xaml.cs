@@ -42,7 +42,7 @@ namespace KinAid_Attempt1
 
         private void Window_Loaded(object sender, EventArgs e)
         {
-            ScreenManager.setHost(this);
+            ScreenManager.SetHost(this);
 
             SharedContent.Nui = new Runtime();
             SharedContent.Sr = new SpeechRecognizer();

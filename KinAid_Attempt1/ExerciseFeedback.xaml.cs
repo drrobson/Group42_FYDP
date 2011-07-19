@@ -34,12 +34,12 @@ namespace KinAid_Attempt1
 
         private void selectedRetry(object sender, RoutedEventArgs e)
         {
-            ScreenManager.setScreen(new ExercisePreview());
+            ScreenManager.SetScreen(new ExercisePreview());
         }
 
         private void selectedBack(object sender, RoutedEventArgs e)
         {
-            ScreenManager.setScreen(new ExerciseSelector());
+            ScreenManager.SetScreen(new ExerciseSelector());
         }
     }
 }
