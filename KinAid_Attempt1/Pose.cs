@@ -75,18 +75,37 @@ namespace KinAid_Attempt1
 
         /// <summary>
         /// Determines whether this those is in between the initial and final poses provided, where it is assumed that a pose is in between two poses if and only if it occurs if
-        /// the pose will occur while linearly transitioning from the first pose to the second pose (linearly = along the shortest path)
+        /// the pose will occur while linearly transitioning from the first pose to the second pose (linearly = along the shortest path). Returns the average percent of the
+        /// displacement between the initial and final poses that this pose has traveled
         /// </summary>
         /// <param name="initialPose"></param>
         /// <param name="finalPose"></param>
         /// <returns></returns>
-        public bool IsInBetweenPoses(Pose initialPose, Pose finalPose)
+        public int IsInBetweenPoses(Pose initialPose, Pose finalPose)
         {
+            List<int> nonNegligableChanges = new List<int>();
+
             foreach (SharedContent.BodyPartID bodyPartID in initialPose.bodyPartsOfInterest)
             {
+                BodyPartOrientation bodyPartToCheck;
+                this.poseBodyPartOrientations.TryGetValue(bodyPartID, out bodyPartToCheck);
 
+                BodyPartOrientation initialBodyPart, finalBodyPart;
+                initialPose.poseBodyPartOrientations.TryGetValue(bodyPartID, out initialBodyPart);
+                finalPose.poseBodyPartOrientations.TryGetValue(bodyPartID, out finalBodyPart);
+
+                int percentComplete = bodyPartToCheck.IsInBetweenOrientations(initialBodyPart, finalBodyPart);
+                if (percentComplete == -1) return -1;
+                else if (percentComplete != -2) nonNegligableChanges.Add(percentComplete);
             }
-            return false;
+
+            if (nonNegligableChanges.Max() - nonNegligableChanges.Min() > SharedContent.AllowableDeviationInPercent)
+            {
+                return -1;
+            }
+
+            if (nonNegligableChanges.Count == 0) throw new Exception("In determining if pose is between two others, found that no non-negligable changes exist between the starting and ending poses");
+            else return (int)(nonNegligableChanges.Average());
         }
 
         /// <summary>

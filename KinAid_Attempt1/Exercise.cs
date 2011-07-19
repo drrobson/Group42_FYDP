@@ -12,12 +12,16 @@ namespace KinAid_Attempt1
     public class Exercise
     {
         public Pose[] exercisePoses;
+        public ExerciseStep[] exerciseSteps;
         //Array of exercise steps
         string name, description;
 
-        public Exercise(Pose[] exercisePoses)
+        public Exercise(string name, string description, Pose[] exercisePoses, ExerciseStep[] exerciseSteps)
         {
-            
+            this.name = name;
+            this.description = description;
+            this.exercisePoses = exercisePoses;
+            this.exerciseSteps = exerciseSteps;
         }
 
         public int getNumCalibrations()
