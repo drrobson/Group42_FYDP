@@ -23,7 +23,10 @@ namespace KinAid_Attempt1
     public partial class CalibratingView : UserControl, IScreen//, IKinectFrames (when I add the Kinect control feature)
     {
         DispatcherTimer timer;
-        int secondsPassed = 5;
+        int secondsLeft;
+        bool capturing;
+
+        Exercise ex;
 
         public UIElement element
         {
@@ -33,23 +36,40 @@ namespace KinAid_Attempt1
             }
         }
 
-        public CalibratingView()
+        public CalibratingView(Exercise ex)
         {
             InitializeComponent();
+
+            this.ex = ex;
+
+            secondsLeft = SharedContent.CalibrationSeconds * ex.getNumCalibrations();
+            capturing = false;
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 1);
             timer.Tick += timerSecondPassed;
             timer.Start();
+
+            /* SET FIRST POSE TO CONFORM TO (frontView & sideView) */
         }
 
         private void timerSecondPassed(object source, EventArgs e)
         {
-            secondsPassed--;
-            secondsLabel.Content = String.Format("{0}", secondsPassed);
-            if (secondsPassed == 0)
+            if (capturing) // wait one second for the capture to take effect
             {
-                timer.Stop();
+                capturing = false;
+                return;
+            }
+
+            secondsLeft--;
+            secondsLabel.Content = String.Format("{0}", secondsLeft);
+            if (secondsLeft % SharedContent.CalibrationSeconds == 0)
+            {
+                capturing = true;
                 SharedContent.Nui.SkeletonFrameReady += nuiSkeletonFrameReady;
+                if (secondsLeft == 0)
+                {
+                    timer.Stop();
+                }
             }
         }
 
@@ -70,7 +90,14 @@ namespace KinAid_Attempt1
             }
              * */
 
-            ScreenManager.setScreen(new ExerciseSelector());
+            if (secondsLeft == 0)
+            {
+                ScreenManager.setScreen(new ExerciseSelector());
+            }
+            else
+            {
+                /* UPDATE POSE TO CONFORM TO (frontView & sideView) */
+            }
         }
     }
 }

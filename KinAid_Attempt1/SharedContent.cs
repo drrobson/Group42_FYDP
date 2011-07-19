@@ -15,6 +15,8 @@ namespace KinAid_Attempt1
         /// Front-end shared content
         /// </summary>
 
+        public const int CalibrationSeconds = 5;
+
         public static Dictionary<JointID, Brush> JointColors = new Dictionary<JointID, Brush>() { 
             {JointID.HipCenter, new SolidColorBrush(Color.FromRgb(169, 176, 155))},
             {JointID.Spine, new SolidColorBrush(Color.FromRgb(169, 176, 155))},
@@ -37,19 +39,6 @@ namespace KinAid_Attempt1
             {JointID.AnkleRight, new SolidColorBrush(Color.FromRgb(245, 228, 156))},
             {JointID.FootRight, new SolidColorBrush(Color.FromRgb(77,  109, 243))}
         };
-
-        public static double AllowableDeviationInDegrees = 5;
-        public static double AllowableDeviationInPercent = 15;
-
-        public static Pose NeutralPose = new Pose(new Dictionary<BodyPartID,BodyPartOrientation>()
-        {
-            {SharedContent.BodyPartID.Head, new HeadOrientation(new Vector3D(0,1,-0.2))},
-            {SharedContent.BodyPartID.Torso, new TorsoOrientation(0, new Vector3D(0,1,-0.1))},
-            {SharedContent.BodyPartID.RightArm, new LimbOrientation(BodyPartID.RightArm, new Vector3D(0,-1,0), new Vector3D(0,-1,0))},
-            {SharedContent.BodyPartID.LeftArm, new LimbOrientation(BodyPartID.LeftArm, new Vector3D(0,-1,0), new Vector3D(0,-1,0))},
-            {SharedContent.BodyPartID.RightLeg, new LimbOrientation(BodyPartID.RightLeg, new Vector3D(0,-1,0), new Vector3D(0,-1,0))},
-            {SharedContent.BodyPartID.LeftLeg, new LimbOrientation(BodyPartID.LeftLeg, new Vector3D(0,-1,0), new Vector3D(0,-1,0))}
-        });
 
         public static Runtime Nui;
         public static SpeechRecognizer Sr;
@@ -86,6 +75,23 @@ namespace KinAid_Attempt1
         {
             return CommandStrings[(int)command];
         }
+
+        /// <summary>
+        /// Back-end shared content
+        /// </summary>
+
+        public static double AllowableDeviationInDegrees = 5;
+        public static double AllowableDeviationInPercent = 15;
+
+        public static Pose NeutralPose = new Pose(new Dictionary<BodyPartID, BodyPartOrientation>()
+        {
+            {SharedContent.BodyPartID.Head, new HeadOrientation(new Vector3D(0,1,-0.2))},
+            {SharedContent.BodyPartID.Torso, new TorsoOrientation(0, new Vector3D(0,1,-0.1))},
+            {SharedContent.BodyPartID.RightArm, new LimbOrientation(BodyPartID.RightArm, new Vector3D(0,-1,0), new Vector3D(0,-1,0))},
+            {SharedContent.BodyPartID.LeftArm, new LimbOrientation(BodyPartID.LeftArm, new Vector3D(0,-1,0), new Vector3D(0,-1,0))},
+            {SharedContent.BodyPartID.RightLeg, new LimbOrientation(BodyPartID.RightLeg, new Vector3D(0,-1,0), new Vector3D(0,-1,0))},
+            {SharedContent.BodyPartID.LeftLeg, new LimbOrientation(BodyPartID.LeftLeg, new Vector3D(0,-1,0), new Vector3D(0,-1,0))}
+        });
 
         public enum BodyPartID
         {

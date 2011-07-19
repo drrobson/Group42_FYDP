@@ -24,6 +24,34 @@ namespace KinAid_Attempt1
             this.exerciseSteps = exerciseSteps;
         }
 
+        public int getNumCalibrations()
+        {
+            return 0;
+        }
+
+        /*
+        /// <summary>
+        /// Asserts the initial pose constraint; if the user's limb orientations as defined in the SkeletonData satisfy the initial
+        /// pose constraint of the exercise then the exercise is considered to be started
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns>Bool indicating whether the exercise has been successfully started (i.e. the SkeletonData satisfies the initial pose constraint
+        /// for the exercise</returns>
+        public bool startExercise(SkeletonData data)
+        {
+            if (initialConstraint.verify(data) == SharedContent.Progression.Completed)
+            {
+                currentState.timeStarted = DateTime.Now;
+                this.progression = SharedContent.Progression.Started;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+         * */
+
         public SharedContent.Progression updateExercise(SkeletonData data)
         {
             
