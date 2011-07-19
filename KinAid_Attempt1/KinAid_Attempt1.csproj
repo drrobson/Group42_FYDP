@@ -160,6 +160,12 @@
     <Resource Include="CheckboxFail.bmp" />
     <Resource Include="CheckboxPass.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Voice.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Calibrating.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

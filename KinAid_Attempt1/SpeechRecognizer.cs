@@ -63,7 +63,16 @@ namespace KinAid_Attempt1
 
         private void startSpeechRecognitionThread()
         {
-            audioSource = new KinectAudioSource();
+            try
+            {
+                audioSource = new KinectAudioSource();
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("Runtime initialization failed. Please make sure Kinect device is plugged in.");
+                Environment.Exit(-1);
+            }
+
             audioSource.FeatureMode = true;
             audioSource.AutomaticGainControl = false;
             audioSource.SystemMode = SystemMode.OptibeamArrayOnly;

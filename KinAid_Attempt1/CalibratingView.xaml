@@ -5,9 +5,19 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Name="TheLayout">
-        <Label Content="Please stand straight with your arms along your side." Name="instructionLabel1" Margin="12,101,0,173" />
-        <Label Content="Calibration starting in:" Name="instructionLabel2" Margin="88,133,88,141" />
-        <Label Content="5" Name="secondsLabel" Margin="122,165,115,109" HorizontalContentAlignment="Center" />
-    </Grid>
+    <StackPanel>
+        <Grid Height="34">
+            <Image Source="Calibrating.bmp" HorizontalAlignment="Left" Width="37" Height="34" />
+            <Label Content="5" Name="secondsLabel" FontWeight="Bold" FontSize="16" FontFamily="Arial" Margin="9,3,-9,-3" />
+            <Label Content="Calibrating, please conform to the pose..." HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="14" />
+        </Grid>
+        <StackPanel Orientation="Horizontal" Height="232">
+            <Image Name="frontView" Width="150"/>
+            <Image Name="sideView" Width="150"/>
+        </StackPanel>
+        <Grid Height="34">
+            <Label Content="Front View" VerticalAlignment="Center" FontSize="14" Margin="35,3,-35,3" />
+            <Label Content="Side View" VerticalAlignment="Center" FontSize="14" Margin="185,3,-185,3" />
+        </Grid>
+    </StackPanel>
 </UserControl>

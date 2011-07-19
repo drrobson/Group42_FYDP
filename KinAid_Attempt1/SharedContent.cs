@@ -73,6 +73,8 @@ namespace KinAid_Attempt1
             return CommandStrings[(int)command];
         }
 
+        public static ExerciseFactory Ef;
+
         /// <summary>
         /// Back-end shared content
         /// </summary>
@@ -101,18 +103,6 @@ namespace KinAid_Attempt1
             Failed = -1,
             Started = 0,
             Completed = 100,
-        }
-
-        public static Exercise[] GetExercises()
-        {
-            LimbOrientationOld[] limb1 = { new LimbOrientationOld(JointID.ShoulderLeft, JointID.ElbowLeft, 90, 180, 90) };
-            PoseConstraint pc = new PoseConstraint(limb1);
-            LimbOrientationOld limb2 = new LimbOrientationOld(JointID.ShoulderLeft, JointID.ElbowLeft, 180, 90, 90);
-            GlobalConstraint[] gcs = { new GlobalConstraint(JointID.ShoulderLeft, JointID.ElbowLeft, JointID.WristLeft, 90, 15) };
-            VariableConstraint[] vcs = { new VariableConstraint("TEST", new TimeSpan(0, 0, 10), limb1[0], limb2) };
-            Exercise ex1 = new Exercise(null, pc, gcs, vcs);
-
-            return new Exercise[] { ex1 };
         }
     }
 }

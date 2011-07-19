@@ -51,8 +51,8 @@ namespace KinAid_Attempt1
             try
             {
                 SharedContent.Nui.Initialize(
-                    RuntimeOptions.UseDepthAndPlayerIndex | 
-                    RuntimeOptions.UseSkeletalTracking | 
+                    RuntimeOptions.UseDepthAndPlayerIndex |
+                    RuntimeOptions.UseSkeletalTracking |
                     RuntimeOptions.UseColor);
             }
             catch (InvalidOperationException)

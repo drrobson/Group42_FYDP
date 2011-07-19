@@ -4,7 +4,22 @@ using System.Text;
 
 namespace KinAid_Attempt1
 {
-    public class ExerciseFactory
+    public static class ExerciseFactory
     {
+        public static Exercise[] GetExercises()
+        {
+            /*
+             * Dan
+             */
+            return null;
+        }
+
+        private static Exercise CreateExercise()
+        {
+            /*
+             * Dan
+             */
+            return null;
+        }
     }
 }
