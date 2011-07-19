@@ -24,6 +24,8 @@ namespace KinAid_Attempt1
         {
             InitializeComponent();
 
+            //SharedContent.Sr.registerSpeechCommand(
+
             Exercise[] exercises = ExerciseFactory.GetExercises();
             for (int i = 0; i < exercises.Length; i++)
             {
