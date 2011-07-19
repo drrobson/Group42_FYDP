@@ -13,7 +13,9 @@ namespace KinAid_Attempt1
     {
         public Pose[] exercisePoses;
         public ExerciseStep[] exerciseSteps;
-        //Array of exercise steps
+
+        ExerciseStatus exerciseStatus;
+        int currentStepIndex = 0;
         string name, description;
 
         public Exercise(string name, string description, Pose[] exercisePoses, ExerciseStep[] exerciseSteps)
@@ -22,95 +24,81 @@ namespace KinAid_Attempt1
             this.description = description;
             this.exercisePoses = exercisePoses;
             this.exerciseSteps = exerciseSteps;
+
+            this.exerciseStatus = ExerciseStatus.NotStarted;
         }
 
-        public int getNumCalibrations()
+        public Pose[] getPosesToBeCalibrated()
         {
-            return 0;
-        }
+            return this.exercisePoses;
+        } 
 
-        /*
-        /// <summary>
-        /// Asserts the initial pose constraint; if the user's limb orientations as defined in the SkeletonData satisfy the initial
-        /// pose constraint of the exercise then the exercise is considered to be started
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns>Bool indicating whether the exercise has been successfully started (i.e. the SkeletonData satisfies the initial pose constraint
-        /// for the exercise</returns>
-        public bool startExercise(SkeletonData data)
+        public ExerciseStatusInfo PerformExercise(SkeletonData userData)
         {
-            if (initialConstraint.verify(data) == SharedContent.Progression.Completed)
+            string statusMessage = "Status message not set";
+            ExerciseStepStatusInfo exerciseStepInfo = this.exerciseSteps[currentStepIndex].PerformStep(userData);
+
+            switch (this.exerciseStatus)
             {
-                currentState.timeStarted = DateTime.Now;
-                this.progression = SharedContent.Progression.Started;
-                return true;
+                case ExerciseStatus.NotStarted:
+                    if (exerciseStepInfo.exerciseStepStatus == ExerciseStepStatus.NotInInitialPose)
+                    {
+                        statusMessage = "Waiting for user to assume the starting pose of the first exercise step";
+                    }
+                    else if (exerciseStepInfo.exerciseStepStatus == ExerciseStepStatus.ReadyToStart)
+                    {
+                        this.exerciseStatus = ExerciseStatus.InProgress;
+                        statusMessage = exerciseStepInfo.statusMessage;
+                    }
+                    break;
+                case ExerciseStatus.InProgress:
+                    if (exerciseStepInfo.exerciseStepStatus == ExerciseStepStatus.ReadyToStart)
+                    {
+                        statusMessage = exerciseStepInfo.statusMessage;
+                    }
+                    else if (exerciseStepInfo.exerciseStepStatus == ExerciseStepStatus.InProgress)
+                    {
+                        statusMessage = exerciseStepInfo.statusMessage;
+                    }
+                    else if (exerciseStepInfo.exerciseStepStatus == ExerciseStepStatus.Failed)
+                    {
+                        this.exerciseStatus = ExerciseStatus.Failed;
+                        statusMessage = exerciseStepInfo.statusMessage;
+                    }
+                    else if (exerciseStepInfo.exerciseStepStatus == ExerciseStepStatus.Complete)
+                    {
+                        currentStepIndex++;
+                        if (currentStepIndex == exerciseSteps.Length)
+                        {
+                            this.exerciseStatus = ExerciseStatus.Complete;
+                            statusMessage = "Exercise complete!";
+                        }
+                    }
+                    break;
             }
-            else
-            {
-                return false;
-            }
-        }
-         * */
 
-        public SharedContent.Progression updateExercise(SkeletonData data)
+            return new ExerciseStatusInfo(this.exerciseStatus, statusMessage);
+        }
+
+        public void Reset()
         {
-            
-            /*
-            if (progression == SharedContent.Progression.NotStarted && !initialConstraint.verify(data))
-            { // check the initial pose constraints for this exercise
-                return SharedContent.Progression.NotStarted;
-            }
-            progression = SharedContent.Progression.Started;
-            if (initialConstraint.verify(data))
-            { // check to see if the user has started moving
-                return SharedContent.Progression.Started;
-            }
-             * */
-
-            /*
-            foreach (GlobalConstraint constraint in globalConstraints)
-            { // check all of the global constraints
-                if (constraint.verify(data) == SharedContent.Progression.Failed)
-                {
-                    return SharedContent.Progression.Failed;
-                }
-            }
-
-            progression = currentState.updateState(data);
-            Console.WriteLine("Exercise is {0}% complete", progression);
-            if (progression == SharedContent.Progression.Completed)
-            { // check if a particular state of the exercise was completed
-                progression = nextState();
-            }
-            return progression;
-             * */
-            return SharedContent.Progression.Failed;
+            this.currentStepIndex = 0;
+            this.exerciseStatus = ExerciseStatus.NotStarted;
         }
+    }
 
-        public SharedContent.Progression nextState()
-        {
-            // We are still determining how to represent the multi-step aspect of exercises, for now we assume the exercise is complete
-            return SharedContent.Progression.Completed;
-        }
+    public enum ExerciseStatus
+    {
+        NotStarted = 0,
+        InProgress = 1,
+        Complete = 2,
+        Failed = 3
+    }
 
-        public string printState()
-        {
-            /*
-            switch (progression)
-            {
-                case SharedContent.Progression.NotStarted:
-                    return "Looking for pose";
-                case SharedContent.Progression.Started:
-                    return "Start the exercise";
-                case SharedContent.Progression.Completed:
-                    return "Exercise Complete";
-                case SharedContent.Progression.Failed:
-                    return "Exercise Failed";
-                default:
-                    return String.Format("Exercise {0}% complete", progression);
-            }
-             * */
-            return null;
-        }
+    public struct ExerciseStatusInfo
+    {
+        public ExerciseStatusInfo(ExerciseStatus exStatus, string statusMsg) { this.exerciseStatus = exStatus; this.statusMessage = statusMsg; }
+        public ExerciseStatus exerciseStatus;
+        public string statusMessage;
     }
 }

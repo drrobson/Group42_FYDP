@@ -96,20 +96,20 @@ namespace KinAid_Attempt1
             return true;
         }
 
-        public override int IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
+        public override UserPerformanceAnalysisInfo IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
         {
             TorsoOrientation initialTorsoOrientation = (TorsoOrientation)initialOrientation;
             TorsoOrientation finalTorsoOrientation = (TorsoOrientation)finalOrientation;
 
-            int percentInclinationTraveled = BodyPartOrientation.IsVectorOnPathInPlane(this.calibratedInclination, initialTorsoOrientation.calibratedInclination, finalTorsoOrientation.calibratedInclination);
-            if (percentInclinationTraveled == -1) return -1;
+            UserPerformanceAnalysisInfo inclinationInfo = BodyPartOrientation.IsVectorOnPathInPlane(this.calibratedInclination, initialTorsoOrientation.calibratedInclination, finalTorsoOrientation.calibratedInclination);
+            if (inclinationInfo.failed) return inclinationInfo;
 
             double currentRotationTraveled = Math.Abs(this.calibratedRotation - initialTorsoOrientation.calibratedRotation);
             double totalRotationToTravel = Math.Abs(finalTorsoOrientation.calibratedRotation - initialTorsoOrientation.calibratedRotation);
             if (totalRotationToTravel <= SharedContent.AllowableDeviationInDegrees)
             {
-                if (percentInclinationTraveled == -2) return -2;
-                else return percentInclinationTraveled;
+                if (inclinationInfo.negligableAction) return new UserPerformanceAnalysisInfo(true);
+                else return inclinationInfo;
             }
 
             if (finalTorsoOrientation.calibratedRotation < initialTorsoOrientation.calibratedRotation)
@@ -117,7 +117,7 @@ namespace KinAid_Attempt1
                 if (this.calibratedRotation > initialTorsoOrientation.calibratedRotation + SharedContent.AllowableDeviationInDegrees ||
                     this.calibratedRotation < initialTorsoOrientation.calibratedRotation - SharedContent.AllowableDeviationInDegrees)
                 {
-                    return -1;
+                    return new UserPerformanceAnalysisInfo(true, "User's torso rotation is not in the range defined by the exercise step");
                 }
                 if (this.calibratedRotation > initialTorsoOrientation.calibratedRotation) currentRotationTraveled = 0;
             }
@@ -126,28 +126,21 @@ namespace KinAid_Attempt1
                 if (this.calibratedRotation < initialTorsoOrientation.calibratedRotation - SharedContent.AllowableDeviationInDegrees ||
                     this.calibratedRotation > finalTorsoOrientation.calibratedRotation + SharedContent.AllowableDeviationInDegrees)
                 {
-                    return -1;
+                    return new UserPerformanceAnalysisInfo(true, "User's torso rotation is not in the range defined by the exercise step");
                 }
                 if (this.calibratedRotation < initialTorsoOrientation.calibratedRotation) currentRotationTraveled = 0;
             }
 
-            int percentRotationTraveled;
-            if (totalRotationToTravel == 0)
-            {
-                percentRotationTraveled = percentInclinationTraveled;
-            }
-            else
-            {
-                percentRotationTraveled = (int)(100 * (currentRotationTraveled / totalRotationToTravel));
-            }
+            UserPerformanceAnalysisInfo rotationInfo = new UserPerformanceAnalysisInfo((int)(100 * (currentRotationTraveled / totalRotationToTravel)));
 
-            if (Math.Abs(percentInclinationTraveled - percentRotationTraveled) > SharedContent.AllowableDeviationInPercent)
+            if (Math.Abs(inclinationInfo.percentComplete - rotationInfo.percentComplete) > SharedContent.AllowableDeviationInPercent)
             {
-                return -1;
+                return new UserPerformanceAnalysisInfo(true, String.Format("The difference in the percentage completion of the change in torso inclination and change in torso rotation exceeded the maximum allowable deviation of {0}",
+                    SharedContent.AllowableDeviationInPercent));
             }
 
             //Return the average percent complete
-            return (int)((percentInclinationTraveled + percentRotationTraveled) / 2.0);
+            return new UserPerformanceAnalysisInfo((int)((inclinationInfo.percentComplete + rotationInfo.percentComplete) / 2.0));
         }
     }
 }

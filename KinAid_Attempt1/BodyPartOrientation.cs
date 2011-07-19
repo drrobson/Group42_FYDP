@@ -10,70 +10,9 @@ namespace KinAid_Attempt1
 {
     public abstract class BodyPartOrientation
     {
-        /*
-        public static void CalibrateNeutralBodyPartOrientations(SkeletonData neutralOrientationData)
-        {
-            //Set neutral head orientation
-            HeadOrientation.ActualNeutralInclination = HeadOrientation.CalculateHeadInclination(neutralOrientationData);
-            Console.WriteLine("Neutral head orientation\n\thead inclination = {0} degrees from (0,1,0)", Vector3D.AngleBetween(HeadOrientation.ActualNeutralInclination,
-                HeadOrientation.IdealNeutralInclination));
-
-            //Set neutral torso orientation
-            TorsoOrientation.ActualNeutralTorsoRotation = TorsoOrientation.CalculateTorsoRotation(neutralOrientationData);
-            TorsoOrientation.ActualNeutralTorsoInclination = TorsoOrientation.CalculateTorsoInclination(neutralOrientationData);
-            Console.WriteLine("Neutral torso orientation\n\ttorso inclination = {0} degrees from (0,1,0)\n\ttorso rotation = {1} degrees", Vector3D.AngleBetween(TorsoOrientation.ActualNeutralTorsoInclination,
-                TorsoOrientation.IdealNeutralTorsoInclination), TorsoOrientation.ActualNeutralTorsoRotation);
-
-            //Set neutral limb orientations
-            LimbOrientation.ActualNeutralUpperLimbOrientations[(int)SharedContent.BodyPartID.RightArm] = LimbOrientation.CalculateUpperLimbInclination(SharedContent.BodyPartID.RightArm, neutralOrientationData);
-            LimbOrientation.ActualNeutralUpperLimbOrientations[(int)SharedContent.BodyPartID.LeftArm] = LimbOrientation.CalculateUpperLimbInclination(SharedContent.BodyPartID.LeftArm, neutralOrientationData);
-            LimbOrientation.ActualNeutralUpperLimbOrientations[(int)SharedContent.BodyPartID.RightLeg] = LimbOrientation.CalculateUpperLimbInclination(SharedContent.BodyPartID.RightLeg, neutralOrientationData);
-            LimbOrientation.ActualNeutralUpperLimbOrientations[(int)SharedContent.BodyPartID.LeftLeg] = LimbOrientation.CalculateUpperLimbInclination(SharedContent.BodyPartID.LeftLeg, neutralOrientationData);
-
-            LimbOrientation.ActualNeutralBendInLimbs[(int)SharedContent.BodyPartID.RightArm] = LimbOrientation.CalculateBendInLimb(SharedContent.BodyPartID.RightArm, neutralOrientationData);
-            LimbOrientation.ActualNeutralBendInLimbs[(int)SharedContent.BodyPartID.LeftArm] = LimbOrientation.CalculateBendInLimb(SharedContent.BodyPartID.LeftArm, neutralOrientationData);
-            LimbOrientation.ActualNeutralBendInLimbs[(int)SharedContent.BodyPartID.RightLeg] = LimbOrientation.CalculateBendInLimb(SharedContent.BodyPartID.RightLeg, neutralOrientationData);
-            LimbOrientation.ActualNeutralBendInLimbs[(int)SharedContent.BodyPartID.LeftLeg] = LimbOrientation.CalculateBendInLimb(SharedContent.BodyPartID.LeftLeg, neutralOrientationData);
-            Console.Write("Neutral limb orientation\n");
-            Console.Write("\tright arm: upper inclination = {0}, bend in arm = {1}\n", Vector3D.AngleBetween(LimbOrientation.ActualNeutralUpperLimbOrientations[(int)SharedContent.BodyPartID.RightArm], LimbOrientation.IdealNeutralUpperLimbOrientations[(int)SharedContent.BodyPartID.RightArm]),
-                LimbOrientation.ActualNeutralBendInLimbs[(int)SharedContent.BodyPartID.RightArm]);
-            Console.Write("\tleft arm: upper inclination = {0}, bend in arm = {1}\n", Vector3D.AngleBetween(LimbOrientation.ActualNeutralUpperLimbOrientations[(int)SharedContent.BodyPartID.LeftArm], LimbOrientation.IdealNeutralUpperLimbOrientations[(int)SharedContent.BodyPartID.LeftArm]),
-                LimbOrientation.ActualNeutralBendInLimbs[(int)SharedContent.BodyPartID.LeftArm]);
-            Console.Write("\tright leg: upper inclination = {0}, bend in leg = {1}\n", Vector3D.AngleBetween(LimbOrientation.ActualNeutralUpperLimbOrientations[(int)SharedContent.BodyPartID.RightLeg], LimbOrientation.IdealNeutralUpperLimbOrientations[(int)SharedContent.BodyPartID.RightLeg]),
-                LimbOrientation.ActualNeutralBendInLimbs[(int)SharedContent.BodyPartID.RightLeg]);
-            Console.Write("\tleft leg: upper inclination = {0}, bend in leg = {1}\n", Vector3D.AngleBetween(LimbOrientation.ActualNeutralUpperLimbOrientations[(int)SharedContent.BodyPartID.LeftLeg], LimbOrientation.IdealNeutralUpperLimbOrientations[(int)SharedContent.BodyPartID.LeftLeg]),
-                LimbOrientation.ActualNeutralBendInLimbs[(int)SharedContent.BodyPartID.LeftLeg]);
-        }
-         * */
-        /*
-        public static BodyPartOrientation GetNeutralBodyPartOrientation(SharedContent.BodyPartID bodyPartID, bool getIdealOrientation)
-        {
-            BodyPartOrientation neutralBodyPartOrientation;
-            switch (bodyPartID)
-            {
-                case SharedContent.BodyPartID.Head:
-                    neutralBodyPartOrientation = getIdealOrientation ? new HeadOrientation(HeadOrientation.IdealNeutralInclination) :
-                        new HeadOrientation(HeadOrientation.ActualNeutralInclination);
-                    break;
-                case SharedContent.BodyPartID.Torso:
-                    neutralBodyPartOrientation = getIdealOrientation ? new TorsoOrientation(TorsoOrientation.IdealNeutralTorsoRotation, TorsoOrientation.IdealNeutralTorsoInclination) :
-                        new TorsoOrientation(TorsoOrientation.ActualNeutralTorsoRotation, TorsoOrientation.ActualNeutralTorsoInclination);
-                    break;
-                default:
-                    //We know that the body part is a limb, so we cast to limb ID
-                    neutralBodyPartOrientation = getIdealOrientation ? new LimbOrientation(bodyPartID, LimbOrientation.IdealNeutralUpperLimbOrientations[(int)bodyPartID],
-                        LimbOrientation.IdealNeutralBendInLimbs[(int)bodyPartID]) : new LimbOrientation(bodyPartID, LimbOrientation.ActualNeutralUpperLimbOrientations[(int)bodyPartID],
-                        LimbOrientation.ActualNeutralBendInLimbs[(int)bodyPartID]);
-                    break;
-            }
-
-            return neutralBodyPartOrientation;
-        }
-         * */
-
         public abstract void CalibrateOrientation(SkeletonData bodyPartData);
         public abstract bool IsBodyPartInOrientation(SkeletonData bodyPartData);
-        public abstract int IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation);
+        public abstract UserPerformanceAnalysisInfo IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation);
 
         /// <summary>
         /// Checks whether: 1) the vector to check is approximately in the plane created by the other vectors, where it is approximately in the plane if
@@ -86,10 +25,14 @@ namespace KinAid_Attempt1
         /// <param name="secondVector"></param>
         /// <returns>-1 if vector does satisfy requirements. -2 if there is a negligable (less than allowable deviation) angle between the first plane vector
         /// and the second plane vector</returns>
-        public static int IsVectorOnPathInPlane(Vector3D vectorToCheck, Vector3D firstPlaneVector, Vector3D secondPlaneVector)
+        public static UserPerformanceAnalysisInfo IsVectorOnPathInPlane(Vector3D vectorToCheck, Vector3D firstPlaneVector, Vector3D secondPlaneVector)
         {
+            UserPerformanceAnalysisInfo result;
             double totalDisplacementToTravel = Vector3D.AngleBetween(firstPlaneVector, secondPlaneVector);
-            if (totalDisplacementToTravel <= SharedContent.AllowableDeviationInDegrees) return -2;
+            if (totalDisplacementToTravel <= SharedContent.AllowableDeviationInDegrees)
+            {
+                result = new UserPerformanceAnalysisInfo(true);
+            }
 
             Vector3D normalToPlane = Vector3D.CrossProduct(firstPlaneVector, secondPlaneVector);
             normalToPlane.Normalize();
@@ -99,7 +42,9 @@ namespace KinAid_Attempt1
             //Verifies that the deviation from the plane defined by the initial and final orientations is less than the allowable deviation
             if (Vector3D.AngleBetween(projectionOfInclIntoPlane, vectorToCheck) > SharedContent.AllowableDeviationInDegrees)
             {
-                return -1;
+                result = new UserPerformanceAnalysisInfo(true, String.Format("The deviation between the vector to check and the path between the two plane-defining vectors exceeds {0} degrees",
+                    SharedContent.AllowableDeviationInDegrees));
+                return result;
             }
 
             //Verifies that this orientation instance falls between the initial and final orientations in the interior angle give or take the allowable deviation
@@ -108,12 +53,18 @@ namespace KinAid_Attempt1
                 (Vector3D.AngleBetween(projectionOfInclIntoPlane, firstPlaneVector) > Vector3D.AngleBetween(secondPlaneVector, firstPlaneVector) &&
                 Vector3D.AngleBetween(projectionOfInclIntoPlane, secondPlaneVector) > SharedContent.AllowableDeviationInDegrees))
             {
-                return -1;
+                result = new UserPerformanceAnalysisInfo(true, "The vector is not in the shortest path between the two plane-defining vectors");
+                return result;
             }
 
             double currentDisplacementTraveled = Vector3D.AngleBetween(projectionOfInclIntoPlane, firstPlaneVector);
 
-            return (int)(100 * (currentDisplacementTraveled / totalDisplacementToTravel));
+            return new UserPerformanceAnalysisInfo((int)(100 * (currentDisplacementTraveled / totalDisplacementToTravel)));
         }
+    }
+
+    public enum BodyPartOrientationAnalysisInfo
+    {
+
     }
 }

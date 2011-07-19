@@ -128,18 +128,18 @@ namespace KinAid_Attempt1
             return true;
         }
 
-        public override int IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
+        public override UserPerformanceAnalysisInfo IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
         {
             LimbOrientation initialLimbOrientation = (LimbOrientation)initialOrientation;
             LimbOrientation finalLimbOrientation = (LimbOrientation)finalOrientation;
 
-            int percentUpperLimbInclinationTraveled = BodyPartOrientation.IsVectorOnPathInPlane(this.calibratedUpperLimbInclination, initialLimbOrientation.calibratedUpperLimbInclination,
+            UserPerformanceAnalysisInfo upperLimbInclinationInfo = BodyPartOrientation.IsVectorOnPathInPlane(this.calibratedUpperLimbInclination, initialLimbOrientation.calibratedUpperLimbInclination,
                 finalLimbOrientation.calibratedUpperLimbInclination);
-            if (percentUpperLimbInclinationTraveled == -1) return -1;
+            if (upperLimbInclinationInfo.failed) return upperLimbInclinationInfo;
 
-            int percentLowerLimbInclinationTraveled = BodyPartOrientation.IsVectorOnPathInPlane(this.calibratedLowerLimbInclination, initialLimbOrientation.calibratedLowerLimbInclination,
+            UserPerformanceAnalysisInfo lowerLimbInclinationInfo = BodyPartOrientation.IsVectorOnPathInPlane(this.calibratedLowerLimbInclination, initialLimbOrientation.calibratedLowerLimbInclination,
                 finalLimbOrientation.calibratedLowerLimbInclination);
-            if (percentLowerLimbInclinationTraveled == -1) return -1;
+            if (lowerLimbInclinationInfo.failed) return lowerLimbInclinationInfo;
 
             double currentChangeInBendInLimb = Math.Abs(this.calibratedBendInLimb - initialLimbOrientation.calibratedBendInLimb);
             double totalChangeInBendInLimb = Math.Abs(finalLimbOrientation.calibratedBendInLimb - initialLimbOrientation.calibratedBendInLimb);
@@ -149,7 +149,7 @@ namespace KinAid_Attempt1
                 if (this.calibratedBendInLimb > initialLimbOrientation.calibratedBendInLimb + SharedContent.AllowableDeviationInDegrees ||
                     this.calibratedBendInLimb < finalLimbOrientation.calibratedBendInLimb - SharedContent.AllowableDeviationInDegrees)
                 {
-                    return -1;
+                    return new UserPerformanceAnalysisInfo(true, String.Format("The bend in the {0} is not in the range defined in the exercise step", Enum.GetName(typeof(SharedContent.BodyPartID),this.limbID)));
                 }
                 if (this.calibratedBendInLimb > initialLimbOrientation.calibratedBendInLimb) currentChangeInBendInLimb = 0;
             }
@@ -158,41 +158,95 @@ namespace KinAid_Attempt1
                 if (this.calibratedBendInLimb < initialLimbOrientation.calibratedBendInLimb - SharedContent.AllowableDeviationInDegrees ||
                     this.calibratedBendInLimb > finalLimbOrientation.calibratedBendInLimb + SharedContent.AllowableDeviationInDegrees)
                 {
-                    return -1;
+                    return new UserPerformanceAnalysisInfo(true, String.Format("The bend in the {0} is not in the range defined in the exercise step", Enum.GetName(typeof(SharedContent.BodyPartID), this.limbID)));
                 }
                 if (this.calibratedBendInLimb < initialLimbOrientation.calibratedBendInLimb) currentChangeInBendInLimb = 0;
             }
 
-            int percentChangeInBendInLimbTraveled;
+            UserPerformanceAnalysisInfo bendInLimbInfo = new UserPerformanceAnalysisInfo();
+            bendInLimbInfo.failed = false;
+
             if (totalChangeInBendInLimb < SharedContent.AllowableDeviationInDegrees)
             {
-                percentChangeInBendInLimbTraveled = -2;
+                bendInLimbInfo.negligableAction = true;
             }
             else
             {
-                percentChangeInBendInLimbTraveled = (int)(100 * (currentChangeInBendInLimb / totalChangeInBendInLimb));
+                bendInLimbInfo.percentComplete = (int)(100 * (currentChangeInBendInLimb / totalChangeInBendInLimb));
             }
 
-            List<int> nonNegligableChanges = new List<int>();
-            if (percentChangeInBendInLimbTraveled != -2) nonNegligableChanges.Add(percentChangeInBendInLimbTraveled);
-            if (percentLowerLimbInclinationTraveled != -2) nonNegligableChanges.Add(percentLowerLimbInclinationTraveled);
-            if (percentUpperLimbInclinationTraveled != -2) nonNegligableChanges.Add(percentUpperLimbInclinationTraveled);
-
-            if (nonNegligableChanges.Count == 0)
+            int maxChange = int.MinValue, minChange = int.MaxValue, percentSum = 0, numPercents = 0;
+            LimbComponentID maxChangeLimbComponent = LimbComponentID.UpperLimb, minChangeLimbComponent = LimbComponentID.UpperLimb;
+            if (!bendInLimbInfo.negligableAction)
             {
-                return -2;
-            }
-            else
-            {
-                if (nonNegligableChanges.Max() - nonNegligableChanges.Min() > SharedContent.AllowableDeviationInPercent)
+                percentSum += bendInLimbInfo.percentComplete;
+                numPercents++;
+                if (bendInLimbInfo.percentComplete > maxChange)
                 {
-                    return -1;
+                    maxChange = bendInLimbInfo.percentComplete;
+                    maxChangeLimbComponent = LimbComponentID.BendInLimb;
+                }
+                if (bendInLimbInfo.percentComplete < minChange)
+                {
+                    minChange = bendInLimbInfo.percentComplete;
+                    minChangeLimbComponent = LimbComponentID.BendInLimb;
+                }
+            }
+            if (!lowerLimbInclinationInfo.negligableAction)
+            {
+                percentSum += lowerLimbInclinationInfo.percentComplete;
+                numPercents++;
+                if (lowerLimbInclinationInfo.percentComplete > maxChange)
+                {
+                    maxChange = lowerLimbInclinationInfo.percentComplete;
+                    maxChangeLimbComponent = LimbComponentID.LowerLimb;
+                }
+                if (lowerLimbInclinationInfo.percentComplete < minChange)
+                {
+                    minChange = lowerLimbInclinationInfo.percentComplete;
+                    minChangeLimbComponent = LimbComponentID.LowerLimb;
+                }
+            }
+            if (!upperLimbInclinationInfo.negligableAction)
+            {
+                percentSum += upperLimbInclinationInfo.percentComplete;
+                numPercents++;
+                if (upperLimbInclinationInfo.percentComplete > maxChange)
+                {
+                    maxChange = upperLimbInclinationInfo.percentComplete;
+                    maxChangeLimbComponent = LimbComponentID.UpperLimb;
+                }
+                if (upperLimbInclinationInfo.percentComplete < minChange)
+                {
+                    minChange = upperLimbInclinationInfo.percentComplete;
+                    minChangeLimbComponent = LimbComponentID.UpperLimb;
+                }
+            }
+
+            if (numPercents == 0)
+            {
+                return new UserPerformanceAnalysisInfo(true);
+            }
+            else
+            {
+                if (maxChange - minChange > SharedContent.AllowableDeviationInPercent)
+                {
+                    return new UserPerformanceAnalysisInfo(true, String.Format("The difference in the percentage completion of the movement for the {0} and {1} of the {2} exceeded the maximum allowable deviation of {3}",
+                        Enum.GetName(typeof(LimbComponentID), maxChangeLimbComponent), Enum.GetName(typeof(LimbComponentID), minChangeLimbComponent),
+                        Enum.GetName(typeof(SharedContent.BodyPartID), this.limbID), SharedContent.AllowableDeviationInPercent));
                 }
                 else
                 {
-                    return (int)(nonNegligableChanges.Average());
+                    return new UserPerformanceAnalysisInfo(percentSum / numPercents);
                 }
             }
+        }
+
+        private enum LimbComponentID
+        {
+            UpperLimb = 0,
+            LowerLimb = 1,
+            BendInLimb = 2
         }
     }
 }

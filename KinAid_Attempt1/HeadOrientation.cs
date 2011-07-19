@@ -57,7 +57,7 @@ namespace KinAid_Attempt1
             return true;
         }
 
-        public override int IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
+        public override UserPerformanceAnalysisInfo IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
         {
             HeadOrientation initialHeadOrientation = (HeadOrientation)initialOrientation;
             HeadOrientation finalHeadOrientation = (HeadOrientation)finalOrientation;

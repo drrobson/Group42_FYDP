@@ -42,7 +42,7 @@ namespace KinAid_Attempt1
 
             this.ex = ex;
 
-            secondsLeft = SharedContent.CalibrationSeconds * ex.getNumCalibrations();
+            secondsLeft = SharedContent.CalibrationSeconds * ex.getPosesToBeCalibrated().Count();
             capturing = false;
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 1);

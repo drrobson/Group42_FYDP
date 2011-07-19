@@ -81,9 +81,11 @@ namespace KinAid_Attempt1
         /// <param name="initialPose"></param>
         /// <param name="finalPose"></param>
         /// <returns></returns>
-        public int IsInBetweenPoses(Pose initialPose, Pose finalPose)
+        public UserPerformanceAnalysisInfo IsInBetweenPoses(Pose initialPose, Pose finalPose)
         {
-            List<int> nonNegligableChanges = new List<int>();
+            int maxChange = int.MinValue, minChange = int.MaxValue, percentSum = 0, numPercents = 0;
+            SharedContent.BodyPartID maxChangeID = SharedContent.BodyPartID.Head, minChangeID = SharedContent.BodyPartID.Head;
+            UserPerformanceAnalysisInfo result;
 
             foreach (SharedContent.BodyPartID bodyPartID in initialPose.bodyPartsOfInterest)
             {
@@ -94,18 +96,44 @@ namespace KinAid_Attempt1
                 initialPose.poseBodyPartOrientations.TryGetValue(bodyPartID, out initialBodyPart);
                 finalPose.poseBodyPartOrientations.TryGetValue(bodyPartID, out finalBodyPart);
 
-                int percentComplete = bodyPartToCheck.IsInBetweenOrientations(initialBodyPart, finalBodyPart);
-                if (percentComplete == -1) return -1;
-                else if (percentComplete != -2) nonNegligableChanges.Add(percentComplete);
+                result = bodyPartToCheck.IsInBetweenOrientations(initialBodyPart, finalBodyPart);
+                if (result.failed)
+                {
+                    return result;
+                }
+                else if (!result.negligableAction)
+                {
+                    if (result.percentComplete < minChange)
+                    {
+                        minChange = result.percentComplete;
+                        minChangeID = bodyPartID;
+                    }
+                    else if (result.percentComplete > maxChange)
+                    {
+                        maxChange = result.percentComplete;
+                        maxChangeID = bodyPartID;
+                    }
+                    percentSum += result.percentComplete;
+                    numPercents++;
+                }
             }
 
-            if (nonNegligableChanges.Max() - nonNegligableChanges.Min() > SharedContent.AllowableDeviationInPercent)
+            if (numPercents == 0)
             {
-                return -1;
+                throw new Exception("In determining if pose is between two others, found that no non-negligable changes exist between the starting and ending poses");
             }
 
-            if (nonNegligableChanges.Count == 0) throw new Exception("In determining if pose is between two others, found that no non-negligable changes exist between the starting and ending poses");
-            else return (int)(nonNegligableChanges.Average());
+            if (maxChange - minChange > SharedContent.AllowableDeviationInPercent)
+            {
+                result = new UserPerformanceAnalysisInfo(true, String.Format("The difference in the percentage completion of the movement for {0} and {1} exceeded the maximum allowable deviation of {2}",
+                    Enum.GetName(typeof(SharedContent.BodyPartID), maxChangeID), Enum.GetName(typeof(SharedContent.BodyPartID), minChangeID), SharedContent.AllowableDeviationInPercent));
+                return result;
+            }
+            else
+            {
+                result = new UserPerformanceAnalysisInfo(percentSum / numPercents);
+                return result;
+            }
         }
 
         /// <summary>

@@ -27,43 +27,83 @@ namespace KinAid_Attempt1
             stepStatus = ExerciseStepStatus.NotInInitialPose;
         }
 
-        public ExerciseStepStatus PerformStep(SkeletonData userData)
+        public ExerciseStepStatusInfo PerformStep(SkeletonData userData)
         {
+            string statusMessage = "Status message not set";
             switch (this.stepStatus)
             {
                 case ExerciseStepStatus.NotInInitialPose:
                     if (initialPose.IsInPose(userData))
                     {
                         this.stepStatus = ExerciseStepStatus.ReadyToStart;
-                        return this.stepStatus;
-                    }
-                    break;
-                case ExerciseStepStatus.ReadyToStart:
-                    if (!initialPose.IsInPose(userData))
-                    {
-                        //User has left the initial pose -- equates to starting the exercise
-                        startTime = DateTime.Now;
-                        this.stepStatus = ExerciseStepStatus.InProgress;
-                    }
-                    break;
-                case ExerciseStepStatus.InProgress:
-                    if (finalPose.IsInPose(userData))
-                    {
-                        this.stepStatus = ExerciseStepStatus.Complete;
+                        statusMessage = "Waiting for user to start performing the exercise step";
                     }
                     else
                     {
-                        int percentComplete = this.IsUserPerformingStepCorrectly(userData);
-                        if (percentComplete == -1)
+                        statusMessage = "Waiting for user to assume the starting pose of the exercise step";
+                    }
+                    break;
+                case ExerciseStepStatus.ReadyToStart:
+                    if (this.stepType == ExerciseStepType.Hold || !initialPose.IsInPose(userData))
+                    {
+                        //User leaving the initial pose equates to starting the exercise
+                        startTime = DateTime.Now;
+                        this.stepStatus = ExerciseStepStatus.InProgress;
+                        statusMessage = "Detected the user starting to perform the exercise step";
+                    }
+                    break;
+                case ExerciseStepStatus.InProgress:
+                    statusMessage = "Analyzing user's performance of the exercise step...";
+                    bool userInFinalPose = finalPose.IsInPose(userData);
+                    if (this.stepType == ExerciseStepType.Hold)
+                    {
+                        if (!userInFinalPose)
                         {
                             this.stepStatus = ExerciseStepStatus.Failed;
+                            statusMessage = "User left the pose that they are supposed to be holding";
                         }
-                        Console.WriteLine("Exercise step is {0} percent complete", percentComplete);
+                        else
+                        {
+                            //If the pose has been held for a sufficiently long time...
+                            if (DateTime.Now >= this.GetExpectedCompletionTime() - new TimeSpan(0, 0, 0, 0, (int)(this.expectedDuration.TotalMilliseconds * (SharedContent.AllowableDeviationInPercent / 100.0))))
+                            {
+                                //We check whether it has not been held for too long
+                                if (DateTime.Now <= this.GetExpectedCompletionTime() + new TimeSpan(0, 0, 0, 0, (int)(this.expectedDuration.TotalMilliseconds * (SharedContent.AllowableDeviationInPercent / 100.0))))
+                                {
+                                    this.stepStatus = ExerciseStepStatus.Complete;
+                                    statusMessage = "Completed the hold of the pose for the appropriate length of time";
+                                }
+                                else
+                                {
+                                    //Held for too long
+                                    this.stepStatus = ExerciseStepStatus.Failed;
+                                    statusMessage = "User held the pose for too long";
+                                }
+                            }
+                        }
+                    }
+                    else if (userInFinalPose)
+                    {
+                        this.stepStatus = ExerciseStepStatus.Complete;
+                        statusMessage = "User completed the exercise step";
+                    }
+                    else
+                    {
+                        UserPerformanceAnalysisInfo performanceInfo = this.IsUserPerformingStepCorrectly(userData);
+                        if (performanceInfo.failed)
+                        {
+                            this.stepStatus = ExerciseStepStatus.Failed;
+                            statusMessage = performanceInfo.failureMessage;
+                        }
+                        else
+                        {
+                            statusMessage += String.Format("User is {0} % complete the exercise step", performanceInfo.percentComplete);
+                        }
                     }
                     break;
             }
 
-            return this.stepStatus;
+            return new ExerciseStepStatusInfo(this.stepStatus, statusMessage);
         }
 
         public DateTime GetExpectedCompletionTime()
@@ -84,7 +124,7 @@ namespace KinAid_Attempt1
         /// </summary>
         /// <param name="userData"></param>
         /// <returns></returns>
-        public int IsUserPerformingStepCorrectly(SkeletonData userData)
+        public UserPerformanceAnalysisInfo IsUserPerformingStepCorrectly(SkeletonData userData)
         {
             Pose currentPose = new Pose(userData, initialPose.bodyPartsOfInterest);
 
@@ -99,6 +139,24 @@ namespace KinAid_Attempt1
         InProgress = 2,
         Complete = 3,
         Failed = 4
+    }
+
+    public struct UserPerformanceAnalysisInfo
+    {
+        public UserPerformanceAnalysisInfo(bool failed, string failureMsg) { this.failed = failed; this.failureMessage = failureMsg; this.negligableAction = false; this.percentComplete = -1; }
+        public UserPerformanceAnalysisInfo(int percentComplete) { this.failed = false; this.failureMessage = ""; this.negligableAction = false; this.percentComplete = percentComplete; }
+        public UserPerformanceAnalysisInfo(bool negligableAction) { this.failed = false; this.failureMessage = ""; this.negligableAction = negligableAction; this.percentComplete = -1; }
+        public bool failed;
+        public bool negligableAction;
+        public string failureMessage;
+        public int percentComplete;
+    }
+
+    public struct ExerciseStepStatusInfo
+    {
+        public ExerciseStepStatusInfo(ExerciseStepStatus exStepStatus, string statusMsg) { this.exerciseStepStatus = exStepStatus; this.statusMessage = statusMsg; }
+        public ExerciseStepStatus exerciseStepStatus;
+        public string statusMessage;
     }
 
     public enum ExerciseStepType
