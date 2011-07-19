@@ -9,12 +9,17 @@ namespace KinAid_Attempt1
     {
         private static IScreenHost Host;
 
-        public static void setHost(IScreenHost host)
+        public static IScreenHost GetHost()
+        {
+            return Host;
+        }
+
+        public static void SetHost(IScreenHost host)
         {
             Host = host;
         }
 
-        public static void setScreen(IScreen screen)
+        public static void SetScreen(IScreen screen)
         {
             Host.setScreen(screen);
         }

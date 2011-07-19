@@ -76,6 +76,9 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="AudioMessageBox.xaml.cs">
+      <DependentUpon>AudioMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExerciseStep.cs" />
     <Compile Include="ExerciseFeedback.xaml.cs">
       <DependentUpon>ExerciseFeedback.xaml</DependentUpon>
@@ -111,6 +114,10 @@
     <Compile Include="SpeechRecognizer.cs" />
     <Compile Include="TorsoOrientation.cs" />
     <Compile Include="VariableConstraint.cs" />
+    <Page Include="AudioMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CalibratingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

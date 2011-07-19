@@ -50,12 +50,30 @@ namespace KinAid_Attempt1
         private void selectedExercise(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            ScreenManager.setScreen(new ExercisePreview());
+#if BUTTONUI
+            MessageBoxResult doCalibration = 
+                MessageBox.Show("Do you wish to calibrate the exercise?", "KinAid", MessageBoxButton.YesNo);
+            bool? dialogResult = (doCalibration == MessageBoxResult.Yes ? true : false);
+#elif AUDIOUI
+            AudioMessageBox amb = new AudioMessageBox("");
+            amb.Owner = (Window) ScreenManager.GetHost();
+            bool? dialogResult = amb.ShowDialog();
+#endif
+            if (dialogResult.HasValue && dialogResult == true)
+            {
+                ScreenManager.SetScreen(new CalibratingView(null));
+            }
+            else if (dialogResult.HasValue && dialogResult == false)
+            {
+                ScreenManager.SetScreen(new ExercisePreview());
+            }
         }
 
         private void selectedAddExercise(object sender, RoutedEventArgs e)
         {
-
+            /*
+             * To Implement
+             */
         }
 
     }

@@ -84,7 +84,7 @@ namespace KinAid_Attempt1
 
         private void selectedContinue()
         {
-            ScreenManager.setScreen(new ExerciseView());
+            ScreenManager.SetScreen(new ExerciseView());
             SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Play);
             SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Pause);
             SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Stop);

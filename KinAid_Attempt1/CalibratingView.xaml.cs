@@ -92,7 +92,7 @@ namespace KinAid_Attempt1
 
             if (secondsLeft == 0)
             {
-                ScreenManager.setScreen(new ExerciseSelector());
+                ScreenManager.SetScreen(new ExerciseSelector());
             }
             else
             {
