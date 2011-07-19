@@ -30,6 +30,11 @@ namespace KinAid_Attempt1
         public ExercisePreview()
         {
             InitializeComponent();
+
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Play, selectedPlay);
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Pause, selectedPause);
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Stop, selectedStop);
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Continue, selectedContinue);
         }
 
         private void Element_MediaOpened(object source, EventArgs e)
@@ -44,22 +49,46 @@ namespace KinAid_Attempt1
 
         private void selectedPlay(object sender, RoutedEventArgs e)
         {
+            selectedPlay();
+        }
+
+        private void selectedPlay()
+        {
             exercisePreview.Play();
         }
 
         private void selectedPause(object sender, RoutedEventArgs e)
+        {
+            selectedPause();
+        }
+
+        private void selectedPause()
         {
             exercisePreview.Pause();
         }
 
         private void selectedStop(object sender, RoutedEventArgs e)
         {
+            selectedStop();
+        }
+
+        private void selectedStop()
+        {
             exercisePreview.Stop();
         }
 
         private void selectedContinue(object sender, RoutedEventArgs e)
         {
+            selectedContinue();
+        }
+
+        private void selectedContinue()
+        {
             ScreenManager.setScreen(new ExerciseView());
+            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Play);
+            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Pause);
+            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Stop);
+            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Continue);
         }
     }
 }

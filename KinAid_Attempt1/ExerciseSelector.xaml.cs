@@ -24,7 +24,7 @@ namespace KinAid_Attempt1
         {
             InitializeComponent();
 
-            Exercise[] exercises = SharedContent.GetExercises();
+            Exercise[] exercises = ExerciseFactory.GetExercises();
             for (int i = 0; i < exercises.Length; i++)
             {
                 Button button = new Button();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -10,6 +11,10 @@ namespace KinAid_Attempt1
 {
     public static class SharedContent
     {
+        /// <summary>
+        /// Front-end shared content
+        /// </summary>
+
         public static Dictionary<JointID, Brush> JointColors = new Dictionary<JointID, Brush>() { 
             {JointID.HipCenter, new SolidColorBrush(Color.FromRgb(169, 176, 155))},
             {JointID.Spine, new SolidColorBrush(Color.FromRgb(169, 176, 155))},
@@ -47,16 +52,40 @@ namespace KinAid_Attempt1
         });
 
         public static Runtime Nui;
+        public static SpeechRecognizer Sr;
 
-        /*
-        public enum LimbID
+        public const string RecognizerId = "SR_MS_en-US_Kinect_10.0";
+        public static string[] CommandStrings = new string[] {
+            // General UI Commands
+            "calibrate",
+            "exercise",
+            "play",
+            "pause",
+            "stop",
+            "continue",
+            "retry",
+            "back",
+            // Exercise Commands
+            // ...
+        };
+        public enum Commands
         {
-            RightArm = 0,
-            LeftArm = 1,
-            RightLeg = 2,
-            LeftLeg = 3
+            // General UI Commands
+            Calibrate,
+            Exercise,
+            Play,
+            Pause,
+            Stop,
+            Continue,
+            Retry,
+            Back,
+            // Exercise Commands
+            // ...
         }
-         * */
+        public static string GetCommandString(Commands command)
+        {
+            return CommandStrings[(int)command];
+        }
 
         public enum BodyPartID
         {
@@ -82,21 +111,6 @@ namespace KinAid_Attempt1
             Failed = -1,
             Started = 0,
             Completed = 100,
-        }
-
-        public static Exercise[] GetExercises()
-        {
-            /*
-            LimbOrientationOld[] limb1 = { new LimbOrientationOld(JointID.ShoulderLeft, JointID.ElbowLeft, 90, 180, 90) };
-            PoseConstraint pc = new PoseConstraint(limb1);
-            LimbOrientationOld limb2 = new LimbOrientationOld(JointID.ShoulderLeft, JointID.ElbowLeft, 180, 90, 90);
-            GlobalConstraint[] gcs = { new GlobalConstraint(JointID.ShoulderLeft, JointID.ElbowLeft, JointID.WristLeft, 90, 15) };
-            VariableConstraint[] vcs = { new VariableConstraint("TEST", new TimeSpan(0, 0, 10), limb1[0], limb2) };
-            Exercise ex1 = new Exercise(null, pc, gcs, vcs);
-
-            return new Exercise[] { ex1 };
-             * */
-            return null;
         }
     }
 }

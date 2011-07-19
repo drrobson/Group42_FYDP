@@ -22,9 +22,14 @@ namespace KinAid_Attempt1
     /// </summary>
     public partial class ExerciseView : UserControl, IScreen, IKinectFrames
     {
+#if DEBUG
+        Label fpsLabel;
         int totalFrames = 0;
         int lastFrames = 0;
         DateTime lastTime = DateTime.MaxValue;
+#endif
+
+        Exercise ex;
 
         public UIElement element
         {
@@ -54,7 +59,14 @@ namespace KinAid_Attempt1
         {
             InitializeComponent();
 
+#if DEBUG
             lastTime = DateTime.Now;
+
+            fpsLabel = new Label();
+            fpsLabel.Content = "FPS:";
+            fpsLabel.HorizontalAlignment = HorizontalAlignment.Left;
+            bottomPanel.Children.Insert(0, fpsLabel);
+#endif
 
             //SharedContent.Nui.DepthFrameReady += new EventHandler<ImageFrameReadyEventArgs>(nuiDepthFrameReady);
             SharedContent.Nui.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(nuiSkeletonFrameReady);
@@ -226,16 +238,18 @@ namespace KinAid_Attempt1
             PlanarImage Image = e.ImageFrame.Image;
             video.Source = BitmapSource.Create(
                 Image.Width, Image.Height, 96, 96, PixelFormats.Bgr32, null, Image.Bits, Image.Width * Image.BytesPerPixel);
+            
+#if DEBUG
             ++totalFrames;
-
             DateTime cur = DateTime.Now;
             if (cur.Subtract(lastTime) > TimeSpan.FromSeconds(1))
             {
                 int frameDiff = totalFrames - lastFrames;
                 lastFrames = totalFrames;
                 lastTime = cur;
-                fpsLabel.Content = frameDiff.ToString() + " fps";
+                fpsLabel.Content = "FPS: " + frameDiff.ToString() + " fps";
             }
+#endif
         }
     }
 }

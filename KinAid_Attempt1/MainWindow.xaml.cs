@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using Microsoft.Research.Kinect.Nui;
+using Microsoft.Research.Kinect.Audio;
 
 namespace KinAid_Attempt1
 {
@@ -44,17 +45,19 @@ namespace KinAid_Attempt1
             ScreenManager.setHost(this);
 
             SharedContent.Nui = new Runtime();
+            SharedContent.Sr = new SpeechRecognizer();
+            SharedContent.Sr.initialize();
 
             try
             {
                 SharedContent.Nui.Initialize(
-                    RuntimeOptions.UseDepthAndPlayerIndex | 
-                    RuntimeOptions.UseSkeletalTracking | 
+                    RuntimeOptions.UseDepthAndPlayerIndex |
+                    RuntimeOptions.UseSkeletalTracking |
                     RuntimeOptions.UseColor);
             }
             catch (InvalidOperationException)
             {
-                System.Windows.MessageBox.Show("Runtime initialization failed. Please make sure Kinect device is plugged in.");
+                MessageBox.Show("Runtime initialization failed. Please make sure Kinect device is plugged in.");
                 Environment.Exit(-1);
             }
 
@@ -65,7 +68,7 @@ namespace KinAid_Attempt1
             }
             catch (InvalidOperationException)
             {
-                System.Windows.MessageBox.Show("Failed to open stream. Please make sure to specify a supported image type and resolution.");
+                MessageBox.Show("Failed to open stream. Please make sure to specify a supported image type and resolution.");
                 Environment.Exit(-1);
             }
         }

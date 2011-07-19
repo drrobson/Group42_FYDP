@@ -37,6 +37,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Research.Kinect, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Speech, Version=10.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.Speech\10.2.0.0__31bf3856ad364e35\Microsoft.Speech.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -58,6 +62,9 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Compile Include="ExerciseStep.cs" />
+    <Compile Include="ExerciseFeedback.xaml.cs">
+      <DependentUpon>ExerciseFeedback.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LimbOrientation-old.cs" />
     <Compile Include="LimbOrientation.cs" />
     <Compile Include="CalibratingView.xaml.cs">
@@ -86,9 +93,14 @@
     <Compile Include="ExerciseView.xaml.cs">
       <DependentUpon>ExerciseView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SpeechRecognizer.cs" />
     <Compile Include="TorsoOrientation.cs" />
     <Compile Include="VariableConstraint.cs" />
     <Page Include="CalibratingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExerciseFeedback.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -144,6 +156,17 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Kinaid.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Checkbox.bmp" />
+    <Resource Include="CheckboxFail.bmp" />
+    <Resource Include="CheckboxPass.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Voice.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Calibrating.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
