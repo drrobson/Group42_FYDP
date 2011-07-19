@@ -10,7 +10,7 @@
             <WrapPanel Orientation="Horizontal" Name="buttonPanel">
             </WrapPanel>
         </ScrollViewer>
-        <Grid>
+        <Grid Name="bottomPanel">
             <Button Content="Calibrate" Click="selectedCalibrate" HorizontalAlignment="Left" />
             <Button Content="Add Exercise" Click="selectedAddExercise" HorizontalAlignment="Right" />
         </Grid>

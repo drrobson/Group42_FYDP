@@ -5,6 +5,6 @@
         Loaded="Window_Loaded" Closed="Window_Closed"
         Icon="Kinaid.ico" xmlns:my="clr-namespace:KinAid_Attempt1">
     <Grid Name="LayoutRoot">
-        <my:CalibratingView HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <my:ExerciseSelector HorizontalAlignment="Left" VerticalAlignment="Top" />
     </Grid>
 </Window>
