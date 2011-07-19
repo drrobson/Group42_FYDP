@@ -6,14 +6,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="310" d:DesignWidth="420">
     <StackPanel>
-        <Image Name="video" Height="284"/>
-        <Grid>
-            <Label Content="FPS:" Name="fpsLabel" HorizontalAlignment="Left" />
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Image Source="Checkbox.bmp" Name="statusImage" Stretch="None" StretchDirection="DownOnly" />
-                <Label Content="TEST ME BITCH" Name="statusText" />
-                <!--Button Content=""-->
-            </StackPanel>
-        </Grid>
+        <Image Name="video" Height="280"/>
+        <StackPanel Name="bottomPanel" Orientation="Horizontal">
+            <Image Source="Checkbox.bmp" Name="statusImage" Stretch="None" StretchDirection="DownOnly" />
+            <Label Content="Random Instruction" Name="statusText" />
+            <Image Source="Voice.bmp" />
+            <Label Content="Stop" FontSize="14" BorderThickness="1" BorderBrush="Black" />
+        </StackPanel>
     </StackPanel>
 </UserControl>
