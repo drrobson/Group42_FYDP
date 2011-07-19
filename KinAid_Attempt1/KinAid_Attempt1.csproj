@@ -57,6 +57,7 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="ExerciseStep.cs" />
     <Compile Include="LimbOrientation-old.cs" />
     <Compile Include="LimbOrientation.cs" />
     <Compile Include="CalibratingView.xaml.cs">
@@ -77,6 +78,7 @@
     <Compile Include="ExercisePreview.xaml.cs">
       <DependentUpon>ExercisePreview.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pose.cs" />
     <Compile Include="PoseConstraint.cs" />
     <Compile Include="Routine.cs" />
     <Compile Include="ScreenManager.cs" />

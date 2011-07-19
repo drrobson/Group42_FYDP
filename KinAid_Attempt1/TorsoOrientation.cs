@@ -10,37 +10,95 @@ namespace KinAid_Attempt1
 {
     public class TorsoOrientation : BodyPartOrientation
     {
-        public double torsoRotation;
-        public Vector3D torsoInclination;
+        public double rotation;
+        public double calibratedRotation;
+        public Vector3D inclination;
+        public Vector3D calibratedInclination;
 
-        public static double NeutralTorsoRotation = 0;        //Looking at the top of the user's head, rotation is positive in the counter-clockwise direction
-        public static Vector3D NeutralTorsoInclination = new Vector3D(0, 1, 0);   //Torso orientation relative to the hips
+        /*
+        public static double IdealNeutralTorsoRotation = 0;
+        public static Vector3D IdealNeutralTorsoInclination = new Vector3D(0, 1, 0);
+        public static double ActualNeutralTorsoRotation;        //Looking at the top of the user's head, rotation is positive in the counter-clockwise direction
+        public static Vector3D ActualNeutralTorsoInclination;   //Torso orientation relative to the hips
+         * */
 
-        public void CalibrateNeutral(SkeletonData neutralOrientationData)
+        public TorsoOrientation(SkeletonData bodyPartData)
         {
-            //Arbitrarily decide to examine rotation of right shoulder to determine rotation value (assume left shoulder rotates in equal magnitude and opposite direction)
-            //We examine angular difference between the vector of center hip to right hip and center shoulder to right shoulder to determine the rotation of the torso
-            Vector hipCenterPosition = neutralOrientationData.Joints[JointID.HipCenter].Position;
-            Vector hipRightPosition = neutralOrientationData.Joints[JointID.HipRight].Position;
-            Vector3D hipVector = new Vector3D(hipRightPosition.X - hipCenterPosition.X, 0, hipRightPosition.Z - hipCenterPosition.Z);
+            this.rotation = TorsoOrientation.CalculateTorsoRotation(bodyPartData);
+            this.inclination = TorsoOrientation.CalculateTorsoInclination(bodyPartData);
+            this.inclination.Normalize();
 
-            Vector shoulderCenterPosition = neutralOrientationData.Joints[JointID.ShoulderCenter].Position;
-            Vector shoulderRightPosition = neutralOrientationData.Joints[JointID.ShoulderRight].Position;
-            Vector3D shoulderVector = new Vector3D(shoulderRightPosition.X - shoulderCenterPosition.X, 0, shoulderRightPosition.Z - shoulderCenterPosition.Z);
+            this.calibratedRotation = this.rotation;
+            this.calibratedInclination = this.inclination;
+        }
 
-            TorsoOrientation.NeutralTorsoRotation = Vector3D.AngleBetween(shoulderVector, hipVector);
+        public TorsoOrientation(double torsoRotation, Vector3D torsoInclination)
+        {
+            this.rotation = torsoRotation;
+            this.inclination = torsoInclination;
+            this.inclination.Normalize();
 
-            TorsoOrientation.NeutralTorsoInclination = new Vector3D(shoulderCenterPosition.X - hipCenterPosition.X, shoulderCenterPosition.Y - hipCenterPosition.Y,
+            this.calibratedRotation = this.rotation;
+            this.calibratedInclination = this.inclination;
+        }
+
+        public static Vector3D CalculateTorsoInclination(SkeletonData bodyPartData)
+        {
+            Vector hipCenterPosition = bodyPartData.Joints[JointID.HipCenter].Position;
+            Vector shoulderCenterPosition = bodyPartData.Joints[JointID.ShoulderCenter].Position;
+
+            return new Vector3D(shoulderCenterPosition.X - hipCenterPosition.X, shoulderCenterPosition.Y - hipCenterPosition.Y,
                 shoulderCenterPosition.Z - hipCenterPosition.Z);
         }
 
-        public static TorsoOrientation GetNeutralOrientation()
+        public static double CalculateTorsoRotation(SkeletonData bodyPartData)
         {
-            TorsoOrientation neutralOrientation = new TorsoOrientation();
-            neutralOrientation.torsoRotation = TorsoOrientation.NeutralTorsoRotation;
-            neutralOrientation.torsoInclination = TorsoOrientation.NeutralTorsoInclination;
+            //We examine angular difference between the vector of center hip to right hip and center shoulder to right shoulder to determine the rotation of the torso
+            Vector hipCenterPosition = bodyPartData.Joints[JointID.HipCenter].Position;
+            Vector hipRightPosition = bodyPartData.Joints[JointID.HipRight].Position;
+            Vector3D hipVector = new Vector3D(hipRightPosition.X - hipCenterPosition.X, 0, hipRightPosition.Z - hipCenterPosition.Z);
 
-            return neutralOrientation;
+            Vector shoulderCenterPosition = bodyPartData.Joints[JointID.ShoulderCenter].Position;
+            Vector shoulderRightPosition = bodyPartData.Joints[JointID.ShoulderRight].Position;
+            Vector3D shoulderVector = new Vector3D(shoulderRightPosition.X - shoulderCenterPosition.X, 0, shoulderRightPosition.Z - shoulderCenterPosition.Z);
+
+            double degreesOfRotation = Vector3D.AngleBetween(shoulderVector, hipVector);
+
+            if (shoulderRightPosition.Z < hipRightPosition.Z)
+            {
+                degreesOfRotation = -degreesOfRotation;
+            }
+            return degreesOfRotation;
+        }
+
+        public override void CalibrateOrientation(SkeletonData bodyPartData)
+        {
+            this.calibratedInclination = TorsoOrientation.CalculateTorsoInclination(bodyPartData);
+            this.calibratedRotation = TorsoOrientation.CalculateTorsoRotation(bodyPartData);
+        }
+
+        public override bool IsBodyPartInOrientation(SkeletonData bodyPartData)
+        {
+            double currentRotation = TorsoOrientation.CalculateTorsoRotation(bodyPartData);
+
+            if (Math.Abs(currentRotation - this.calibratedRotation) > SharedContent.AllowableDeviationInDegrees)
+            {
+                return false;
+            }
+
+            Vector3D currentInclination = TorsoOrientation.CalculateTorsoInclination(bodyPartData);
+
+            if (Vector3D.AngleBetween(currentInclination, this.calibratedInclination) > SharedContent.AllowableDeviationInDegrees)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public override bool IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
+        {
+            throw new NotImplementedException();
         }
     }
 }

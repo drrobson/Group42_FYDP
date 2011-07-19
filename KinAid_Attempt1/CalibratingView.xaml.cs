@@ -56,8 +56,19 @@ namespace KinAid_Attempt1
         public void nuiSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
             SharedContent.Nui.SkeletonFrameReady -= nuiSkeletonFrameReady;
-            
-            /* Dan do your shiz here */
+
+            /*
+            SkeletonFrame skeletonFrame = e.SkeletonFrame;
+            foreach (SkeletonData skeletonData in skeletonFrame.Skeletons)
+            {
+                if (skeletonData.TrackingState == SkeletonTrackingState.Tracked)
+                {
+                    ExerciseView.neutralPose.CalibratePose(skeletonData);
+                    ExerciseView.tPose.CalibratePose(skeletonData);
+                    break;
+                }
+            }
+             * */
 
             ScreenManager.setScreen(new ExerciseSelector());
         }

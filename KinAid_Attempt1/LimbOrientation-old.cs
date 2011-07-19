@@ -67,14 +67,14 @@ namespace KinAid_Attempt1
         public static bool areOrientationsEqual(LimbOrientationOld limbOrientation1, LimbOrientationOld limbOrientation2)
         {
             if (
-                ((limbOrientation1.xAngle < limbOrientation2.xAngle && (limbOrientation1.xAngle + SharedContent.AllowableDeviation) > limbOrientation2.xAngle) ||
-                 (limbOrientation1.xAngle > limbOrientation2.xAngle && (limbOrientation1.xAngle - SharedContent.AllowableDeviation) < limbOrientation2.xAngle))
+                ((limbOrientation1.xAngle < limbOrientation2.xAngle && (limbOrientation1.xAngle + SharedContent.AllowableDeviationInDegrees) > limbOrientation2.xAngle) ||
+                 (limbOrientation1.xAngle > limbOrientation2.xAngle && (limbOrientation1.xAngle - SharedContent.AllowableDeviationInDegrees) < limbOrientation2.xAngle))
                 &&
-                ((limbOrientation1.yAngle < limbOrientation2.yAngle && (limbOrientation1.yAngle + SharedContent.AllowableDeviation) > limbOrientation2.yAngle) ||
-                 (limbOrientation1.yAngle > limbOrientation2.yAngle && (limbOrientation1.yAngle - SharedContent.AllowableDeviation) < limbOrientation2.yAngle))
+                ((limbOrientation1.yAngle < limbOrientation2.yAngle && (limbOrientation1.yAngle + SharedContent.AllowableDeviationInDegrees) > limbOrientation2.yAngle) ||
+                 (limbOrientation1.yAngle > limbOrientation2.yAngle && (limbOrientation1.yAngle - SharedContent.AllowableDeviationInDegrees) < limbOrientation2.yAngle))
                 &&
-                ((limbOrientation1.zAngle < limbOrientation2.zAngle && (limbOrientation1.zAngle + SharedContent.AllowableDeviation) > limbOrientation2.zAngle) ||
-                 (limbOrientation1.zAngle > limbOrientation2.zAngle && (limbOrientation1.zAngle - SharedContent.AllowableDeviation) < limbOrientation2.zAngle))
+                ((limbOrientation1.zAngle < limbOrientation2.zAngle && (limbOrientation1.zAngle + SharedContent.AllowableDeviationInDegrees) > limbOrientation2.zAngle) ||
+                 (limbOrientation1.zAngle > limbOrientation2.zAngle && (limbOrientation1.zAngle - SharedContent.AllowableDeviationInDegrees) < limbOrientation2.zAngle))
                 )
             {
                 return true;
@@ -128,9 +128,9 @@ namespace KinAid_Attempt1
 
             // For axes where the expected displacement is 0, if the actual displacement exceeds some global error threshold, we consider it an incorrectly performed exercise
             if (
-                (endLimbOrientation.xAngle - startLimbOrientation.xAngle == 0 && Math.Abs(endLimbOrientation.xAngle - curLimbOrientation.xAngle) > SharedContent.AllowableDeviation)
-                || (endLimbOrientation.yAngle - startLimbOrientation.yAngle == 0 && Math.Abs(endLimbOrientation.yAngle - curLimbOrientation.yAngle) > SharedContent.AllowableDeviation)
-                || (endLimbOrientation.zAngle - startLimbOrientation.zAngle == 0 && Math.Abs(endLimbOrientation.zAngle - curLimbOrientation.zAngle) > SharedContent.AllowableDeviation)
+                (endLimbOrientation.xAngle - startLimbOrientation.xAngle == 0 && Math.Abs(endLimbOrientation.xAngle - curLimbOrientation.xAngle) > SharedContent.AllowableDeviationInDegrees)
+                || (endLimbOrientation.yAngle - startLimbOrientation.yAngle == 0 && Math.Abs(endLimbOrientation.yAngle - curLimbOrientation.yAngle) > SharedContent.AllowableDeviationInDegrees)
+                || (endLimbOrientation.zAngle - startLimbOrientation.zAngle == 0 && Math.Abs(endLimbOrientation.zAngle - curLimbOrientation.zAngle) > SharedContent.AllowableDeviationInDegrees)
                )
             {
                 Console.WriteLine("Performed exercise incorrectly! Attempt failed");

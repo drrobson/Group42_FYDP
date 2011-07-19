@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Media.Media3D;
 
 using Microsoft.Research.Kinect.Nui;
 
@@ -33,6 +34,14 @@ namespace KinAid_Attempt1
             }
         }
 
+        public static Pose tPose = new Pose(new Dictionary<SharedContent.BodyPartID, BodyPartOrientation>()
+            {
+                {SharedContent.BodyPartID.RightArm, new LimbOrientation(SharedContent.BodyPartID.RightArm, new Vector3D(1,0,0), new Vector3D(1,0,0))},
+                {SharedContent.BodyPartID.LeftArm, new LimbOrientation(SharedContent.BodyPartID.LeftArm, new Vector3D(-1,0,0), new Vector3D(-1,0,0))},
+                {SharedContent.BodyPartID.RightLeg, new LimbOrientation(SharedContent.BodyPartID.RightLeg, new Vector3D(0,-1,0), new Vector3D(0,-1,0))},
+                {SharedContent.BodyPartID.LeftLeg, new LimbOrientation(SharedContent.BodyPartID.LeftLeg, new Vector3D(0,-1,0), new Vector3D(0,-1,0))}
+            });
+
         // We want to control how depth data gets converted into false-color data
         // for more intuitive visualization, so we keep 32-bit color frame buffer versions of
         // these, to be updated whenever we receive and process a 16-bit frame.
@@ -48,7 +57,7 @@ namespace KinAid_Attempt1
             lastTime = DateTime.Now;
 
             //SharedContent.Nui.DepthFrameReady += new EventHandler<ImageFrameReadyEventArgs>(nuiDepthFrameReady);
-            //SharedContent.Nui.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(nuiSkeletonFrameReady);
+            SharedContent.Nui.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(nuiSkeletonFrameReady);
             SharedContent.Nui.VideoFrameReady += new EventHandler<ImageFrameReadyEventArgs>(nuiColorFrameReady);
         }
 
@@ -153,55 +162,63 @@ namespace KinAid_Attempt1
             polyline.StrokeThickness = 5;
             return polyline;
         }
-
+        */
         
         public void nuiSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
             SkeletonFrame skeletonFrame = e.SkeletonFrame;
-            int iSkeleton = 0;
-            Brush[] brushes = new Brush[6];
-            brushes[0] = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-            brushes[1] = new SolidColorBrush(Color.FromRgb(0, 255, 0));
-            brushes[2] = new SolidColorBrush(Color.FromRgb(64, 255, 255));
-            brushes[3] = new SolidColorBrush(Color.FromRgb(255, 255, 64));
-            brushes[4] = new SolidColorBrush(Color.FromRgb(255, 64, 255));
-            brushes[5] = new SolidColorBrush(Color.FromRgb(128, 128, 255));
+            //int iSkeleton = 0;
+            //Brush[] brushes = new Brush[6];
+            //brushes[0] = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+            //brushes[1] = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+            //brushes[2] = new SolidColorBrush(Color.FromRgb(64, 255, 255));
+            //brushes[3] = new SolidColorBrush(Color.FromRgb(255, 255, 64));
+            //brushes[4] = new SolidColorBrush(Color.FromRgb(255, 64, 255));
+            //brushes[5] = new SolidColorBrush(Color.FromRgb(128, 128, 255));
 
-            skeleton.Children.Clear();
+            //skeleton.Children.Clear();
             foreach (SkeletonData data in skeletonFrame.Skeletons)
             {
                 if (SkeletonTrackingState.Tracked == data.TrackingState)
                 {
-                    // Draw bones
-                    Brush brush = brushes[iSkeleton % brushes.Length];
-                    skeleton.Children.Add(getBodySegment(data.Joints, brush, JointID.HipCenter, JointID.Spine, JointID.ShoulderCenter, JointID.Head));
-                    skeleton.Children.Add(getBodySegment(data.Joints, brush, JointID.ShoulderCenter, JointID.ShoulderLeft, JointID.ElbowLeft, JointID.WristLeft, JointID.HandLeft));
-                    skeleton.Children.Add(getBodySegment(data.Joints, brush, JointID.ShoulderCenter, JointID.ShoulderRight, JointID.ElbowRight, JointID.WristRight, JointID.HandRight));
-                    skeleton.Children.Add(getBodySegment(data.Joints, brush, JointID.HipCenter, JointID.HipLeft, JointID.KneeLeft, JointID.AnkleLeft, JointID.FootLeft));
-                    skeleton.Children.Add(getBodySegment(data.Joints, brush, JointID.HipCenter, JointID.HipRight, JointID.KneeRight, JointID.AnkleRight, JointID.FootRight));
-
-                    // Draw joints
-                    foreach (Joint joint in data.Joints)
+                    if (SharedContent.NeutralPose.IsInPose(data))
                     {
-                        Point jointPos = getDisplayPosition(joint);
-                        Line jointLine = new Line();
-                        jointLine.X1 = jointPos.X - 3;
-                        jointLine.X2 = jointLine.X1 + 6;
-                        jointLine.Y1 = jointLine.Y2 = jointPos.Y;
-                        jointLine.Stroke = SharedContent.JointColors[joint.ID];
-                        jointLine.StrokeThickness = 6;
-                        skeleton.Children.Add(jointLine);
+                        Console.Write("In neutral pose!");
                     }
-
-                    if (startExercise)
+                    if (tPose.IsInPose(data))
                     {
-                        ex1.updateExercise(data);
-                        exerciseCorrect.Text = ex1.printState();
+                        Console.Write("In T pose!");
                     }
+                    //// Draw bones
+                    //Brush brush = brushes[iSkeleton % brushes.Length];
+                    //skeleton.Children.Add(getBodySegment(data.Joints, brush, JointID.HipCenter, JointID.Spine, JointID.ShoulderCenter, JointID.Head));
+                    //skeleton.Children.Add(getBodySegment(data.Joints, brush, JointID.ShoulderCenter, JointID.ShoulderLeft, JointID.ElbowLeft, JointID.WristLeft, JointID.HandLeft));
+                    //skeleton.Children.Add(getBodySegment(data.Joints, brush, JointID.ShoulderCenter, JointID.ShoulderRight, JointID.ElbowRight, JointID.WristRight, JointID.HandRight));
+                    //skeleton.Children.Add(getBodySegment(data.Joints, brush, JointID.HipCenter, JointID.HipLeft, JointID.KneeLeft, JointID.AnkleLeft, JointID.FootLeft));
+                    //skeleton.Children.Add(getBodySegment(data.Joints, brush, JointID.HipCenter, JointID.HipRight, JointID.KneeRight, JointID.AnkleRight, JointID.FootRight));
+
+                    //// Draw joints
+                    //foreach (Joint joint in data.Joints)
+                    //{
+                    //    Point jointPos = getDisplayPosition(joint);
+                    //    Line jointLine = new Line();
+                    //    jointLine.X1 = jointPos.X - 3;
+                    //    jointLine.X2 = jointLine.X1 + 6;
+                    //    jointLine.Y1 = jointLine.Y2 = jointPos.Y;
+                    //    jointLine.Stroke = SharedContent.JointColors[joint.ID];
+                    //    jointLine.StrokeThickness = 6;
+                    //    skeleton.Children.Add(jointLine);
+                    //}
+
+                    //if (startExercise)
+                    //{
+                    //    ex1.updateExercise(data);
+                    //    exerciseCorrect.Text = ex1.printState();
+                    //}
                 }
-                iSkeleton++;
+                //iSkeleton++;
             } // for each skeleton
-        }*/
+        }
 
         public void nuiColorFrameReady(object sender, ImageFrameReadyEventArgs e)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 using Microsoft.Research.Kinect.Nui;
 
@@ -32,16 +33,39 @@ namespace KinAid_Attempt1
             {JointID.FootRight, new SolidColorBrush(Color.FromRgb(77,  109, 243))}
         };
 
-        public static double AllowableDeviation = 15;
+        public static double AllowableDeviationInDegrees = 5;
+        public static double AllowableDeviationInPercent = 15;
+
+        public static Pose NeutralPose = new Pose(new Dictionary<BodyPartID,BodyPartOrientation>()
+        {
+            {SharedContent.BodyPartID.Head, new HeadOrientation(new Vector3D(0,1,-0.2))},
+            {SharedContent.BodyPartID.Torso, new TorsoOrientation(0, new Vector3D(0,1,-0.1))},
+            {SharedContent.BodyPartID.RightArm, new LimbOrientation(BodyPartID.RightArm, new Vector3D(0,-1,0), new Vector3D(0,-1,0))},
+            {SharedContent.BodyPartID.LeftArm, new LimbOrientation(BodyPartID.LeftArm, new Vector3D(0,-1,0), new Vector3D(0,-1,0))},
+            {SharedContent.BodyPartID.RightLeg, new LimbOrientation(BodyPartID.RightLeg, new Vector3D(0,-1,0), new Vector3D(0,-1,0))},
+            {SharedContent.BodyPartID.LeftLeg, new LimbOrientation(BodyPartID.LeftLeg, new Vector3D(0,-1,0), new Vector3D(0,-1,0))}
+        });
 
         public static Runtime Nui;
 
+        /*
         public enum LimbID
         {
             RightArm = 0,
             LeftArm = 1,
             RightLeg = 2,
             LeftLeg = 3
+        }
+         * */
+
+        public enum BodyPartID
+        {
+            RightArm = 0,
+            LeftArm = 1,
+            RightLeg = 2,
+            LeftLeg = 3,
+            Torso = 4,
+            Head = 5
         }
 
         public enum ExerciseType
@@ -62,6 +86,7 @@ namespace KinAid_Attempt1
 
         public static Exercise[] GetExercises()
         {
+            /*
             LimbOrientationOld[] limb1 = { new LimbOrientationOld(JointID.ShoulderLeft, JointID.ElbowLeft, 90, 180, 90) };
             PoseConstraint pc = new PoseConstraint(limb1);
             LimbOrientationOld limb2 = new LimbOrientationOld(JointID.ShoulderLeft, JointID.ElbowLeft, 180, 90, 90);
@@ -70,6 +95,8 @@ namespace KinAid_Attempt1
             Exercise ex1 = new Exercise(null, pc, gcs, vcs);
 
             return new Exercise[] { ex1 };
+             * */
+            return null;
         }
     }
 }

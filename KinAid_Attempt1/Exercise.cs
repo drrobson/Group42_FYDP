@@ -11,46 +11,16 @@ namespace KinAid_Attempt1
     /// </summary>
     public class Exercise
     {
-        public SharedContent.LimbID[] limbs // the limbs involved in the exercise
+        public Pose[] exercisePoses;
+        //Array of exercise steps
+        string name, description;
+
+        public Exercise(Pose[] exercisePoses)
         {
-            get;
-            private set;
-        }
-        public PoseConstraint initialConstraint // the constraints that define the user's initial pose
-        {
-            get;
-            private set;
-        }
-        public GlobalConstraint[] globalConstraints // the constraints that should hold throughout the entire exercise
-        {
-            get;
-            private set;
+            
         }
 
-        public SharedContent.Progression progression // the progression of the overall exercise
-        {
-            get;
-            set;
-        }
-        public ExerciseState currentState // holds the state of the user's current position
-        {
-            get;
-            set;
-        }
-
-        public Exercise(SharedContent.LimbID[] limbs, 
-            PoseConstraint initialConstraint, 
-            GlobalConstraint[] globalConstraints, 
-            VariableConstraint[] variableConstraints)
-        {
-            this.limbs = limbs;
-            this.initialConstraint = initialConstraint;
-            this.globalConstraints = globalConstraints;
-
-            progression = SharedContent.Progression.NotStarted;
-            currentState = new ExerciseState(variableConstraints);
-        }
-
+        /*
         /// <summary>
         /// Asserts the initial pose constraint; if the user's limb orientations as defined in the SkeletonData satisfy the initial
         /// pose constraint of the exercise then the exercise is considered to be started
@@ -71,9 +41,11 @@ namespace KinAid_Attempt1
                 return false;
             }
         }
+         * */
 
         public SharedContent.Progression updateExercise(SkeletonData data)
         {
+            
             /*
             if (progression == SharedContent.Progression.NotStarted && !initialConstraint.verify(data))
             { // check the initial pose constraints for this exercise
@@ -86,6 +58,7 @@ namespace KinAid_Attempt1
             }
              * */
 
+            /*
             foreach (GlobalConstraint constraint in globalConstraints)
             { // check all of the global constraints
                 if (constraint.verify(data) == SharedContent.Progression.Failed)
@@ -101,6 +74,8 @@ namespace KinAid_Attempt1
                 progression = nextState();
             }
             return progression;
+             * */
+            return SharedContent.Progression.Failed;
         }
 
         public SharedContent.Progression nextState()
@@ -111,6 +86,7 @@ namespace KinAid_Attempt1
 
         public string printState()
         {
+            /*
             switch (progression)
             {
                 case SharedContent.Progression.NotStarted:
@@ -124,6 +100,8 @@ namespace KinAid_Attempt1
                 default:
                     return String.Format("Exercise {0}% complete", progression);
             }
+             * */
+            return null;
         }
     }
 }

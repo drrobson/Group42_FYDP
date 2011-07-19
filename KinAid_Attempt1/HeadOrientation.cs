@@ -10,32 +10,66 @@ namespace KinAid_Attempt1
 {
     public class HeadOrientation : BodyPartOrientation
     {
-        public Vector3D inclination
+        public Vector3D inclination;
+        public Vector3D calibratedInclination;
+
+        /*
+        public static Vector3D IdealNeutralInclination = new Vector3D(0, 1, 0);
+        public static Vector3D ActualNeutralInclination;
+         * */
+
+        public HeadOrientation(SkeletonData bodyPartData)
         {
-            get;
-            set;
+            this.inclination = HeadOrientation.CalculateHeadInclination(bodyPartData);
+            this.calibratedInclination = this.inclination;
         }
 
-        public static Vector3D NeutralInclination
+        public HeadOrientation(Vector3D inclination)
         {
-            get;
-            private set;
+            this.inclination = inclination;
+            this.inclination.Normalize();
+            this.calibratedInclination = this.inclination;
         }
 
-        public void CalibrateNeutral(SkeletonData neutralOrientationData)
+        public static Vector3D CalculateHeadInclination(SkeletonData bodyPartData)
         {
-            Vector centerShoulderPosition = neutralOrientationData.Joints[JointID.ShoulderCenter].Position;
-            Vector headPosition = neutralOrientationData.Joints[JointID.Head].Position;
+            Vector centerShoulderPosition = bodyPartData.Joints[JointID.ShoulderCenter].Position;
+            Vector headPosition = bodyPartData.Joints[JointID.Head].Position;
 
-            HeadOrientation.NeutralInclination = new Vector3D(headPosition.X - centerShoulderPosition.X, headPosition.Y - centerShoulderPosition.Y, headPosition.Z - centerShoulderPosition.Z);
+            return new Vector3D(headPosition.X - centerShoulderPosition.X, headPosition.Y - centerShoulderPosition.Y,
+                headPosition.Z - centerShoulderPosition.Z);
         }
 
-        public static HeadOrientation GetNeutralOrientation()
+        public override void CalibrateOrientation(SkeletonData bodyPartData)
         {
-            HeadOrientation neutralOrientation = new HeadOrientation();
-            neutralOrientation.inclination = HeadOrientation.NeutralInclination;
+            this.calibratedInclination = HeadOrientation.CalculateHeadInclination(bodyPartData);
+            this.calibratedInclination.Normalize();
+        }
 
-            return neutralOrientation;
+        public override bool IsBodyPartInOrientation(SkeletonData bodyPartData)
+        {
+            Vector3D currentInclination = HeadOrientation.CalculateHeadInclination(bodyPartData);
+
+            if (Vector3D.AngleBetween(currentInclination, this.calibratedInclination) > SharedContent.AllowableDeviationInDegrees)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public override bool IsInBetweenOrientations(BodyPartOrientation initialOrientation, BodyPartOrientation finalOrientation)
+        {
+            HeadOrientation initialHeadOr = (HeadOrientation)initialOrientation;
+            HeadOrientation finalHeadOr = (HeadOrientation)finalOrientation;
+            //double xDelta, yDelta, zDelta;
+
+            //Vector3D normalizedInitialIncl = initialHeadOr.calibratedInclination;
+            //Vector3D normalizedFinalIncl = finalHeadOr.calibratedInclination.Normalize();
+
+            //xDelta = normalizedFinalIncl.X - normalizedInitialIncl.X;
+            //yDelta = normalizedFinalIncl.Y - normalizedInitialIncl.Y;
+            //zDelta = normalizedFinalIncl.Z - normalizedInitialIncl.Z;
+            return false;
         }
     }
 }
