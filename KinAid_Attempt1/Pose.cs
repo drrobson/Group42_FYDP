@@ -62,7 +62,7 @@ namespace KinAid_Attempt1
                         this.poseBodyPartOrientations.Add(bodyPartID, new LimbOrientation(bodyPartID, poseData));
                         break;
                 }
-                bodyPartsOfInterest.Add(bodyPartID);
+                this.bodyPartsOfInterest.Add(bodyPartID);
             }
         }
 

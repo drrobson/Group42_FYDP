@@ -64,7 +64,7 @@ namespace KinAid_Attempt1
             }
 
             secondsLeft--;
-            secondsLabel.Content = String.Format("{0}", secondsLeft);
+            secondsLabel.Content = String.Format("{0}", (secondsLeft % SharedContent.CalibrationSeconds) + 1);
             if (secondsLeft % SharedContent.CalibrationSeconds == 0)
             {
                 capturing = true;
@@ -80,13 +80,19 @@ namespace KinAid_Attempt1
         {
             SharedContent.Nui.SkeletonFrameReady -= nuiSkeletonFrameReady;
 
-            ex.getPosesToBeCalibrated()[currentPoseBeingCalibrated].CalibratePose(e.SkeletonFrame.Skeletons[0]);
+            foreach (SkeletonData sk in e.SkeletonFrame.Skeletons)
+            {
+                if (sk.TrackingState == SkeletonTrackingState.Tracked)
+                {
+                    ex.getPosesToBeCalibrated()[currentPoseBeingCalibrated].CalibratePose(sk);
+                }
+            }
             currentPoseBeingCalibrated++;
             drawPose();
 
             if (secondsLeft == 0)
             {
-                ScreenManager.SetScreen(new ExerciseSelector());
+                ScreenManager.SetScreen(new ExerciseView(ex));
             }
         }
 

@@ -9,10 +9,13 @@ namespace KinAid_Attempt1
 {
     public static class ExerciseFactory
     {
+        static Exercise shoulderAbduction = null;
+        static Exercise bicepCurl = null;
+
         public static Exercise[] GetExercises()
         {
-            Exercise shoulderAbduction = ExerciseFactory.CreateRightShoulderAbductionExercise();
-            Exercise bicepCurl = ExerciseFactory.CreateRightBicepCurlExercise();
+            shoulderAbduction = shoulderAbduction ?? ExerciseFactory.CreateRightShoulderAbductionExercise();
+            bicepCurl = bicepCurl ?? ExerciseFactory.CreateRightBicepCurlExercise();
 
             return new Exercise[] { shoulderAbduction, bicepCurl };
         }

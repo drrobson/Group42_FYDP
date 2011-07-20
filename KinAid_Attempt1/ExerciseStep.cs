@@ -29,7 +29,7 @@ namespace KinAid_Attempt1
 
         public ExerciseStepStatusInfo PerformStep(SkeletonData userData)
         {
-            string statusMessage = "Status message not set";
+            string statusMessage = "asdfStatus message not set";
             switch (this.stepStatus)
             {
                 case ExerciseStepStatus.NotInInitialPose:
