@@ -9,6 +9,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
@@ -25,6 +26,7 @@ namespace KinAid_Attempt1
         DispatcherTimer timer;
         int secondsLeft;
         bool capturing;
+        int currentPoseBeingCalibrated;
 
         Exercise ex;
 
@@ -49,7 +51,8 @@ namespace KinAid_Attempt1
             timer.Tick += timerSecondPassed;
             timer.Start();
 
-            /* SET FIRST POSE TO CONFORM TO (frontView & sideView) */
+            currentPoseBeingCalibrated = 0;
+            drawPose();
         }
 
         private void timerSecondPassed(object source, EventArgs e)
@@ -77,27 +80,19 @@ namespace KinAid_Attempt1
         {
             SharedContent.Nui.SkeletonFrameReady -= nuiSkeletonFrameReady;
 
-            /*
-            SkeletonFrame skeletonFrame = e.SkeletonFrame;
-            foreach (SkeletonData skeletonData in skeletonFrame.Skeletons)
-            {
-                if (skeletonData.TrackingState == SkeletonTrackingState.Tracked)
-                {
-                    ExerciseView.neutralPose.CalibratePose(skeletonData);
-                    ExerciseView.tPose.CalibratePose(skeletonData);
-                    break;
-                }
-            }
-             * */
+            ex.getPosesToBeCalibrated()[currentPoseBeingCalibrated].CalibratePose(e.SkeletonFrame.Skeletons[0]);
+            currentPoseBeingCalibrated++;
+            drawPose();
 
             if (secondsLeft == 0)
             {
                 ScreenManager.SetScreen(new ExerciseSelector());
             }
-            else
-            {
-                /* UPDATE POSE TO CONFORM TO (frontView & sideView) */
-            }
+        }
+
+        private void drawPose()
+        {
+            // need to figure out a simple way to draw this (maybe draw images for now?)
         }
     }
 }

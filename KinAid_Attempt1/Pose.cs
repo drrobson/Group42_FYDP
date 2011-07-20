@@ -9,7 +9,11 @@ namespace KinAid_Attempt1
 {
     public class Pose
     {
-        private Dictionary<SharedContent.BodyPartID, BodyPartOrientation> poseBodyPartOrientations = new Dictionary<SharedContent.BodyPartID, BodyPartOrientation>();
+        public Dictionary<SharedContent.BodyPartID, BodyPartOrientation> poseBodyPartOrientations
+        {
+            get;
+            private set;
+        }
 
         public List<SharedContent.BodyPartID> bodyPartsOfInterest = new List<SharedContent.BodyPartID>();
 
@@ -19,6 +23,8 @@ namespace KinAid_Attempt1
         /// <param name="poseBodyParts"></param>
         public Pose(Dictionary<SharedContent.BodyPartID, BodyPartOrientation> poseBodyParts)
         {
+            poseBodyPartOrientations = new Dictionary<SharedContent.BodyPartID, BodyPartOrientation>();
+
             if (poseBodyParts.Count == 0)
             {
                 throw new Exception("No body part orientations specified");
@@ -40,6 +46,8 @@ namespace KinAid_Attempt1
         /// <param name="bodyPartsOfInterest">List of body parts that are of interest -- all body parts not included in this list will not be examined/tracked by this pose instance</param>
         public Pose(SkeletonData poseData, List<SharedContent.BodyPartID> bodyPartsOfInterest)
         {
+            poseBodyPartOrientations = new Dictionary<SharedContent.BodyPartID, BodyPartOrientation>();
+
             foreach (SharedContent.BodyPartID bodyPartID in bodyPartsOfInterest)
             {
                 switch (bodyPartID)
