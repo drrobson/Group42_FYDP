@@ -12,8 +12,8 @@
             <Label Content="Calibrating, please conform to the pose..." HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" />
         </Grid>
         <StackPanel Orientation="Horizontal" Height="232">
-            <Image Name="frontView" Width="150"/>
-            <Image Name="sideView" Width="150"/>
+            <Canvas Width="150" Height="230" Name="frontView" Background="Black" ClipToBounds="True"/>
+            <Canvas Width="150" Height="230" Name="sideView" Background="Black" ClipToBounds="True"/>
         </StackPanel>
         <Grid Height="34">
             <Label Content="Front View" VerticalAlignment="Center" FontSize="14" Margin="35,3,-35,3" />

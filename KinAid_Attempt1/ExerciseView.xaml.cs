@@ -55,9 +55,11 @@ namespace KinAid_Attempt1
         const int BLUE_IDX = 0;
         byte[] depthFrame32 = new byte[320 * 240 * 4];*/
 
-        public ExerciseView()
+        public ExerciseView(Exercise ex)
         {
             InitializeComponent();
+
+            this.ex = ex;
 
 #if DEBUG
             lastTime = DateTime.Now;
@@ -180,7 +182,7 @@ namespace KinAid_Attempt1
         
         public void nuiSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
-            SkeletonFrame skeletonFrame = e.SkeletonFrame;
+            //SkeletonFrame skeletonFrame = e.SkeletonFrame;
             //int iSkeleton = 0;
             //Brush[] brushes = new Brush[6];
             //brushes[0] = new SolidColorBrush(Color.FromRgb(255, 0, 0));
@@ -190,19 +192,40 @@ namespace KinAid_Attempt1
             //brushes[4] = new SolidColorBrush(Color.FromRgb(255, 64, 255));
             //brushes[5] = new SolidColorBrush(Color.FromRgb(128, 128, 255));
 
-            //skeleton.Children.Clear();
-            foreach (SkeletonData data in skeletonFrame.Skeletons)
+            ExerciseStatusInfo statusInfo = new ExerciseStatusInfo();
+            foreach (SkeletonData sk in e.SkeletonFrame.Skeletons)
             {
-                if (SkeletonTrackingState.Tracked == data.TrackingState)
+                if (sk.TrackingState == SkeletonTrackingState.Tracked)
                 {
-                    if (SharedContent.NeutralPose.IsInPose(data))
-                    {
-                        Console.Write("In neutral pose!");
-                    }
-                    if (tPose.IsInPose(data))
-                    {
-                        Console.Write("In T pose!");
-                    }
+                    statusInfo = ex.PerformExercise(sk);
+                    break;
+                }
+            }
+
+            if (statusInfo.exerciseStatus == ExerciseStatus.Failed)
+            {
+                SharedContent.Nui.SkeletonFrameReady -= nuiSkeletonFrameReady;
+                Uri source = new Uri(@"/KinAid_Attempt1;CheckboxFail.bmp", UriKind.Relative);
+                statusImage.Source = new BitmapImage(source);
+                statusText.Content = statusInfo.statusMessage;
+            }
+            else if (statusInfo.exerciseStatus == ExerciseStatus.Complete)
+            {
+                SharedContent.Nui.SkeletonFrameReady -= nuiSkeletonFrameReady;
+                Uri source = new Uri(@"/KinAid_Attempt1;CheckboxPass.bmp", UriKind.Relative);
+                statusImage.Source = new BitmapImage(source);
+                statusText.Content = statusInfo.statusMessage;
+            }
+            else if (statusInfo.exerciseStatus == ExerciseStatus.InProgress)
+            {
+                statusText.Content = statusInfo.statusMessage;
+            }
+            Console.WriteLine("Status message = {0}", statusInfo.statusMessage);
+            //skeleton.Children.Clear();
+            //foreach (SkeletonData data in skeletonFrame.Skeletons)
+            //{
+                //if (SkeletonTrackingState.Tracked == data.TrackingState)
+                //{
                     //// Draw bones
                     //Brush brush = brushes[iSkeleton % brushes.Length];
                     //skeleton.Children.Add(getBodySegment(data.Joints, brush, JointID.HipCenter, JointID.Spine, JointID.ShoulderCenter, JointID.Head));
@@ -229,9 +252,9 @@ namespace KinAid_Attempt1
                     //    ex1.updateExercise(data);
                     //    exerciseCorrect.Text = ex1.printState();
                     //}
-                }
+                //}
                 //iSkeleton++;
-            } // for each skeleton
+            //} // for each skeleton
         }
 
         public void nuiColorFrameReady(object sender, ImageFrameReadyEventArgs e)

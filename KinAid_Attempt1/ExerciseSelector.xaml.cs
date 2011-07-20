@@ -32,7 +32,7 @@ namespace KinAid_Attempt1
                 Button button = new Button();
                 button.Content = String.Format("Exercise {0}", i);
                 button.Height = 150;
-                button.Width = 280;
+                button.Width = 300;
                 button.Click += selectedExercise;
                 button.Tag = i;
                 buttonPanel.Children.Add(button);
@@ -55,13 +55,13 @@ namespace KinAid_Attempt1
                 MessageBox.Show("Do you wish to calibrate the exercise?", "KinAid", MessageBoxButton.YesNo);
             bool? dialogResult = (doCalibration == MessageBoxResult.Yes ? true : false);
 #elif AUDIOUI
-            AudioMessageBox amb = new AudioMessageBox("");
+            AudioMessageBox amb = new AudioMessageBox("Do you wish to calibrate the exercise?");
             amb.Owner = (Window) ScreenManager.GetHost();
             bool? dialogResult = amb.ShowDialog();
 #endif
             if (dialogResult.HasValue && dialogResult == true)
             {
-                ScreenManager.SetScreen(new CalibratingView(null));
+                ScreenManager.SetScreen(new CalibratingView(ExerciseFactory.GetExercises()[(int)button.Tag]));
             }
             else if (dialogResult.HasValue && dialogResult == false)
             {
