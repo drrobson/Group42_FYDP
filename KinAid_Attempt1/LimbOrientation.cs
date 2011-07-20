@@ -181,40 +181,44 @@ namespace KinAid_Attempt1
             }
             limbComponentPerformanceInfo[(int)LimbComponentID.BendInLimb] = bendInLimbInfo;
 
-            int maxChangeIndex = 0, minChangeIndex = 0, percentSum = 0, numPercents = 0;            
+            if (bendInLimbInfo.negligableAction && upperLimbInclinationInfo.negligableAction && lowerLimbInclinationInfo.negligableAction)
+            {
+                return new UserPerformanceAnalysisInfo(true);
+            }
+
+            int maxPercent = int.MinValue, minPercent = int.MaxValue, maxPercentIndex = 0, minPercentIndex = 0, percentSum = 0, numPercents = 0;            
             foreach (LimbComponentID limbComponentID in Enum.GetValues(typeof(LimbComponentID)))
             {
                 if (!limbComponentPerformanceInfo[(int)limbComponentID].negligableAction)
                 {
                     percentSum += limbComponentPerformanceInfo[(int)limbComponentID].percentComplete;
                     numPercents++;
-                    if (limbComponentPerformanceInfo[(int)limbComponentID].percentComplete > limbComponentPerformanceInfo[maxChangeIndex].percentComplete)
+                    if (limbComponentPerformanceInfo[(int)limbComponentID].percentComplete > maxPercent)
                     {
-                        maxChangeIndex = (int)limbComponentID;
+                        maxPercentIndex = (int)limbComponentID;
+                        maxPercent = limbComponentPerformanceInfo[(int)limbComponentID].percentComplete;
                     }
-                    if (limbComponentPerformanceInfo[(int)limbComponentID].percentComplete < limbComponentPerformanceInfo[minChangeIndex].percentComplete)
+                    if (limbComponentPerformanceInfo[(int)limbComponentID].percentComplete < minPercent)
                     {
-                        minChangeIndex = (int)limbComponentID;
+                        minPercentIndex = (int)limbComponentID;
+                        minPercent = limbComponentPerformanceInfo[(int)limbComponentID].percentComplete;
                     }
                 }
             }
 
-            if (numPercents == 0)
+            if ((limbComponentPerformanceInfo[maxPercentIndex].percentComplete - limbComponentPerformanceInfo[minPercentIndex].percentComplete) > SharedContent.AllowableDeviationInPercent)
             {
-                return new UserPerformanceAnalysisInfo(true);
+                Console.WriteLine("Vector3D.AngleBetween(initialLimbOrientation.upperLimbInclination, finalLimbOrientation.upperLimbInclination) = {0}",
+                    Vector3D.AngleBetween(initialLimbOrientation.upperLimbInclination, finalLimbOrientation.upperLimbInclination));
+                Console.WriteLine("maxChange is for the {0} with {1} percent. minChange is for the {2} with {3} percent", Enum.GetName(typeof(LimbComponentID), (LimbComponentID)maxPercentIndex),
+                    limbComponentPerformanceInfo[maxPercentIndex].percentComplete, Enum.GetName(typeof(LimbComponentID), (LimbComponentID)minPercentIndex), limbComponentPerformanceInfo[minPercentIndex].percentComplete);
+                return new UserPerformanceAnalysisInfo(true, String.Format("The difference in the percentage completion of the movement for the {0} and {1} of the {2} exceeded the maximum allowable deviation of {3}",
+                    Enum.GetName(typeof(LimbComponentID), (LimbComponentID)maxPercentIndex), Enum.GetName(typeof(LimbComponentID), (LimbComponentID)minPercentIndex),
+                    Enum.GetName(typeof(SharedContent.BodyPartID), this.limbID), SharedContent.AllowableDeviationInPercent));
             }
             else
             {
-                if ((limbComponentPerformanceInfo[maxChangeIndex].percentComplete - limbComponentPerformanceInfo[minChangeIndex].percentComplete) > SharedContent.AllowableDeviationInPercent)
-                {
-                    return new UserPerformanceAnalysisInfo(true, String.Format("The difference in the percentage completion of the movement for the {0} and {1} of the {2} exceeded the maximum allowable deviation of {3}",
-                        Enum.GetName(typeof(LimbComponentID), (LimbComponentID)maxChangeIndex), Enum.GetName(typeof(LimbComponentID), (LimbComponentID)minChangeIndex),
-                        Enum.GetName(typeof(SharedContent.BodyPartID), this.limbID), SharedContent.AllowableDeviationInPercent));
-                }
-                else
-                {
-                    return new UserPerformanceAnalysisInfo(percentSum / numPercents);
-                }
+                return new UserPerformanceAnalysisInfo(percentSum / numPercents);
             }
         }
 

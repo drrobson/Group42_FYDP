@@ -88,6 +88,10 @@ namespace KinAid_Attempt1
         {
             this.currentStepIndex = 0;
             this.exerciseStatus = ExerciseStatus.NotStarted;
+            foreach (ExerciseStep step in exerciseSteps)
+            {
+                //step.reset();
+            }
         }
     }
 
