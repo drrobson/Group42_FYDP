@@ -57,7 +57,22 @@ namespace KinAid_Attempt1
             HeadOrientation initialHeadOrientation = (HeadOrientation)initialOrientation;
             HeadOrientation finalHeadOrientation = (HeadOrientation)finalOrientation;
 
-            return BodyPartOrientation.IsVectorOnPathInPlane(this.calibratedInclination, initialHeadOrientation.calibratedInclination, finalHeadOrientation.calibratedInclination);
+            UserPerformanceAnalysisInfo headInclinationInfo = BodyPartOrientation.IsVectorOnPathInPlane(this.calibratedInclination, initialHeadOrientation.calibratedInclination, finalHeadOrientation.calibratedInclination);
+
+            if (headInclinationInfo.failed)
+            {
+                Console.WriteLine("Failed when checking head inclination");
+                return headInclinationInfo;
+            }
+            else if (Vector3D.AngleBetween(initialHeadOrientation.inclination, finalHeadOrientation.inclination) <= SharedContent.AllowableDeviationInDegrees)
+            {
+                //The actual exercise has a negligable change in the head inclination
+                return new UserPerformanceAnalysisInfo(true);
+            }
+            else
+            {
+                return headInclinationInfo;
+            }
         }
     }
 }

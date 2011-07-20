@@ -29,10 +29,10 @@ namespace KinAid_Attempt1
         {
             UserPerformanceAnalysisInfo result;
             double totalDisplacementToTravel = Vector3D.AngleBetween(firstPlaneVector, secondPlaneVector);
-            if (totalDisplacementToTravel <= SharedContent.AllowableDeviationInDegrees)
-            {
-                result = new UserPerformanceAnalysisInfo(true);
-            }
+            //if (totalDisplacementToTravel <= SharedContent.AllowableDeviationInDegrees)
+            //{
+            //    result = new UserPerformanceAnalysisInfo(true);
+            //}
 
             Vector3D normalToPlane = Vector3D.CrossProduct(firstPlaneVector, secondPlaneVector);
             normalToPlane.Normalize();
@@ -61,10 +61,5 @@ namespace KinAid_Attempt1
 
             return new UserPerformanceAnalysisInfo((int)(100 * (currentDisplacementTraveled / totalDisplacementToTravel)));
         }
-    }
-
-    public enum BodyPartOrientationAnalysisInfo
-    {
-
     }
 }

@@ -116,7 +116,7 @@ namespace KinAid_Attempt1
                         minChange = result.percentComplete;
                         minChangeID = bodyPartID;
                     }
-                    else if (result.percentComplete > maxChange)
+                    if (result.percentComplete > maxChange)
                     {
                         maxChange = result.percentComplete;
                         maxChangeID = bodyPartID;

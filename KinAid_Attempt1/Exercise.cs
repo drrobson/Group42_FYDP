@@ -35,7 +35,7 @@ namespace KinAid_Attempt1
 
         public ExerciseStatusInfo PerformExercise(SkeletonData userData)
         {
-            string statusMessage = "Status message not setasdf";
+            string statusMessage = "Status message not set in Exercise";
             ExerciseStepStatusInfo exerciseStepInfo = this.exerciseSteps[currentStepIndex].PerformStep(userData);
 
             switch (this.exerciseStatus)
@@ -73,6 +73,10 @@ namespace KinAid_Attempt1
                             this.exerciseStatus = ExerciseStatus.Complete;
                             statusMessage = "Exercise complete!";
                         }
+                    }
+                    else
+                    {
+                        statusMessage = exerciseStepInfo.statusMessage;
                     }
                     break;
             }
