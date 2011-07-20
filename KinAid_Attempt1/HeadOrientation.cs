@@ -13,11 +13,6 @@ namespace KinAid_Attempt1
         public Vector3D inclination;
         public Vector3D calibratedInclination;
 
-        /*
-        public static Vector3D IdealNeutralInclination = new Vector3D(0, 1, 0);
-        public static Vector3D ActualNeutralInclination;
-         * */
-
         public HeadOrientation(SkeletonData bodyPartData)
         {
             this.inclination = HeadOrientation.CalculateHeadInclination(bodyPartData);

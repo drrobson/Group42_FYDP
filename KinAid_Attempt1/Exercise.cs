@@ -16,7 +16,7 @@ namespace KinAid_Attempt1
 
         ExerciseStatus exerciseStatus;
         int currentStepIndex = 0;
-        string name, description;
+        public string name, description;
 
         public Exercise(string name, string description, Pose[] exercisePoses, ExerciseStep[] exerciseSteps)
         {
