@@ -27,19 +27,52 @@ namespace KinAid_Attempt1
             }
         }
 
-        public ExerciseFeedback()
+        Exercise ex;
+
+        public ExerciseFeedback(Exercise ex)
         {
             InitializeComponent();
+
+            this.ex = ex;
+            ExerciseStep[] steps = ex.exerciseSteps;
+            foreach (ExerciseStep step in steps)
+            {
+                Uri source;
+                switch (step.stepStatus)
+                {
+                    case ExerciseStepStatus.Complete:
+                        source = new Uri(@"/KinAid_Attempt1;CheckboxPass.bmp", UriKind.Relative);
+                        break;
+                    case ExerciseStepStatus.Failed:
+                        source = new Uri(@"/KinAid_Attempt1;CheckboxFail.bmp", UriKind.Relative);
+                        break;
+                    default:
+                        source = new Uri(@"/KinAid_Attempt1;Checkbox.bmp", UriKind.Relative);
+                        break;
+                }
+                Image statusImage = new Image();
+                statusImage.Source = new BitmapImage(source);
+                Label statusLabel = new Label();
+                statusLabel.Width = 300;
+                statusLabel.Content = step.stepName;
+                stepPanel.Children.Add(statusImage);
+                stepPanel.Children.Add(statusLabel);
+            }
         }
 
         private void selectedRetry(object sender, RoutedEventArgs e)
         {
-            ScreenManager.SetScreen(new ExercisePreview());
+            ex.Reset();
+            ScreenManager.SetScreen(new ExerciseView(ex));
         }
 
         private void selectedBack(object sender, RoutedEventArgs e)
         {
             ScreenManager.SetScreen(new ExerciseSelector());
         }
+
+        // recalibrate action
+
+        // see informationn action
     }
 }

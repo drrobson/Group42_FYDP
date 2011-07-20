@@ -13,16 +13,21 @@ namespace KinAid_Attempt1
         public TimeSpan expectedDuration;
         public ExerciseStepType stepType;
         public ExerciseStepStatus stepStatus;
-        
+        public string stepName
+        {
+            get;
+            private set;
+        }
 
         private DateTime startTime;
 
-        public ExerciseStep(Pose initialPose, Pose finalPose, TimeSpan expectedDuration, ExerciseStepType stepType)
+        public ExerciseStep(Pose initialPose, Pose finalPose, TimeSpan expectedDuration, ExerciseStepType stepType, string stepName)
         {
             this.initialPose = initialPose;
             this.finalPose = finalPose;
             this.expectedDuration = expectedDuration;
             this.stepType = stepType;
+            this.stepName = stepName;
 
             stepStatus = ExerciseStepStatus.NotInInitialPose;
         }
