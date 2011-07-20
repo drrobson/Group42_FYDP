@@ -39,14 +39,6 @@ namespace KinAid_Attempt1
             }
         }
 
-        public static Pose tPose = new Pose(new Dictionary<SharedContent.BodyPartID, BodyPartOrientation>()
-            {
-                {SharedContent.BodyPartID.RightArm, new LimbOrientation(SharedContent.BodyPartID.RightArm, new Vector3D(1,0,0), new Vector3D(1,0,0))},
-                {SharedContent.BodyPartID.LeftArm, new LimbOrientation(SharedContent.BodyPartID.LeftArm, new Vector3D(-1,0,0), new Vector3D(-1,0,0))},
-                {SharedContent.BodyPartID.RightLeg, new LimbOrientation(SharedContent.BodyPartID.RightLeg, new Vector3D(0,-1,0), new Vector3D(0,-1,0))},
-                {SharedContent.BodyPartID.LeftLeg, new LimbOrientation(SharedContent.BodyPartID.LeftLeg, new Vector3D(0,-1,0), new Vector3D(0,-1,0))}
-            });
-
         // We want to control how depth data gets converted into false-color data
         // for more intuitive visualization, so we keep 32-bit color frame buffer versions of
         // these, to be updated whenever we receive and process a 16-bit frame.
@@ -70,7 +62,9 @@ namespace KinAid_Attempt1
             bottomPanel.Children.Insert(0, fpsLabel);
 #endif
 
+#if AUDIOUI
             //SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Stop, );
+#endif
 
             //SharedContent.Nui.DepthFrameReady += new EventHandler<ImageFrameReadyEventArgs>(nuiDepthFrameReady);
             SharedContent.Nui.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(nuiSkeletonFrameReady);
@@ -182,16 +176,6 @@ namespace KinAid_Attempt1
         
         public void nuiSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
-            //SkeletonFrame skeletonFrame = e.SkeletonFrame;
-            //int iSkeleton = 0;
-            //Brush[] brushes = new Brush[6];
-            //brushes[0] = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-            //brushes[1] = new SolidColorBrush(Color.FromRgb(0, 255, 0));
-            //brushes[2] = new SolidColorBrush(Color.FromRgb(64, 255, 255));
-            //brushes[3] = new SolidColorBrush(Color.FromRgb(255, 255, 64));
-            //brushes[4] = new SolidColorBrush(Color.FromRgb(255, 64, 255));
-            //brushes[5] = new SolidColorBrush(Color.FromRgb(128, 128, 255));
-
             ExerciseStatusInfo statusInfo = new ExerciseStatusInfo();
             foreach (SkeletonData sk in e.SkeletonFrame.Skeletons)
             {
@@ -208,6 +192,8 @@ namespace KinAid_Attempt1
                 Uri source = new Uri(@"/KinAid_Attempt1;CheckboxFail.bmp", UriKind.Relative);
                 statusImage.Source = new BitmapImage(source);
                 statusText.Content = statusInfo.statusMessage;
+
+                ScreenManager.SetScreen(new ExerciseFeedback(ex));
             }
             else if (statusInfo.exerciseStatus == ExerciseStatus.Complete)
             {
@@ -215,12 +201,26 @@ namespace KinAid_Attempt1
                 Uri source = new Uri(@"/KinAid_Attempt1;CheckboxPass.bmp", UriKind.Relative);
                 statusImage.Source = new BitmapImage(source);
                 statusText.Content = statusInfo.statusMessage;
+
+                ScreenManager.SetScreen(new ExerciseFeedback(ex));
             }
             else if (statusInfo.exerciseStatus == ExerciseStatus.InProgress)
             {
                 statusText.Content = statusInfo.statusMessage;
             }
+
             Console.WriteLine("Status message = {0}", statusInfo.statusMessage);
+
+            //SkeletonFrame skeletonFrame = e.SkeletonFrame;
+            //int iSkeleton = 0;
+            //Brush[] brushes = new Brush[6];
+            //brushes[0] = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+            //brushes[1] = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+            //brushes[2] = new SolidColorBrush(Color.FromRgb(64, 255, 255));
+            //brushes[3] = new SolidColorBrush(Color.FromRgb(255, 255, 64));
+            //brushes[4] = new SolidColorBrush(Color.FromRgb(255, 64, 255));
+            //brushes[5] = new SolidColorBrush(Color.FromRgb(128, 128, 255));
+
             //skeleton.Children.Clear();
             //foreach (SkeletonData data in skeletonFrame.Skeletons)
             //{

@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinAid_Attempt1", "KinAid_Attempt1.csproj", "{C32BAA3A-26D3-4626-B2A1-77155F4CAA9D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyProject", "DummyProject\DummyProject.csproj", "{E533D5D6-B733-4144-B130-993C119E8511}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,6 +15,10 @@ Global
 		{C32BAA3A-26D3-4626-B2A1-77155F4CAA9D}.Debug|x86.Build.0 = Debug|x86
 		{C32BAA3A-26D3-4626-B2A1-77155F4CAA9D}.Release|x86.ActiveCfg = Release|x86
 		{C32BAA3A-26D3-4626-B2A1-77155F4CAA9D}.Release|x86.Build.0 = Release|x86
+		{E533D5D6-B733-4144-B130-993C119E8511}.Debug|x86.ActiveCfg = Debug|x86
+		{E533D5D6-B733-4144-B130-993C119E8511}.Debug|x86.Build.0 = Debug|x86
+		{E533D5D6-B733-4144-B130-993C119E8511}.Release|x86.ActiveCfg = Release|x86
+		{E533D5D6-B733-4144-B130-993C119E8511}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
