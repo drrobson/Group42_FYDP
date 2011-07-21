@@ -84,7 +84,7 @@ namespace KinAid_Attempt1
         /// Back-end shared content
         /// </summary>
 
-        public static double AllowableDeviationInDegrees = 5;
+        public static double AllowableDeviationInDegrees = 7;
         public static double AllowableDeviationInPercent = 15;
 
         public static Pose NeutralPose = new Pose(new Dictionary<BodyPartID, BodyPartOrientation>()
