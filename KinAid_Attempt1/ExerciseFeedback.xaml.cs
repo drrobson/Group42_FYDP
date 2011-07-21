@@ -41,22 +41,18 @@ namespace KinAid_Attempt1
                 switch (step.stepStatus)
                 {
                     case ExerciseStepStatus.Complete:
-                        source = new Uri(@"/KinAid_Attempt1;CheckboxPass.bmp", UriKind.Relative);
+                        source = new Uri("Images/CheckboxPass.bmp", UriKind.Relative);
                         break;
                     case ExerciseStepStatus.Failed:
-                        source = new Uri(@"/KinAid_Attempt1;CheckboxFail.bmp", UriKind.Relative);
+                        source = new Uri("Images/CheckboxFail.bmp", UriKind.Relative);                        
                         break;
                     default:
-                        source = new Uri(@"/KinAid_Attempt1;Checkbox.bmp", UriKind.Relative);
+                        source = new Uri("Images/Checkbox.bmp", UriKind.Relative); 
                         break;
                 }
-                Image statusImage = new Image();
-                statusImage.Source = new BitmapImage(source);
-                Label statusLabel = new Label();
-                statusLabel.Width = 300;
-                statusLabel.Content = step.stepName;
-                stepPanel.Children.Add(statusImage);
-                stepPanel.Children.Add(statusLabel);
+                LabelAndImage lai = new LabelAndImage(new BitmapImage(source), step.stepName);
+                lai.Width = 300;
+                stepPanel.Children.Add(lai);
             }
         }
 

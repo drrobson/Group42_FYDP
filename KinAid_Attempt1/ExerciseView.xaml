@@ -3,22 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:my="clr-namespace:KinAid_Attempt1"
              xmlns:audioui="AudioUI"
              mc:Ignorable="d" 
-             d:DesignHeight="310" d:DesignWidth="420">
+             d:DesignHeight="450" d:DesignWidth="450">
     <StackPanel>
-        <Image Name="video" Height="280"/>
-        <Grid Height="30">
+        <Image Name="video" Height="390"/>
+        <Grid Height="60">
             <StackPanel Name="bottomPanel" Orientation="Horizontal" HorizontalAlignment="Left">
-                <Image Source="Checkbox.bmp" Name="statusImage" Stretch="None" />
-                <Label Content="Random Instruction" Name="statusText" />
+                <Image Source="Images/Checkbox.bmp" Name="statusImage" Stretch="None" VerticalAlignment="Center" />
+                <TextBlock Text="Random Instruction" Name="statusText" MaxWidth="400" />
             </StackPanel>
             <mc:AlternateContent>
                 <mc:Choice Requires="audioui">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Image Source="Voice.bmp" />
-                        <Label Content="Stop" FontSize="14" BorderThickness="1" BorderBrush="Black" />
-                    </StackPanel>
+                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Stop" ControlHorizontalAlignment="Right" />
                 </mc:Choice>
             </mc:AlternateContent>
         </Grid>

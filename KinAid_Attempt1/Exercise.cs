@@ -15,17 +15,28 @@ namespace KinAid_Attempt1
         public ExerciseStep[] exerciseSteps;
 
         ExerciseStatus exerciseStatus;
-        int currentStepIndex = 0;
+        public int currentStepIndex
+        {
+            get;
+            private set;
+        }
         string name, description;
+        public string statusMessage
+        {
+            get;
+            private set;
+        }
 
         public Exercise(string name, string description, Pose[] exercisePoses, ExerciseStep[] exerciseSteps)
         {
+            this.currentStepIndex = 0;
             this.name = name;
             this.description = description;
             this.exercisePoses = exercisePoses;
             this.exerciseSteps = exerciseSteps;
 
             this.exerciseStatus = ExerciseStatus.NotStarted;
+            this.statusMessage = "Waiting for user to assume the starting pose of the first exercise step";
         }
 
         public Pose[] getPosesToBeCalibrated()
@@ -35,7 +46,7 @@ namespace KinAid_Attempt1
 
         public ExerciseStatusInfo PerformExercise(SkeletonData userData)
         {
-            string statusMessage = "Status message not setasdf";
+            statusMessage = "Status message not setasdf";
             ExerciseStepStatusInfo exerciseStepInfo = this.exerciseSteps[currentStepIndex].PerformStep(userData);
 
             switch (this.exerciseStatus)

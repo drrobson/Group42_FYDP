@@ -45,5 +45,18 @@ namespace KinAid_Attempt1
             DialogResult = false;
             this.Close();
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            if (!DialogResult.HasValue)
+            {
+                DialogResult = false;
+            }
+
+            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Yes);
+            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.No);
+        }
     }
 }

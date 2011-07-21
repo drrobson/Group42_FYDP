@@ -53,6 +53,8 @@ namespace KinAid_Attempt1
 
             this.ex = ex;
 
+            statusText.Text = ex.statusMessage;
+
 #if DEBUG
             lastTime = DateTime.Now;
 
@@ -189,24 +191,26 @@ namespace KinAid_Attempt1
             if (statusInfo.exerciseStatus == ExerciseStatus.Failed)
             {
                 SharedContent.Nui.SkeletonFrameReady -= nuiSkeletonFrameReady;
-                Uri source = new Uri(@"/KinAid_Attempt1;CheckboxFail.bmp", UriKind.Relative);
+                Uri source = new Uri("Images/CheckboxFail.bmp", UriKind.Relative);
                 statusImage.Source = new BitmapImage(source);
-                statusText.Content = statusInfo.statusMessage;
+                statusText.Text = ex.exerciseSteps[ex.currentStepIndex].stepName;
 
                 ScreenManager.SetScreen(new ExerciseFeedback(ex));
             }
             else if (statusInfo.exerciseStatus == ExerciseStatus.Complete)
             {
                 SharedContent.Nui.SkeletonFrameReady -= nuiSkeletonFrameReady;
-                Uri source = new Uri(@"/KinAid_Attempt1;CheckboxPass.bmp", UriKind.Relative);
+                Uri source = new Uri("Images/CheckboxPass.bmp", UriKind.Relative);
                 statusImage.Source = new BitmapImage(source);
-                statusText.Content = statusInfo.statusMessage;
+                statusText.Text = ex.exerciseSteps[ex.currentStepIndex].stepName;
 
                 ScreenManager.SetScreen(new ExerciseFeedback(ex));
             }
             else if (statusInfo.exerciseStatus == ExerciseStatus.InProgress)
             {
-                statusText.Content = statusInfo.statusMessage;
+                Uri source = new Uri("Images/Checkbox.bmp", UriKind.Relative);
+                statusImage.Source = new BitmapImage(source);
+                statusText.Text = ex.exerciseSteps[ex.currentStepIndex].stepName;
             }
 
             Console.WriteLine("Status message = {0}", statusInfo.statusMessage);

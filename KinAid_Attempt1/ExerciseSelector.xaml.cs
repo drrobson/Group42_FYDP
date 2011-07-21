@@ -65,7 +65,7 @@ namespace KinAid_Attempt1
             }
             else if (dialogResult.HasValue && dialogResult == false)
             {
-                ScreenManager.SetScreen(new ExercisePreview());
+                ScreenManager.SetScreen(new ExercisePreview(ExerciseFactory.GetExercises()[(int)button.Tag]));
             }
         }
 

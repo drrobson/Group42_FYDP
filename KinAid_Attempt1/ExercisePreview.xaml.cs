@@ -27,9 +27,13 @@ namespace KinAid_Attempt1
             }
         }
 
-        public ExercisePreview()
+        Exercise ex;
+
+        public ExercisePreview(Exercise ex)
         {
             InitializeComponent();
+
+            this.ex = ex;
 
             SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Play, selectedPlay);
             SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Pause, selectedPause);
@@ -84,7 +88,7 @@ namespace KinAid_Attempt1
 
         private void selectedContinue()
         {
-            ScreenManager.SetScreen(new ExerciseView(null));
+            ScreenManager.SetScreen(new ExerciseView(ex));
             SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Play);
             SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Pause);
             SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Stop);

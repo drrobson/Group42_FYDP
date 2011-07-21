@@ -37,7 +37,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;BUTTONUI</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;AUDIOUI</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -82,6 +82,9 @@
     <Compile Include="ExerciseStep.cs" />
     <Compile Include="ExerciseFeedback.xaml.cs">
       <DependentUpon>ExerciseFeedback.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LabelAndImage.xaml.cs">
+      <DependentUpon>LabelAndImage.xaml</DependentUpon>
     </Compile>
     <Compile Include="LimbOrientation-old.cs" />
     <Compile Include="LimbOrientation.cs" />
@@ -129,6 +132,10 @@
     <Page Include="ExerciseSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LabelAndImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -180,17 +187,6 @@
     <Resource Include="Kinaid.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Checkbox.bmp" />
-    <Resource Include="CheckboxFail.bmp" />
-    <Resource Include="CheckboxPass.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Voice.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Calibrating.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
@@ -217,6 +213,17 @@
       <Project>{E533D5D6-B733-4144-B130-993C119E8511}</Project>
       <Name>DummyProject</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Sounds\Camera.wav" />
+    <Content Include="Sounds\Countdown.wav" />
+    <Content Include="Sounds\ExerciseFail.wav" />
+    <Content Include="Sounds\ExercisePass.wav" />
+    <Resource Include="Images\Calibrating.bmp" />
+    <Resource Include="Images\Checkbox.bmp" />
+    <Resource Include="Images\CheckboxFail.bmp" />
+    <Resource Include="Images\CheckboxPass.bmp" />
+    <Resource Include="Images\Voice.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:my="clr-namespace:KinAid_Attempt1"
              xmlns:audioui="AudioUI"
              xmlns:buttonui="ButtonUI"
              mc:Ignorable="d" 
@@ -14,23 +15,17 @@
         <ScrollViewer Height="240" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300">
             <WrapPanel Orientation="Horizontal" Name="stepPanel" />
         </ScrollViewer>
-        <Grid>
+        <!--Grid>
             <mc:AlternateContent>
-                <mc:Choice Requires="audioui">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Image Source="Voice.bmp" />
-                        <Label Content="Retry" BorderBrush="Black" BorderThickness="1" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Image Source="Voice.bmp" />
-                        <Label Content="Back"  BorderBrush="Black" BorderThickness="1" />
-                    </StackPanel>
+                <mc:Choice Requires="audioui">]
+                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Retry" />
+                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Back" />
                 </mc:Choice>
                 <mc:Choice Requires="buttonui">
                     <Button Content="Retry" Click="selectedRetry" HorizontalAlignment="Left" />
                     <Button Content="Back to List" Click="selectedBack" HorizontalAlignment="Right" />
                 </mc:Choice>
             </mc:AlternateContent>
-        </Grid>
+        </Grid-->
     </StackPanel>
 </UserControl>

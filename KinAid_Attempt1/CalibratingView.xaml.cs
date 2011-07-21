@@ -26,6 +26,7 @@ namespace KinAid_Attempt1
         DispatcherTimer timer;
         int secondsLeft;
         bool capturing;
+        bool hasCaptured;
         int currentPoseBeingCalibrated;
 
         Exercise ex;
@@ -46,6 +47,8 @@ namespace KinAid_Attempt1
 
             secondsLeft = SharedContent.CalibrationSeconds * ex.getPosesToBeCalibrated().Count();
             capturing = false;
+            hasCaptured = false;
+
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 1);
             timer.Tick += timerSecondPassed;
@@ -59,12 +62,16 @@ namespace KinAid_Attempt1
         {
             if (capturing) // wait one second for the capture to take effect
             {
-                capturing = false;
+                if (hasCaptured)
+                {
+                    hasCaptured = false;
+                    capturing = false;
+                }
                 return;
             }
 
             secondsLeft--;
-            secondsLabel.Content = String.Format("{0}", (secondsLeft % SharedContent.CalibrationSeconds) + 1);
+            secondsLabel.Content = String.Format("{0}", secondsLeft % SharedContent.CalibrationSeconds);
             if (secondsLeft % SharedContent.CalibrationSeconds == 0)
             {
                 capturing = true;
@@ -89,6 +96,9 @@ namespace KinAid_Attempt1
             }
             currentPoseBeingCalibrated++;
             drawPose();
+
+            secondsLabel.Content = String.Format("{0}", SharedContent.CalibrationSeconds);
+            hasCaptured = true;
 
             if (secondsLeft == 0)
             {

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:my="clr-namespace:KinAid_Attempt1"
              xmlns:buttonui="ButtonUI"
              xmlns:audioui="AudioUI"
              mc:Ignorable="d" 
@@ -18,10 +19,7 @@
                     <Button Content="Add Exercise" Click="selectedAddExercise" HorizontalAlignment="Stretch" />
                 </mc:Choice>
                 <mc:Choice Requires="audioui">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Image Source="Voice.bmp" Stretch="None" />
-                        <Label Content="Add Exercise" BorderThickness="1" BorderBrush="Black" />
-                    </StackPanel>
+                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Add Exercise" ControlHorizontalAlignment="Center" />
                 </mc:Choice>
             </mc:AlternateContent>
         </Grid>

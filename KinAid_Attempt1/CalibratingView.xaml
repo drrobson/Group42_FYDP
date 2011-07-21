@@ -7,7 +7,7 @@
       d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
         <Grid Height="34">
-            <Image Source="Calibrating.bmp" HorizontalAlignment="Left" Width="37" Height="34" />
+            <Image Source="Images/Calibrating.bmp" HorizontalAlignment="Left" Width="37" Height="34" />
             <Label Content="5" Name="secondsLabel" FontWeight="Bold" FontSize="16" FontFamily="Arial" Margin="9,3,-9,-3" />
             <Label Content="Calibrating, please conform to the pose..." HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" />
         </Grid>

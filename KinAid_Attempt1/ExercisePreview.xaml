@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:my="clr-namespace:KinAid_Attempt1"
       xmlns:audioui="AudioUI"
       xmlns:buttonui="ButtonUI"
       mc:Ignorable="d" 
@@ -11,21 +12,18 @@
         <!-- To interactively stop, pause, and play the media, the LoadedBehavior 
            property of the MediaElement must be set to "Manual". -->
         <MediaElement Source="C:\Users\Public\Videos\Sample Videos\Wildlife.wmv" Name="exercisePreview" 
-            Height="270" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" 
+            Height="270" Width="450" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" 
             MediaOpened="Element_MediaOpened" MediaEnded="Element_MediaEnded"/>
-        <Grid Height="30">
+        <Grid Height="30" Width="450">
             <mc:AlternateContent>
                 <mc:Choice Requires="audioui">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Image Source="Voice.bmp" />
+                        <Image Source="Images/Voice.bmp" />
                         <Label Content="Play" BorderBrush="Black" BorderThickness="1" />
                         <Label Content="Pause" BorderBrush="Black" BorderThickness="1" />
                         <Label Content="Stop" BorderBrush="Black" BorderThickness="1" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Image Source="Voice.bmp" />
-                        <Label Content="Continue" BorderBrush="Black" BorderThickness="1" />
-                    </StackPanel>
+                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Continue" ControlHorizontalAlignment="Right" />
                 </mc:Choice>
                 <mc:Choice Requires="buttonui">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
