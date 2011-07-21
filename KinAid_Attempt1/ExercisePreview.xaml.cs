@@ -35,10 +35,12 @@ namespace KinAid_Attempt1
 
             this.ex = ex;
 
+#if AUDIOUI
             SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Play, selectedPlay);
             SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Pause, selectedPause);
             SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Stop, selectedStop);
             SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Continue, selectedContinue);
+#endif
         }
 
         private void Element_MediaOpened(object source, EventArgs e)
@@ -89,10 +91,12 @@ namespace KinAid_Attempt1
         private void selectedContinue()
         {
             ScreenManager.SetScreen(new ExerciseView(ex));
+#if AUDIOUI
             SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Play);
             SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Pause);
             SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Stop);
             SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Continue);
+#endif
         }
     }
 }

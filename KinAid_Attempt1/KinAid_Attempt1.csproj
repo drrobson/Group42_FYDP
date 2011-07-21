@@ -37,7 +37,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;AUDIOUI</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;BUTTONUI</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -86,7 +86,6 @@
     <Compile Include="LabelAndImage.xaml.cs">
       <DependentUpon>LabelAndImage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LimbOrientation-old.cs" />
     <Compile Include="LimbOrientation.cs" />
     <Compile Include="CalibratingView.xaml.cs">
       <DependentUpon>CalibratingView.xaml</DependentUpon>
@@ -96,7 +95,6 @@
     <Compile Include="ExerciseSelector.xaml.cs">
       <DependentUpon>ExerciseSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GlobalConstraint.cs" />
     <Compile Include="HeadOrientation.cs" />
     <Compile Include="IConstraint.cs" />
     <Compile Include="IKinectFrames.cs" />
@@ -107,7 +105,6 @@
       <DependentUpon>ExercisePreview.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pose.cs" />
-    <Compile Include="PoseConstraint.cs" />
     <Compile Include="Routine.cs" />
     <Compile Include="ScreenManager.cs" />
     <Compile Include="SharedContent.cs" />
@@ -116,7 +113,6 @@
     </Compile>
     <Compile Include="SpeechRecognizer.cs" />
     <Compile Include="TorsoOrientation.cs" />
-    <Compile Include="VariableConstraint.cs" />
     <Page Include="AudioMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -145,7 +141,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExerciseState.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

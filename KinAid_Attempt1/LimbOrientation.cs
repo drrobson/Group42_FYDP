@@ -106,21 +106,21 @@ namespace KinAid_Attempt1
         {
             Vector3D currentUpperLimbInclination = LimbOrientation.CalculateUpperLimbInclination(this.limbID, bodyPartData);
 
-            if (Vector3D.AngleBetween(currentUpperLimbInclination, this.calibratedUpperLimbInclination) > SharedContent.AllowableDeviationInDegrees)
+            if (Vector3D.AngleBetween(currentUpperLimbInclination, this.calibratedUpperLimbInclination) > SharedContent.GetAllowableDeviationInDegrees())
             {
                 return false;
             }
 
             Vector3D currentLowerLimbInclination = LimbOrientation.CalculateLowerLimbInclination(this.limbID, bodyPartData);
 
-            if (Vector3D.AngleBetween(currentLowerLimbInclination, this.calibratedLowerLimbInclination) > SharedContent.AllowableDeviationInDegrees)
+            if (Vector3D.AngleBetween(currentLowerLimbInclination, this.calibratedLowerLimbInclination) > SharedContent.GetAllowableDeviationInDegrees())
             {
                 return false;
             }
 
             double currentBendInLimb = Vector3D.AngleBetween(currentUpperLimbInclination, currentLowerLimbInclination);
 
-            if (Math.Abs(currentBendInLimb - this.calibratedBendInLimb) > SharedContent.AllowableDeviationInDegrees)
+            if (Math.Abs(currentBendInLimb - this.calibratedBendInLimb) > SharedContent.GetAllowableDeviationInDegrees())
             {
                 return false;
             }
@@ -142,7 +142,7 @@ namespace KinAid_Attempt1
                 Console.WriteLine("Failed when checking upper limb inclination");
                 return upperLimbInclinationInfo;
             }
-            if (Vector3D.AngleBetween(initialLimbOrientation.upperLimbInclination, finalLimbOrientation.upperLimbInclination) <= SharedContent.AllowableDeviationInDegrees)
+            if (Vector3D.AngleBetween(initialLimbOrientation.upperLimbInclination, finalLimbOrientation.upperLimbInclination) <= SharedContent.GetAllowableDeviationInDegrees())
             {
                 upperLimbInclinationInfo.negligableAction = true;
             }
@@ -156,22 +156,22 @@ namespace KinAid_Attempt1
                 Console.WriteLine("Failed when checking lower limb inclination");
                 return lowerLimbInclinationInfo;
             }
-            if (Vector3D.AngleBetween(initialLimbOrientation.lowerLimbInclination, finalLimbOrientation.lowerLimbInclination) <= SharedContent.AllowableDeviationInDegrees)
+            if (Vector3D.AngleBetween(initialLimbOrientation.lowerLimbInclination, finalLimbOrientation.lowerLimbInclination) <= SharedContent.GetAllowableDeviationInDegrees())
             {
                 lowerLimbInclinationInfo.negligableAction = true;
             }
             limbComponentPerformanceInfo[(int)LimbComponentID.LowerLimb] = lowerLimbInclinationInfo;
 
             //Bend in limb
-            if (this.calibratedBendInLimb < Math.Min(initialLimbOrientation.calibratedBendInLimb, finalLimbOrientation.calibratedBendInLimb) - SharedContent.AllowableDeviationInDegrees ||
-                this.calibratedBendInLimb > Math.Max(initialLimbOrientation.calibratedBendInLimb, finalLimbOrientation.calibratedBendInLimb) + SharedContent.AllowableDeviationInDegrees)
+            if (this.calibratedBendInLimb < Math.Min(initialLimbOrientation.calibratedBendInLimb, finalLimbOrientation.calibratedBendInLimb) - SharedContent.GetAllowableDeviationInDegrees() ||
+                this.calibratedBendInLimb > Math.Max(initialLimbOrientation.calibratedBendInLimb, finalLimbOrientation.calibratedBendInLimb) + SharedContent.GetAllowableDeviationInDegrees())
             {
                 return new UserPerformanceAnalysisInfo(true, String.Format("The bend in the {0} is not in the range defined in the exercise step", Enum.GetName(typeof(SharedContent.BodyPartID), this.limbID)));
             }
             UserPerformanceAnalysisInfo bendInLimbInfo = new UserPerformanceAnalysisInfo(false);
             double currentChangeInBendInLimb = Math.Abs(this.calibratedBendInLimb - initialLimbOrientation.calibratedBendInLimb);
             double totalChangeInBendInLimb = Math.Abs(finalLimbOrientation.calibratedBendInLimb - initialLimbOrientation.calibratedBendInLimb);
-            if (Math.Abs(finalLimbOrientation.bendInLimb - initialLimbOrientation.bendInLimb) <= SharedContent.AllowableDeviationInDegrees)
+            if (Math.Abs(finalLimbOrientation.bendInLimb - initialLimbOrientation.bendInLimb) <= SharedContent.GetAllowableDeviationInDegrees())
             {
                 bendInLimbInfo.negligableAction = true;
             }
@@ -206,7 +206,7 @@ namespace KinAid_Attempt1
                 }
             }
 
-            if ((limbComponentPerformanceInfo[maxPercentIndex].percentComplete - limbComponentPerformanceInfo[minPercentIndex].percentComplete) > SharedContent.AllowableDeviationInPercent)
+            if ((limbComponentPerformanceInfo[maxPercentIndex].percentComplete - limbComponentPerformanceInfo[minPercentIndex].percentComplete) > SharedContent.GetAllowableDeviationInPercent())
             {
                 Console.WriteLine("Vector3D.AngleBetween(initialLimbOrientation.upperLimbInclination, finalLimbOrientation.upperLimbInclination) = {0}",
                     Vector3D.AngleBetween(initialLimbOrientation.upperLimbInclination, finalLimbOrientation.upperLimbInclination));
@@ -214,7 +214,7 @@ namespace KinAid_Attempt1
                     limbComponentPerformanceInfo[maxPercentIndex].percentComplete, Enum.GetName(typeof(LimbComponentID), (LimbComponentID)minPercentIndex), limbComponentPerformanceInfo[minPercentIndex].percentComplete);
                 return new UserPerformanceAnalysisInfo(true, String.Format("The difference in the percentage completion of the movement for the {0} and {1} of the {2} exceeded the maximum allowable deviation of {3}",
                     Enum.GetName(typeof(LimbComponentID), (LimbComponentID)maxPercentIndex), Enum.GetName(typeof(LimbComponentID), (LimbComponentID)minPercentIndex),
-                    Enum.GetName(typeof(SharedContent.BodyPartID), this.limbID), SharedContent.AllowableDeviationInPercent));
+                    Enum.GetName(typeof(SharedContent.BodyPartID), this.limbID), SharedContent.GetAllowableDeviationInPercent()));
             }
             else
             {

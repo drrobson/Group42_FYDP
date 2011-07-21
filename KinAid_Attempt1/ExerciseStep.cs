@@ -74,10 +74,10 @@ namespace KinAid_Attempt1
                         else
                         {
                             //If the pose has been held for a sufficiently long time...
-                            if (DateTime.Now >= this.GetExpectedCompletionTime() - new TimeSpan(0, 0, 0, 0, (int)(this.expectedDuration.TotalMilliseconds * (SharedContent.AllowableDeviationInPercent / 100.0))))
+                            if (DateTime.Now >= this.GetExpectedCompletionTime() - new TimeSpan(0, 0, 0, 0, (int)(this.expectedDuration.TotalMilliseconds * (SharedContent.GetAllowableDeviationInPercent() / 100.0))))
                             {
                                 //We check whether it has not been held for too long
-                                if (DateTime.Now <= this.GetExpectedCompletionTime() + new TimeSpan(0, 0, 0, 0, (int)(this.expectedDuration.TotalMilliseconds * (SharedContent.AllowableDeviationInPercent / 100.0))))
+                                if (DateTime.Now <= this.GetExpectedCompletionTime() + new TimeSpan(0, 0, 0, 0, (int)(this.expectedDuration.TotalMilliseconds * (SharedContent.GetAllowableDeviationInPercent() / 100.0))))
                                 {
                                     this.stepStatus = ExerciseStepStatus.Complete;
                                     statusMessage = "Completed the hold of the pose for the appropriate length of time";

@@ -202,7 +202,7 @@ namespace KinAid_Attempt1
                 SharedContent.Nui.SkeletonFrameReady -= nuiSkeletonFrameReady;
                 Uri source = new Uri("Images/CheckboxPass.bmp", UriKind.Relative);
                 statusImage.Source = new BitmapImage(source);
-                statusText.Text = ex.exerciseSteps[ex.currentStepIndex].stepName;
+                statusText.Text = ex.exerciseSteps[ex.exerciseSteps.Length - 1].stepName;
 
                 ScreenManager.SetScreen(new ExerciseFeedback(ex));
             }

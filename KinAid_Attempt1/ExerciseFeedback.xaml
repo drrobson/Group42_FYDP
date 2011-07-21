@@ -15,17 +15,17 @@
         <ScrollViewer Height="240" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300">
             <WrapPanel Orientation="Horizontal" Name="stepPanel" />
         </ScrollViewer>
-        <!--Grid>
+        <Grid>
             <mc:AlternateContent>
-                <mc:Choice Requires="audioui">]
-                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Retry" />
-                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Back" />
+                <mc:Choice Requires="audioui">
+                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Retry" ControlHorizontalAlignment="Left"/>
+                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Back" ControlHorizontalAlignment="Right" />
                 </mc:Choice>
                 <mc:Choice Requires="buttonui">
                     <Button Content="Retry" Click="selectedRetry" HorizontalAlignment="Left" />
                     <Button Content="Back to List" Click="selectedBack" HorizontalAlignment="Right" />
                 </mc:Choice>
             </mc:AlternateContent>
-        </Grid-->
+        </Grid>
     </StackPanel>
 </UserControl>

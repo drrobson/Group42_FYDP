@@ -54,6 +54,16 @@ namespace KinAid_Attempt1
                 lai.Width = 300;
                 stepPanel.Children.Add(lai);
             }
+
+            switch (ex.exerciseStatus)
+            {
+                case ExerciseStatus.Complete:
+                    statusLabel.Content = "COMPLETE!";
+                    break;
+                case ExerciseStatus.Failed:
+                    statusLabel.Content = "FAIL";
+                    break;
+            }
         }
 
         private void selectedRetry(object sender, RoutedEventArgs e)

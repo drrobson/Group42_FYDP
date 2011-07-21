@@ -84,8 +84,20 @@ namespace KinAid_Attempt1
         /// Back-end shared content
         /// </summary>
 
-        public static double AllowableDeviationInDegrees = 7;
-        public static double AllowableDeviationInPercent = 15;
+        public static bool IsCalibrated = false;
+
+        private static double AllowableDeviationInDegrees = 8;
+        private static double AllowableDeviationInDegreesNoCal = 30;
+        public static double GetAllowableDeviationInDegrees()
+        {
+            return IsCalibrated ? AllowableDeviationInDegrees : AllowableDeviationInDegreesNoCal;
+        }
+        private static double AllowableDeviationInPercent = 15;
+        private static double AllowableDeviationInPercentNoCal = 30;
+        public static double GetAllowableDeviationInPercent()
+        {
+            return IsCalibrated ? AllowableDeviationInPercent : AllowableDeviationInPercentNoCal;
+        }
 
         public static Pose NeutralPose = new Pose(new Dictionary<BodyPartID, BodyPartOrientation>()
         {

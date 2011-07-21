@@ -14,7 +14,11 @@ namespace KinAid_Attempt1
         public Pose[] exercisePoses;
         public ExerciseStep[] exerciseSteps;
 
-        ExerciseStatus exerciseStatus;
+        public ExerciseStatus exerciseStatus
+        {
+            get;
+            private set;
+        }
         public int currentStepIndex
         {
             get;
@@ -79,6 +83,7 @@ namespace KinAid_Attempt1
                     else if (exerciseStepInfo.exerciseStepStatus == ExerciseStepStatus.Complete)
                     {
                         currentStepIndex++;
+
                         if (currentStepIndex == exerciseSteps.Length)
                         {
                             this.exerciseStatus = ExerciseStatus.Complete;

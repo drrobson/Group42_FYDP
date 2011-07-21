@@ -40,18 +40,18 @@ namespace KinAid_Attempt1
             Vector3D projectionOfInclIntoPlane = vectorToCheck - projectionOfInclIntoNormal;
 
             //Verifies that the deviation from the plane defined by the initial and final orientations is less than the allowable deviation
-            if (Vector3D.AngleBetween(projectionOfInclIntoPlane, vectorToCheck) > SharedContent.AllowableDeviationInDegrees)
+            if (Vector3D.AngleBetween(projectionOfInclIntoPlane, vectorToCheck) > SharedContent.GetAllowableDeviationInDegrees())
             {
                 result = new UserPerformanceAnalysisInfo(true, String.Format("The deviation between the vector to check and the path between the two plane-defining vectors exceeds {0} degrees",
-                    SharedContent.AllowableDeviationInDegrees));
+                    SharedContent.GetAllowableDeviationInDegrees()));
                 return result;
             }
 
             //Verifies that this orientation instance falls between the initial and final orientations in the interior angle give or take the allowable deviation
-            if ((Vector3D.AngleBetween(projectionOfInclIntoPlane, secondPlaneVector) > Vector3D.AngleBetween(secondPlaneVector, firstPlaneVector) && 
-                Vector3D.AngleBetween(projectionOfInclIntoPlane,firstPlaneVector) > SharedContent.AllowableDeviationInDegrees) ||
+            if ((Vector3D.AngleBetween(projectionOfInclIntoPlane, secondPlaneVector) > Vector3D.AngleBetween(secondPlaneVector, firstPlaneVector) &&
+                Vector3D.AngleBetween(projectionOfInclIntoPlane, firstPlaneVector) > SharedContent.GetAllowableDeviationInDegrees()) ||
                 (Vector3D.AngleBetween(projectionOfInclIntoPlane, firstPlaneVector) > Vector3D.AngleBetween(secondPlaneVector, firstPlaneVector) &&
-                Vector3D.AngleBetween(projectionOfInclIntoPlane, secondPlaneVector) > SharedContent.AllowableDeviationInDegrees))
+                Vector3D.AngleBetween(projectionOfInclIntoPlane, secondPlaneVector) > SharedContent.GetAllowableDeviationInDegrees()))
             {
                 result = new UserPerformanceAnalysisInfo(true, "The vector is not in the shortest path between the two plane-defining vectors");
                 return result;

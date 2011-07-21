@@ -131,10 +131,10 @@ namespace KinAid_Attempt1
                 throw new Exception("In determining if pose is between two others, found that no non-negligable changes exist between the starting and ending poses");
             }
 
-            if (maxChange - minChange > SharedContent.AllowableDeviationInPercent)
+            if (maxChange - minChange > SharedContent.GetAllowableDeviationInPercent())
             {
                 result = new UserPerformanceAnalysisInfo(true, String.Format("The difference in the percentage completion of the movement for {0} and {1} exceeded the maximum allowable deviation of {2}",
-                    Enum.GetName(typeof(SharedContent.BodyPartID), maxChangeID), Enum.GetName(typeof(SharedContent.BodyPartID), minChangeID), SharedContent.AllowableDeviationInPercent));
+                    Enum.GetName(typeof(SharedContent.BodyPartID), maxChangeID), Enum.GetName(typeof(SharedContent.BodyPartID), minChangeID), SharedContent.GetAllowableDeviationInPercent()));
                 return result;
             }
             else

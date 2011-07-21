@@ -74,14 +74,14 @@ namespace KinAid_Attempt1
         {
             double currentRotation = TorsoOrientation.CalculateTorsoRotation(bodyPartData);
 
-            if (Math.Abs(currentRotation - this.calibratedRotation) > SharedContent.AllowableDeviationInDegrees)
+            if (Math.Abs(currentRotation - this.calibratedRotation) > SharedContent.GetAllowableDeviationInDegrees())
             {
                 return false;
             }
 
             Vector3D currentInclination = TorsoOrientation.CalculateTorsoInclination(bodyPartData);
 
-            if (Vector3D.AngleBetween(currentInclination, this.calibratedInclination) > SharedContent.AllowableDeviationInDegrees)
+            if (Vector3D.AngleBetween(currentInclination, this.calibratedInclination) > SharedContent.GetAllowableDeviationInDegrees())
             {
                 return false;
             }
@@ -97,22 +97,22 @@ namespace KinAid_Attempt1
             //Compute inclination information
             UserPerformanceAnalysisInfo inclinationInfo = BodyPartOrientation.IsVectorOnPathInPlane(this.calibratedInclination, initialTorsoOrientation.calibratedInclination, finalTorsoOrientation.calibratedInclination);
             if (inclinationInfo.failed) return inclinationInfo;
-            if (Vector3D.AngleBetween(initialTorsoOrientation.inclination, finalTorsoOrientation.inclination) <= SharedContent.AllowableDeviationInDegrees)
+            if (Vector3D.AngleBetween(initialTorsoOrientation.inclination, finalTorsoOrientation.inclination) <= SharedContent.GetAllowableDeviationInDegrees())
             {
                 //The actual exercise has a negligable change in the torso inclination
                 inclinationInfo.negligableAction = true;
             }
 
             //Compute rotation information
-            if (this.calibratedRotation < Math.Min(initialTorsoOrientation.calibratedRotation, finalTorsoOrientation.calibratedRotation) - SharedContent.AllowableDeviationInDegrees ||
-                this.calibratedRotation > Math.Max(initialTorsoOrientation.calibratedRotation, finalTorsoOrientation.calibratedRotation) + SharedContent.AllowableDeviationInDegrees)
+            if (this.calibratedRotation < Math.Min(initialTorsoOrientation.calibratedRotation, finalTorsoOrientation.calibratedRotation) - SharedContent.GetAllowableDeviationInDegrees() ||
+                this.calibratedRotation > Math.Max(initialTorsoOrientation.calibratedRotation, finalTorsoOrientation.calibratedRotation) + SharedContent.GetAllowableDeviationInDegrees())
             {
                 //The current rotation is not within the range specified by the initial and final orientations
                 return new UserPerformanceAnalysisInfo(true, "User's torso rotation is not in the range defined by the exercise step");
             }
 
             UserPerformanceAnalysisInfo rotationInfo = new UserPerformanceAnalysisInfo(false);
-            if (Math.Abs(finalTorsoOrientation.rotation - initialTorsoOrientation.rotation) <= SharedContent.AllowableDeviationInDegrees)
+            if (Math.Abs(finalTorsoOrientation.rotation - initialTorsoOrientation.rotation) <= SharedContent.GetAllowableDeviationInDegrees())
             {
                 //The actual exercise has a negligable change in the torso rotation
                 rotationInfo.negligableAction = true;
@@ -135,10 +135,10 @@ namespace KinAid_Attempt1
             }
             else
             {
-                if (Math.Abs(inclinationInfo.percentComplete - rotationInfo.percentComplete) > SharedContent.AllowableDeviationInPercent)
+                if (Math.Abs(inclinationInfo.percentComplete - rotationInfo.percentComplete) > SharedContent.GetAllowableDeviationInPercent())
                 {
                     return new UserPerformanceAnalysisInfo(true, String.Format("The difference in the percentage completion of the change in torso inclination and change in torso rotation exceeded the maximum allowable deviation of {0}",
-                        SharedContent.AllowableDeviationInPercent));
+                        SharedContent.GetAllowableDeviationInPercent()));
                 }
 
                 //Return the average percent complete

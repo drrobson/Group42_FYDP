@@ -24,7 +24,9 @@ namespace KinAid_Attempt1
         {
             InitializeComponent();
 
+#if AUDIOUI
             //SharedContent.Sr.registerSpeechCommand(
+#endif
 
             Exercise[] exercises = ExerciseFactory.GetExercises();
             for (int i = 0; i < exercises.Length; i++)
@@ -61,10 +63,12 @@ namespace KinAid_Attempt1
 #endif
             if (dialogResult.HasValue && dialogResult == true)
             {
+                SharedContent.IsCalibrated = true;
                 ScreenManager.SetScreen(new CalibratingView(ExerciseFactory.GetExercises()[(int)button.Tag]));
             }
             else if (dialogResult.HasValue && dialogResult == false)
             {
+                SharedContent.IsCalibrated = false;
                 ScreenManager.SetScreen(new ExercisePreview(ExerciseFactory.GetExercises()[(int)button.Tag]));
             }
         }

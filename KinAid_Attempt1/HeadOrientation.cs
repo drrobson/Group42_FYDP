@@ -45,7 +45,7 @@ namespace KinAid_Attempt1
         {
             Vector3D currentInclination = HeadOrientation.CalculateHeadInclination(bodyPartData);
 
-            if (Vector3D.AngleBetween(currentInclination, this.calibratedInclination) > SharedContent.AllowableDeviationInDegrees)
+            if (Vector3D.AngleBetween(currentInclination, this.calibratedInclination) > SharedContent.GetAllowableDeviationInDegrees())
             {
                 return false;
             }
@@ -64,7 +64,7 @@ namespace KinAid_Attempt1
                 Console.WriteLine("Failed when checking head inclination");
                 return headInclinationInfo;
             }
-            else if (Vector3D.AngleBetween(initialHeadOrientation.inclination, finalHeadOrientation.inclination) <= SharedContent.AllowableDeviationInDegrees)
+            else if (Vector3D.AngleBetween(initialHeadOrientation.inclination, finalHeadOrientation.inclination) <= SharedContent.GetAllowableDeviationInDegrees())
             {
                 //The actual exercise has a negligable change in the head inclination
                 return new UserPerformanceAnalysisInfo(true);
