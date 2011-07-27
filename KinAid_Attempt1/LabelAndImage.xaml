@@ -7,6 +7,6 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Orientation="Horizontal" Name="thePanel" HorizontalAlignment="Left" Height="30">
         <Image Name="theImage" Stretch="None" />
-        <Label Name="theLabel" FontSize="14" BorderThickness="1" BorderBrush="Black" />
+        <Label Name="theLabel" FontSize="48" BorderThickness="1" BorderBrush="Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
     </StackPanel>
 </UserControl>

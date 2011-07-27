@@ -24,14 +24,19 @@ namespace KinAid_Attempt1
             get;
             private set;
         }
-        public string name, description;
+        public SharedContent.Commands name
+        {
+            get;
+            private set;
+        }
+        public string description;
         public string statusMessage
         {
             get;
             private set;
         }
 
-        public Exercise(string name, string description, Pose[] exercisePoses, ExerciseStep[] exerciseSteps)
+        public Exercise(SharedContent.Commands name, string description, Pose[] exercisePoses, ExerciseStep[] exerciseSteps)
         {
             this.currentStepIndex = 0;
             this.name = name;

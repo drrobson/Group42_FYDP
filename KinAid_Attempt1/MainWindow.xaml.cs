@@ -48,6 +48,8 @@ namespace KinAid_Attempt1
             SharedContent.Sr = new SpeechRecognizer();
             SharedContent.Sr.initialize();
 
+            LayoutRoot.Children.Add(new ExerciseSelector());
+
             try
             {
                 SharedContent.Nui.Initialize(
@@ -57,8 +59,8 @@ namespace KinAid_Attempt1
             }
             catch (InvalidOperationException)
             {
-                MessageBox.Show("Runtime initialization failed. Please make sure Kinect device is plugged in.");
-                Environment.Exit(-1);
+                //MessageBox.Show("Runtime initialization failed. Please make sure Kinect device is plugged in.");
+                //Environment.Exit(-1);
             }
 
             try
@@ -68,8 +70,8 @@ namespace KinAid_Attempt1
             }
             catch (InvalidOperationException)
             {
-                MessageBox.Show("Failed to open stream. Please make sure to specify a supported image type and resolution.");
-                Environment.Exit(-1);
+                //MessageBox.Show("Failed to open stream. Please make sure to specify a supported image type and resolution.");
+                //Environment.Exit(-1);
             }
         }
 

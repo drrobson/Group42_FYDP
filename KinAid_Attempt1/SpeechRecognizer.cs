@@ -14,7 +14,7 @@ namespace KinAid_Attempt1
 {
     public class SpeechRecognizer
     {
-        public delegate void SpeechCommandReceived();
+        public delegate void SpeechCommandReceived(string command);
 
         SpeechCommandReceived[] commandDelegates;
         
@@ -119,7 +119,7 @@ namespace KinAid_Attempt1
             {
                 if (SharedContent.CommandStrings[i] == e.Result.Text && commandDelegates[i] != null)
                 {
-                    commandDelegates[i]();
+                    commandDelegates[i](e.Result.Text);
                 }
             }
         }

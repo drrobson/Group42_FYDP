@@ -5,6 +5,5 @@
         Loaded="Window_Loaded" Closed="Window_Closed"
         Icon="Kinaid.ico" xmlns:my="clr-namespace:KinAid_Attempt1">
     <Grid Name="LayoutRoot">
-        <my:ExerciseSelector HorizontalAlignment="Left" VerticalAlignment="Top" />
     </Grid>
 </Window>

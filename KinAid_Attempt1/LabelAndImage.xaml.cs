@@ -37,19 +37,44 @@ namespace KinAid_Attempt1
             set { thePanel.HorizontalAlignment = value; }
         }
 
+        public double PanelHeight
+        {
+            get { return thePanel.Height; }
+            set { thePanel.Height = value; }
+        }
+
+        public double PanelWidth
+        {
+            get { return theLabel.Width; }
+            set { theLabel.Width = value; }
+        }
+
+        public double LabelFont
+        {
+            get { return theLabel.FontSize; }
+            set { theLabel.FontSize = value; }
+        }
+
         public LabelAndImage()
         {
             InitializeComponent();
         }
 
-        public LabelAndImage(ImageSource ImageSource, string LabelContent, 
-            HorizontalAlignment ControlHorizontalAlignment = HorizontalAlignment.Left)
+        public LabelAndImage(ImageSource ImageSource, string LabelContent,
+            HorizontalAlignment ControlHorizontalAlignment = HorizontalAlignment.Left,
+            double PanelHeight = 30, double PanelWidth = 0, double LabelFont = 16)
         {
             InitializeComponent();
 
             this.ImageSource = ImageSource;
             this.LabelContent = LabelContent;
             this.ControlHorizontalAlignment = ControlHorizontalAlignment;
+            this.PanelHeight = PanelHeight;
+            if (PanelWidth != 0)
+            {
+                this.PanelWidth = PanelWidth;
+            }
+            this.LabelFont = LabelFont;
         }
     }
 }

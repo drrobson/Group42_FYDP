@@ -7,13 +7,13 @@
              xmlns:buttonui="ButtonUI"
              xmlns:audioui="AudioUI"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="{StaticResource ResourceKey=AppHeight}" d:DesignWidth="{StaticResource ResourceKey=AppWidth}">
     <StackPanel>
-        <ScrollViewer Height="270" Width="300">
+        <ScrollViewer>
             <WrapPanel Orientation="Horizontal" Name="buttonPanel">
             </WrapPanel>
         </ScrollViewer>
-        <Grid Name="bottomPanel" Height="30">
+        <Grid Name="bottomPanel" Height="{StaticResource ResourceKey=ButtonHeight}">
             <mc:AlternateContent>
                 <mc:Choice Requires="buttonui">
                     <Button Content="Add Exercise" Click="selectedAddExercise" HorizontalAlignment="Stretch" />

@@ -24,25 +24,23 @@ namespace KinAid_Attempt1
 
             this.message.Content = message;
 
-            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Yes, selectedYes);
-            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.No, selectedNo);
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Yes, selectedResponse);
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.No, selectedResponse);
         }
 
-        public void selectedYes()
+        public void selectedResponse(string response)
         {
             SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Yes);
             SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.No);
 
-            DialogResult = true;
-            this.Close();
-        }
-
-        public void selectedNo()
-        {
-            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Yes);
-            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.No);
-
-            DialogResult = false;
+            if (response.Equals(SharedContent.GetCommandString(SharedContent.Commands.Yes)))
+            {
+                DialogResult = true;
+            }
+            else
+            {
+                DialogResult = false;
+            }
             this.Close();
         }
 

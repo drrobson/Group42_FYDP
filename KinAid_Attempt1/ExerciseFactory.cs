@@ -34,7 +34,8 @@ namespace KinAid_Attempt1
             ExerciseStep curlArm = new ExerciseStep(armAtSide, armCurledUp, TimeSpan.FromSeconds(2), ExerciseStepType.Movement, "Curling arm");
             ExerciseStep uncurlArm = new ExerciseStep(armCurledUp, armAtSide, TimeSpan.FromSeconds(2), ExerciseStepType.Movement, "Uncurling arm");
 
-            return new Exercise("Right Arm Bicep Curl", "From a neutral pose with your right arm at your side, bend your right forearm up directly in front of you until it is parallel with the floor, then lower your forearm back into neutral position",
+            return new Exercise(SharedContent.Commands.RightBicepCurl, 
+                "From a neutral pose with your right arm at your side, bend your right forearm up directly in front of you until it is parallel with the floor, then lower your forearm back into neutral position",
                 new Pose[] { armAtSide, armCurledUp }, new ExerciseStep[] { curlArm, uncurlArm });
         }
 
@@ -57,7 +58,8 @@ namespace KinAid_Attempt1
             ExerciseStep holdArmOutstretched = new ExerciseStep(armOutstretched, armOutstretched, TimeSpan.FromSeconds(2), ExerciseStepType.Hold, "Holding position");
             ExerciseStep lowerArm = new ExerciseStep(armOutstretched, armAtSide, TimeSpan.FromSeconds(3), ExerciseStepType.Movement, "Lowering arm");
 
-            return new Exercise("Right Shoulder Abduction", "From a neutral position with your right arm at your side, raise your right arm to shoulder height directly out from your body, then lower your arm back into neutral position",
+            return new Exercise(SharedContent.Commands.RightShoulderAbduction, 
+                "From a neutral position with your right arm at your side, raise your right arm to shoulder height directly out from your body, then lower your arm back into neutral position",
                 new Pose[] { armAtSide, armOutstretched }, new ExerciseStep[] { raiseArm, holdArmOutstretched, lowerArm });
         }
 

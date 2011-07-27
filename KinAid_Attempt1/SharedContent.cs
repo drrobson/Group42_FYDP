@@ -57,7 +57,8 @@ namespace KinAid_Attempt1
             "yes",
             "no",
             // Exercise Commands
-            // ...
+            "Right Shoulder Abduction",
+            "Right Bicep Curl",
         };
         public enum Commands
         {
@@ -73,7 +74,8 @@ namespace KinAid_Attempt1
             Yes,
             No,
             // Exercise Commands
-            // ...
+            RightShoulderAbduction,
+            RightBicepCurl,
         }
         public static string GetCommandString(Commands command)
         {

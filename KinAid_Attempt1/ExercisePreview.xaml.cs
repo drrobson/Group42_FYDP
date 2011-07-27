@@ -36,10 +36,10 @@ namespace KinAid_Attempt1
             this.ex = ex;
 
 #if AUDIOUI
-            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Play, selectedPlay);
-            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Pause, selectedPause);
-            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Stop, selectedStop);
-            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Continue, selectedContinue);
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Play, selectedResponse);
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Pause, selectedResponse);
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Stop, selectedResponse);
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Continue, selectedResponse);
 #endif
         }
 
@@ -53,50 +53,51 @@ namespace KinAid_Attempt1
             exercisePreview.Stop();
         }
 
-        private void selectedPlay(object sender, RoutedEventArgs e)
+#if AUDIOUI
+        private void selectedResponse(string response)
         {
-            selectedPlay();
-        }
+            if (response.Equals(SharedContent.GetCommandString(SharedContent.Commands.Play)))
+            {
+                exercisePreview.Play();
+            }
+            else if (response.Equals(SharedContent.GetCommandString(SharedContent.Commands.Pause)))
+            {
+                exercisePreview.Pause();
+            }
+            else if (response.Equals(SharedContent.GetCommandString(SharedContent.Commands.Stop)))
+            {
+                exercisePreview.Stop();
+            }
+            else if (response.Equals(SharedContent.GetCommandString(SharedContent.Commands.Continue)))
+            {
+                SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Play);
+                SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Pause);
+                SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Stop);
+                SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Continue);
 
-        private void selectedPlay()
+                ScreenManager.SetScreen(new ExerciseView(ex));
+            }
+        }
+#elif BUTTONUI
+        private void selectedPlay(object sender, RoutedEventArgs e)
         {
             exercisePreview.Play();
         }
 
         private void selectedPause(object sender, RoutedEventArgs e)
         {
-            selectedPause();
-        }
-
-        private void selectedPause()
-        {
             exercisePreview.Pause();
         }
 
         private void selectedStop(object sender, RoutedEventArgs e)
-        {
-            selectedStop();
-        }
-
-        private void selectedStop()
         {
             exercisePreview.Stop();
         }
 
         private void selectedContinue(object sender, RoutedEventArgs e)
         {
-            selectedContinue();
-        }
-
-        private void selectedContinue()
-        {
             ScreenManager.SetScreen(new ExerciseView(ex));
-#if AUDIOUI
-            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Play);
-            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Pause);
-            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Stop);
-            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Continue);
-#endif
         }
+#endif
     }
 }

@@ -1,8 +1,12 @@
 ﻿<Application x:Class="KinAid_Attempt1.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <sys:Double x:Key="AppWidth">1200</sys:Double>
+        <sys:Double x:Key="AppHeight">600</sys:Double>
+        <sys:Double x:Key="ButtonHeight">50</sys:Double>
+        <sys:Double x:Key="ButtonFont">32</sys:Double>
     </Application.Resources>
 </Application>
