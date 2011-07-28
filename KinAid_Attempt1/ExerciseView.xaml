@@ -6,13 +6,13 @@
              xmlns:my="clr-namespace:KinAid_Attempt1"
              xmlns:audioui="AudioUI"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="450">
+             d:DesignHeight="{StaticResource ResourceKey=AppHeight}" d:DesignWidth="{StaticResource ResourceKey=AppWidth}">
     <StackPanel>
-        <Image Name="video" Height="390"/>
-        <Grid Height="60">
+        <Image Name="video" Height="{StaticResource ResourceKey=AppHeight}" Width="{StaticResource ResourceKey=AppWidth}"/>
+        <Grid Height="{StaticResource ResourceKey=SmallButtonHeight}">
             <StackPanel Name="bottomPanel" Orientation="Horizontal" HorizontalAlignment="Left">
-                <Image Source="Images/Checkbox.bmp" Name="statusImage" Stretch="None" VerticalAlignment="Center" />
-                <TextBlock Text="Random Instruction" Name="statusText" MaxWidth="400" />
+                <Image Source="Images/Checkbox.bmp" Name="statusImage" Stretch="None" VerticalAlignment="Center" Height="{StaticResource ResourceKey=SmallButtonHeight}" />
+                <TextBlock Text="Random Instruction" Name="statusText" MaxWidth="{StaticResource ResourceKey=BigButtonWidth}" FontSize="{StaticResource ResourceKey=SmallButtonFont}" />
             </StackPanel>
             <mc:AlternateContent>
                 <mc:Choice Requires="audioui">

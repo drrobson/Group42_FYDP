@@ -38,13 +38,16 @@ namespace KinAid_Attempt1
                 SharedContent.Sr.registerSpeechCommand(exercises[i].name, selectedExercise);
                 Uri source = new Uri("Images/Voice.bmp", UriKind.Relative);
                 LabelAndImage labelImage = new LabelAndImage(new BitmapImage(source),
-                    SharedContent.GetCommandString(exercises[i].name), System.Windows.HorizontalAlignment.Left, 120, 1150);
+                    SharedContent.GetCommandString(exercises[i].name), System.Windows.HorizontalAlignment.Left, 
+                    (double)Application.Current.Resources["BigButtonHeight"], (double)Application.Current.Resources["BigButtonWidth"],
+                    (double)Application.Current.Resources["BigButtonFont"]);
                 buttonPanel.Children.Add(labelImage);
 #elif BUTTONUI
                 Button button = new Button();
                 button.Content = SharedContent.GetCommandString(exercises[i].name);
-                button.Height = 150;
-                button.Width = 300;
+                button.Height = (double)Application.Current.Resources["BigButtonHeight"];
+                button.Width = (double)Application.Current.Resources["BigButtonWidth"];
+                button.FontSize = (double)Application.Current.Resources["BigButtonFont"];
                 button.Click += selectedExercise;
                 button.Tag = i;
                 buttonPanel.Children.Add(button);
@@ -66,7 +69,7 @@ namespace KinAid_Attempt1
                 }
             }
 
-            AudioMessageBox amb = new AudioMessageBox("Do you wish to calibrate the exercise?");
+            AudioMessageBox amb = new AudioMessageBox("Do you wish to calibrate the exercise?", MessageBoxButton.OK);
             amb.Owner = (Window)ScreenManager.GetHost();
             bool? dialogResult = amb.ShowDialog();
 
@@ -106,10 +109,12 @@ namespace KinAid_Attempt1
         private void selectedAddExercise(object sender, RoutedEventArgs e)
         {
 #if AUDIOUI
-
+            AudioMessageBox amb = new AudioMessageBox("This feature has not yet been implemented", MessageBoxButton.OK);
+            amb.Owner = (Window)ScreenManager.GetHost();
+            amb.ShowDialog();
 #elif BUTTONUI
             MessageBoxResult notImplemented =
-                MessageBox.Show("This feature has not yet been implemented", "KinAid", MessageBoxButton.YesNo);
+                MessageBox.Show("This feature has not yet been implemented", "KinAid", MessageBoxButton.OK);
 #endif
         }
 

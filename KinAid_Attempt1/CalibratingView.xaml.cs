@@ -46,6 +46,7 @@ namespace KinAid_Attempt1
             this.ex = ex;
 
             secondsLeft = SharedContent.CalibrationSeconds * ex.getPosesToBeCalibrated().Count();
+            secondsLabel.Content = String.Format("{0}", SharedContent.CalibrationSeconds);
             capturing = false;
             hasCaptured = false;
 

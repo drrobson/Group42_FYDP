@@ -9,14 +9,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="{StaticResource ResourceKey=AppHeight}" d:DesignWidth="{StaticResource ResourceKey=AppWidth}">
     <StackPanel>
-        <ScrollViewer>
+        <ScrollViewer Name="buttonViewer" Height="{StaticResource ResourceKey=AppHeight}" Width="{StaticResource ResourceKey=AppWidth}">
             <WrapPanel Orientation="Horizontal" Name="buttonPanel">
             </WrapPanel>
         </ScrollViewer>
-        <Grid Name="bottomPanel" Height="{StaticResource ResourceKey=ButtonHeight}">
+        <Grid Name="bottomPanel" Height="{StaticResource ResourceKey=SmallButtonHeight}" Width="{StaticResource ResourceKey=SmallButtonWidth}">
             <mc:AlternateContent>
                 <mc:Choice Requires="buttonui">
-                    <Button Content="Add Exercise" Click="selectedAddExercise" HorizontalAlignment="Stretch" />
+                    <Button Content="Add Exercise" Click="selectedAddExercise" HorizontalAlignment="Stretch" FontSize="{StaticResource ResourceKey=SmallButtonFont}"  />
                 </mc:Choice>
                 <mc:Choice Requires="audioui">
                     <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Add Exercise" ControlHorizontalAlignment="Center" />

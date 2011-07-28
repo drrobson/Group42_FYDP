@@ -7,31 +7,30 @@
       xmlns:audioui="AudioUI"
       xmlns:buttonui="ButtonUI"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="450">
+      d:DesignHeight="{StaticResource ResourceKey=AppHeight}" d:DesignWidth="{StaticResource ResourceKey=AppWidth}">
     <StackPanel>
         <!-- To interactively stop, pause, and play the media, the LoadedBehavior 
            property of the MediaElement must be set to "Manual". -->
         <MediaElement Source="C:\Users\Public\Videos\Sample Videos\Wildlife.wmv" Name="exercisePreview" 
-            Height="270" Width="450" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" 
+            Width="{StaticResource ResourceKey=AppWidth}" Height="{StaticResource ResourceKey=AppHeight}" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" 
             MediaOpened="Element_MediaOpened" MediaEnded="Element_MediaEnded"/>
-        <Grid Height="30" Width="450">
+        <Grid>
             <mc:AlternateContent>
                 <mc:Choice Requires="audioui">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Image Source="Images/Voice.bmp" />
-                        <Label Content="Play" BorderBrush="Black" BorderThickness="1" />
-                        <Label Content="Pause" BorderBrush="Black" BorderThickness="1" />
-                        <Label Content="Stop" BorderBrush="Black" BorderThickness="1" />
+                        <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Play" ControlHorizontalAlignment="Center" />
+                        <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Pause" ControlHorizontalAlignment="Center" />
+                        <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Stop" ControlHorizontalAlignment="Center" />
                     </StackPanel>
                     <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Continue" ControlHorizontalAlignment="Right" />
                 </mc:Choice>
                 <mc:Choice Requires="buttonui">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Button Content="Play" Click="selectedPlay" />
-                        <Button Content="Pause" Click="selectedPause" />
-                        <Button Content="Stop" Click="selectedStop" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="{StaticResource ResourceKey=SmallButtonHeight}">
+                        <Button Content="Play" Click="selectedPlay" Width="{StaticResource ResourceKey=SmallButtonWidth}" FontSize="{StaticResource ResourceKey=SmallButtonFont}" />
+                        <Button Content="Pause" Click="selectedPause" Width="{StaticResource ResourceKey=SmallButtonWidth}" FontSize="{StaticResource ResourceKey=SmallButtonFont}" />
+                        <Button Content="Stop" Click="selectedStop" Width="{StaticResource ResourceKey=SmallButtonWidth}" FontSize="{StaticResource ResourceKey=SmallButtonFont}" />
                     </StackPanel>
-                    <Button Content="Continue" HorizontalAlignment="Right" Click="selectedContinue" />
+                    <Button Content="Continue" HorizontalAlignment="Right" Click="selectedContinue" Height="{StaticResource ResourceKey=SmallButtonHeight}"  Width="{StaticResource ResourceKey=SmallButtonWidth}" FontSize="{StaticResource ResourceKey=SmallButtonFont}" />
                 </mc:Choice>
             </mc:AlternateContent>
         </Grid>

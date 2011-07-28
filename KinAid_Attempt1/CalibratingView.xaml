@@ -4,20 +4,20 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300">
+      d:DesignHeight="{StaticResource ResourceKey=AppHeight}" d:DesignWidth="{StaticResource ResourceKey=AppWidth}">
     <StackPanel>
-        <Grid Height="34">
-            <Image Source="Images/Calibrating.bmp" HorizontalAlignment="Left" Width="37" Height="34" />
-            <Label Content="5" Name="secondsLabel" FontWeight="Bold" FontSize="16" FontFamily="Arial" Margin="9,3,-9,-3" />
-            <Label Content="Calibrating, please conform to the pose..." HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" />
+        <Grid Width="{StaticResource ResourceKey=AppWidth}">
+            <Image Source="Images/Calibrating.bmp" HorizontalAlignment="Left" Width="{StaticResource ResourceKey=SmallButtonWidth}" Height="{StaticResource ResourceKey=SmallButtonHeight}" />
+            <Label Name="secondsLabel" FontWeight="Bold" FontSize="{StaticResource ResourceKey=SmallButtonFont}" FontFamily="Arial" Margin="17,3,-17,-3" />
+            <Label Content="Calibrating, please conform to the pose..." HorizontalAlignment="Center"  VerticalAlignment="Center" FontSize="{StaticResource ResourceKey=SmallButtonFont}" />
         </Grid>
-        <StackPanel Orientation="Horizontal" Height="232">
-            <Canvas Width="150" Height="230" Name="frontView" Background="Black" ClipToBounds="True"/>
-            <Canvas Width="150" Height="230" Name="sideView" Background="Black" ClipToBounds="True"/>
+        <StackPanel Orientation="Horizontal" Width="{StaticResource ResourceKey=AppWidth}" Height="{StaticResource ResourceKey=AppHeight}">
+            <Canvas Name="frontView" Background="Black" ClipToBounds="True"/>
+            <Canvas Name="sideView" Background="Black" ClipToBounds="True"/>
         </StackPanel>
-        <Grid Height="34">
-            <Label Content="Front View" VerticalAlignment="Center" FontSize="14" Margin="35,3,-35,3" />
-            <Label Content="Side View" VerticalAlignment="Center" FontSize="14" Margin="185,3,-185,3" />
+        <Grid Height="{StaticResource ResourceKey=SmallButtonHeight}">
+           <Label Content="Front View" VerticalAlignment="Center" FontSize="{StaticResource ResourceKey=SmallButtonFont}" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Width="{StaticResource ResourceKey=HalfAppWidth}" />
+            <Label Content="Side View" VerticalAlignment="Center" FontSize="{StaticResource ResourceKey=SmallButtonFont}" HorizontalAlignment="Right" HorizontalContentAlignment="Center" Width="{StaticResource ResourceKey=HalfAppWidth}" />
         </Grid>
     </StackPanel>
 </UserControl>

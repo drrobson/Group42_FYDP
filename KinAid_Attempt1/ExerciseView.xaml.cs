@@ -60,17 +60,28 @@ namespace KinAid_Attempt1
 
             fpsLabel = new Label();
             fpsLabel.Content = "FPS:";
+            fpsLabel.FontSize = (double)Application.Current.Resources["SmallButtonFont"];
+            fpsLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
             fpsLabel.HorizontalAlignment = HorizontalAlignment.Left;
             bottomPanel.Children.Insert(0, fpsLabel);
 #endif
 
 #if AUDIOUI
-            //SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Stop, );
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Stop, selectedResponse);
 #endif
 
             //SharedContent.Nui.DepthFrameReady += new EventHandler<ImageFrameReadyEventArgs>(nuiDepthFrameReady);
             SharedContent.Nui.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(nuiSkeletonFrameReady);
             SharedContent.Nui.VideoFrameReady += new EventHandler<ImageFrameReadyEventArgs>(nuiColorFrameReady);
+        }
+
+        private void selectedResponse(string response)
+        {
+            if (response.Equals(SharedContent.GetCommandString(SharedContent.Commands.Stop)))
+            {
+                SharedContent.Nui.SkeletonFrameReady -= nuiSkeletonFrameReady;
+                ScreenManager.SetScreen(new ExerciseFeedback(ex));
+            }
         }
 
         /// We aren't going to use the depth data for now
@@ -213,7 +224,9 @@ namespace KinAid_Attempt1
                 statusText.Text = ex.exerciseSteps[ex.currentStepIndex].stepName;
             }
 
+#if DEBUG
             Console.WriteLine("Status message = {0}", statusInfo.statusMessage);
+#endif
 
             //SkeletonFrame skeletonFrame = e.SkeletonFrame;
             //int iSkeleton = 0;

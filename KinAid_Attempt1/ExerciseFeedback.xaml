@@ -7,12 +7,12 @@
              xmlns:audioui="AudioUI"
              xmlns:buttonui="ButtonUI"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="{StaticResource ResourceKey=AppHeight}" d:DesignWidth="{StaticResource ResourceKey=AppWidth}">
     <StackPanel>
-        <Grid Height="30">
-            <Label Content="STATUS HERE" Name="statusLabel" HorizontalAlignment="Center" />
+        <Grid Height="{StaticResource ResourceKey=BigButtonHeight}">
+            <Label Content="STATUS HERE" Name="statusLabel" HorizontalAlignment="Center" FontSize="{StaticResource ResourceKey=BigButtonFont}" />
         </Grid>
-        <ScrollViewer Height="240" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300">
+        <ScrollViewer Height="{StaticResource ResourceKey=AppHeight}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{StaticResource ResourceKey=AppWidth}">
             <WrapPanel Orientation="Horizontal" Name="stepPanel" />
         </ScrollViewer>
         <Grid>
@@ -22,8 +22,8 @@
                     <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Back" ControlHorizontalAlignment="Right" />
                 </mc:Choice>
                 <mc:Choice Requires="buttonui">
-                    <Button Content="Retry" Click="selectedRetry" HorizontalAlignment="Left" />
-                    <Button Content="Back to List" Click="selectedBack" HorizontalAlignment="Right" />
+                    <Button Content="Retry" Click="selectedRetry" HorizontalAlignment="Left" Height="{StaticResource ResourceKey=SmallButtonHeight}" FontSize="{StaticResource ResourceKey=SmallButtonFont}" />
+                    <Button Content="Back to List" Click="selectedBack" HorizontalAlignment="Right" Height="{StaticResource ResourceKey=SmallButtonHeight}" FontSize="{StaticResource ResourceKey=SmallButtonFont}" />
                 </mc:Choice>
             </mc:AlternateContent>
         </Grid>

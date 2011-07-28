@@ -38,6 +38,8 @@ namespace KinAid_Attempt1
             this.currentScreen = screen;
             this.LayoutRoot.Children.Clear();
             this.LayoutRoot.Children.Add(screen.element);
+            Grid.SetColumn(screen.element, 1);
+            Grid.SetRow(screen.element, 1);
         }
 
         private void Window_Loaded(object sender, EventArgs e)
@@ -48,6 +50,8 @@ namespace KinAid_Attempt1
             SharedContent.Sr = new SpeechRecognizer();
             SharedContent.Sr.initialize();
 
+            this.Top = 0;
+            this.Left = 0;
             LayoutRoot.Children.Add(new ExerciseSelector());
 
             try

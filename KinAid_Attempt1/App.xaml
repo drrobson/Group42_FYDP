@@ -5,8 +5,13 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <sys:Double x:Key="AppWidth">1200</sys:Double>
+        <sys:Double x:Key="HalfAppWidth">600</sys:Double>
         <sys:Double x:Key="AppHeight">600</sys:Double>
-        <sys:Double x:Key="ButtonHeight">50</sys:Double>
-        <sys:Double x:Key="ButtonFont">32</sys:Double>
+        <sys:Double x:Key="SmallButtonHeight">50</sys:Double>
+        <sys:Double x:Key="BigButtonHeight">120</sys:Double>
+        <sys:Double x:Key="SmallButtonWidth">200</sys:Double>
+        <sys:Double x:Key="BigButtonWidth">1000</sys:Double>
+        <sys:Double x:Key="SmallButtonFont">32</sys:Double>
+        <sys:Double x:Key="BigButtonFont">64</sys:Double>
     </Application.Resources>
 </Application>

@@ -56,6 +56,7 @@ namespace KinAid_Attempt1
             "back",
             "yes",
             "no",
+            "okay",
             // Exercise Commands
             "Right Shoulder Abduction",
             "Right Bicep Curl",
@@ -73,6 +74,7 @@ namespace KinAid_Attempt1
             Back,
             Yes,
             No,
+            Okay,
             // Exercise Commands
             RightShoulderAbduction,
             RightBicepCurl,

@@ -62,19 +62,38 @@ namespace KinAid_Attempt1
 
         public LabelAndImage(ImageSource ImageSource, string LabelContent,
             HorizontalAlignment ControlHorizontalAlignment = HorizontalAlignment.Left,
-            double PanelHeight = 30, double PanelWidth = 0, double LabelFont = 16)
+            double PanelHeight = 0, double PanelWidth = 0, double LabelFont = 0)
         {
             InitializeComponent();
 
             this.ImageSource = ImageSource;
             this.LabelContent = LabelContent;
             this.ControlHorizontalAlignment = ControlHorizontalAlignment;
-            this.PanelHeight = PanelHeight;
-            if (PanelWidth != 0)
+            
+            if (PanelHeight == 0)
+            {
+                this.PanelHeight = (double)Application.Current.Resources["SmallButtonHeight"];
+            }
+            else
+            {
+                this.PanelHeight = PanelHeight;
+            }
+            if (PanelWidth == 0)
+            {
+                this.PanelWidth = (double)Application.Current.Resources["SmallButtonWidth"];
+            }
+            else
             {
                 this.PanelWidth = PanelWidth;
             }
-            this.LabelFont = LabelFont;
+            if (LabelFont == 0)
+            {
+                this.LabelFont = (double)Application.Current.Resources["SmallButtonFont"];
+            }
+            else
+            {
+                this.LabelFont = LabelFont;
+            }
         }
     }
 }

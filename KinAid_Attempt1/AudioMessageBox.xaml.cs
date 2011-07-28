@@ -18,20 +18,39 @@ namespace KinAid_Attempt1
     /// </summary>
     public partial class AudioMessageBox : Window
     {
-        public AudioMessageBox(string message)
+        MessageBoxButton type;
+
+        public AudioMessageBox(string message, MessageBoxButton type)
         {
             InitializeComponent();
 
             this.message.Content = message;
 
-            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Yes, selectedResponse);
-            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.No, selectedResponse);
+            this.type = type;
+            switch (type)
+            {
+                case MessageBoxButton.OK:
+                    SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Okay, selectedResponse);
+                    break;
+                case MessageBoxButton.YesNo:
+                    SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Yes, selectedResponse);
+                    SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.No, selectedResponse);
+                    break;
+            }
         }
 
         public void selectedResponse(string response)
         {
-            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Yes);
-            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.No);
+            switch (type)
+            {
+                case MessageBoxButton.OK:
+                    SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Okay);
+                    break;
+                case MessageBoxButton.YesNo:
+                    SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Yes);
+                    SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.No);
+                    break;
+            }
 
             if (response.Equals(SharedContent.GetCommandString(SharedContent.Commands.Yes)))
             {
@@ -53,8 +72,16 @@ namespace KinAid_Attempt1
                 DialogResult = false;
             }
 
-            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Yes);
-            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.No);
+            switch (type)
+            {
+                case MessageBoxButton.OK:
+                    SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Okay);
+                    break;
+                case MessageBoxButton.YesNo:
+                    SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Yes);
+                    SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.No);
+                    break;
+            }
         }
     }
 }
