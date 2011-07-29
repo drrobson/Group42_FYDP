@@ -24,17 +24,22 @@ namespace KinAid_Attempt1
         {
             InitializeComponent();
 
-            this.message.Content = message;
+            this.message.Text = message;
+            SharedContent.Sr.stopListeningCommands();
 
+            Uri voiceImg = new Uri("Images/Voice.bmp", UriKind.Relative);
             this.type = type;
             switch (type)
             {
                 case MessageBoxButton.OK:
                     SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Okay, selectedResponse);
+                    buttons.Children.Add(new LabelAndImage(new BitmapImage(voiceImg), "OK", HorizontalAlignment.Center));
                     break;
                 case MessageBoxButton.YesNo:
                     SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Yes, selectedResponse);
                     SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.No, selectedResponse);
+                    buttons.Children.Add(new LabelAndImage(new BitmapImage(voiceImg), "Yes"));
+                    buttons.Children.Add(new LabelAndImage(new BitmapImage(voiceImg), "No", HorizontalAlignment.Right));
                     break;
             }
         }
@@ -51,6 +56,7 @@ namespace KinAid_Attempt1
                     SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.No);
                     break;
             }
+            SharedContent.Sr.stopListeningCommands();
 
             if (response.Equals(SharedContent.GetCommandString(SharedContent.Commands.Yes)))
             {
@@ -82,6 +88,7 @@ namespace KinAid_Attempt1
                     SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.No);
                     break;
             }
+            SharedContent.Sr.stopListeningCommands();
         }
     }
 }

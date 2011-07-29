@@ -2,12 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:my="clr-namespace:KinAid_Attempt1"
-        Title="KinAid" Height="150" Width="300" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
+        Title="KinAid" Height="{StaticResource ResourceKey=HalfAppHeight}" Width="{StaticResource ResourceKey=HalfAppWidth}" 
+        ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
     <StackPanel>
-        <Label Height="80" Name="message" />
-        <Grid Height="30">
-            <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Yes" />
-            <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="No" HorizontalContentAlignment="Right" />
+        <TextBlock Height="{StaticResource ResourceKey=BigButtonHeight}" MaxWidth="{StaticResource ResourceKey=HalfAppWidth}"  FontSize="{StaticResource ResourceKey=SmallButtonFont}" Name="message" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Grid Height="{StaticResource ResourceKey=SmallButtonHeight}" Name="buttons">
         </Grid>
     </StackPanel>
 </Window>

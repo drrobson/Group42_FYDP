@@ -33,6 +33,14 @@ namespace KinAid_Attempt1
         {
             InitializeComponent();
 
+            stepViewer.Height = (double)Application.Current.Resources["AppHeight"] - 
+                (double)Application.Current.Resources["BigButtonHeight"];
+
+#if AUDIOUI
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Back, selectedResponse);
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Retry, selectedResponse);
+#endif
+
             this.ex = ex;
             ExerciseStep[] steps = ex.exerciseSteps;
             foreach (ExerciseStep step in steps)
@@ -50,8 +58,9 @@ namespace KinAid_Attempt1
                         source = new Uri("Images/Checkbox.bmp", UriKind.Relative); 
                         break;
                 }
-                LabelAndImage lai = new LabelAndImage(new BitmapImage(source), step.stepName);
-                lai.Width = 300;
+                LabelAndImage lai = new LabelAndImage(new BitmapImage(source), step.stepName, HorizontalAlignment.Left, 
+                    (double)Application.Current.Resources["SmallButtonHeight"], (double)Application.Current.Resources["BigButtonWidth"],
+                    (double)Application.Current.Resources["SmallButtonFont"]);
                 stepPanel.Children.Add(lai);
             }
 
@@ -66,6 +75,7 @@ namespace KinAid_Attempt1
             }
         }
 
+#if BUTTONUI
         private void selectedRetry(object sender, RoutedEventArgs e)
         {
             ex.Reset();
@@ -76,9 +86,29 @@ namespace KinAid_Attempt1
         {
             ScreenManager.SetScreen(new ExerciseSelector());
         }
+#elif AUDIOUI
+        private void selectedResponse(string response)
+        {
+            if (response.Equals(SharedContent.GetCommandString(SharedContent.Commands.Back)))
+            {
+                SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Back);
+                SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Retry);
+                
+                ScreenManager.SetScreen(new ExerciseSelector());
+            }
+            else if (response.Equals(SharedContent.GetCommandString(SharedContent.Commands.Retry)))
+            {
+                SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Back);
+                SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Retry);
+
+                ex.Reset();
+                ScreenManager.SetScreen(new ExerciseView(ex));
+            }
+        }
+#endif
 
         // recalibrate action
 
-        // see informationn action
+        // see information action
     }
 }

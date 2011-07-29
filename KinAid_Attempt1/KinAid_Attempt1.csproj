@@ -210,10 +210,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Sounds\Camera.wav" />
-    <Content Include="Sounds\Countdown.wav" />
-    <Content Include="Sounds\ExerciseFail.wav" />
-    <Content Include="Sounds\ExercisePass.wav" />
+    <Content Include="Sounds\Camera.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\Countdown.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\ExerciseFail.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\ExercisePass.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Images\Calibrating.bmp" />
     <Resource Include="Images\Checkbox.bmp" />
     <Resource Include="Images\CheckboxFail.bmp" />

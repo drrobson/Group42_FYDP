@@ -18,11 +18,11 @@
             <mc:AlternateContent>
                 <mc:Choice Requires="audioui">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Play" ControlHorizontalAlignment="Center" />
-                        <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Pause" ControlHorizontalAlignment="Center" />
-                        <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Stop" ControlHorizontalAlignment="Center" />
+                        <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Play" ControlHorizontalAlignment="Center" LabelFont="{StaticResource ResourceKey=SmallButtonFont}"/>
+                        <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Pause" ControlHorizontalAlignment="Center" LabelFont="{StaticResource ResourceKey=SmallButtonFont}"/>
+                        <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Stop" ControlHorizontalAlignment="Center" LabelFont="{StaticResource ResourceKey=SmallButtonFont}"/>
                     </StackPanel>
-                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Continue" ControlHorizontalAlignment="Right" />
+                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Continue" ControlHorizontalAlignment="Right" LabelFont="{StaticResource ResourceKey=SmallButtonFont}"/>
                 </mc:Choice>
                 <mc:Choice Requires="buttonui">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="{StaticResource ResourceKey=SmallButtonHeight}">

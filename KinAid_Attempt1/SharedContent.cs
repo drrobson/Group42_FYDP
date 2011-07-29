@@ -57,11 +57,13 @@ namespace KinAid_Attempt1
             "yes",
             "no",
             "okay",
+            "add exercise",
+            "exit",
             // Exercise Commands
             "Right Shoulder Abduction",
             "Right Bicep Curl",
         };
-        public enum Commands
+        public enum Commands // make sure these are in the same order as in the array of strings
         {
             // General UI Commands
             Calibrate,
@@ -75,6 +77,8 @@ namespace KinAid_Attempt1
             Yes,
             No,
             Okay,
+            AddExercise,
+            Exit,
             // Exercise Commands
             RightShoulderAbduction,
             RightBicepCurl,

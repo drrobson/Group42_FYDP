@@ -16,7 +16,7 @@
             </StackPanel>
             <mc:AlternateContent>
                 <mc:Choice Requires="audioui">
-                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Stop" ControlHorizontalAlignment="Right" />
+                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Stop" ControlHorizontalAlignment="Right" LabelFont="{StaticResource ResourceKey=SmallButtonFont}"/>
                 </mc:Choice>
             </mc:AlternateContent>
         </Grid>

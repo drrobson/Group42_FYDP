@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,6 +32,9 @@ namespace KinAid_Attempt1
 
         Exercise ex;
 
+        SoundPlayer secondPassedSound;
+        SoundPlayer snapshotSound;
+
         public UIElement element
         {
             get
@@ -45,6 +49,11 @@ namespace KinAid_Attempt1
 
             this.ex = ex;
 
+            secondPassedSound = new SoundPlayer("Sounds/Countdown.wav");
+            secondPassedSound.LoadAsync();
+            snapshotSound = new SoundPlayer("Sounds/Camera.wav");
+            snapshotSound.LoadAsync();
+            
             secondsLeft = SharedContent.CalibrationSeconds * ex.getPosesToBeCalibrated().Count();
             secondsLabel.Content = String.Format("{0}", SharedContent.CalibrationSeconds);
             capturing = false;
@@ -70,7 +79,8 @@ namespace KinAid_Attempt1
                 }
                 return;
             }
-
+            
+            secondPassedSound.Play();
             secondsLeft--;
             secondsLabel.Content = String.Format("{0}", secondsLeft % SharedContent.CalibrationSeconds);
             if (secondsLeft % SharedContent.CalibrationSeconds == 0)
@@ -87,6 +97,8 @@ namespace KinAid_Attempt1
         public void nuiSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
             SharedContent.Nui.SkeletonFrameReady -= nuiSkeletonFrameReady;
+
+            snapshotSound.Play();
 
             foreach (SkeletonData sk in e.SkeletonFrame.Skeletons)
             {

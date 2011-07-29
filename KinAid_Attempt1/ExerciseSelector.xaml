@@ -13,13 +13,14 @@
             <WrapPanel Orientation="Horizontal" Name="buttonPanel">
             </WrapPanel>
         </ScrollViewer>
-        <Grid Name="bottomPanel" Height="{StaticResource ResourceKey=SmallButtonHeight}" Width="{StaticResource ResourceKey=SmallButtonWidth}">
+        <Grid Name="bottomPanel" Height="{StaticResource ResourceKey=SmallButtonHeight}" Width="{StaticResource ResourceKey=BigButtonWidth}">
             <mc:AlternateContent>
                 <mc:Choice Requires="buttonui">
                     <Button Content="Add Exercise" Click="selectedAddExercise" HorizontalAlignment="Stretch" FontSize="{StaticResource ResourceKey=SmallButtonFont}"  />
                 </mc:Choice>
                 <mc:Choice Requires="audioui">
-                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Add Exercise" ControlHorizontalAlignment="Center" />
+                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Add Exercise" ControlHorizontalAlignment="Left" LabelFont="{StaticResource ResourceKey=SmallButtonFont}" />
+                    <my:LabelAndImage ImageSource="Images/Voice.bmp" LabelContent="Exit" ControlHorizontalAlignment="Right" LabelFont="{StaticResource ResourceKey=SmallButtonFont}" />
                 </mc:Choice>
             </mc:AlternateContent>
         </Grid>

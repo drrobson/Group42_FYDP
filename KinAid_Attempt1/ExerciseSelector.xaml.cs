@@ -31,11 +31,14 @@ namespace KinAid_Attempt1
         {
             InitializeComponent();
 
+#if AUDIOUI
+            registerSpeechCommands();
+#endif
+
             Exercise[] exercises = ExerciseFactory.GetExercises();
             for (int i = 0; i < exercises.Length; i++)
             {
 #if AUDIOUI
-                SharedContent.Sr.registerSpeechCommand(exercises[i].name, selectedExercise);
                 Uri source = new Uri("Images/Voice.bmp", UriKind.Relative);
                 LabelAndImage labelImage = new LabelAndImage(new BitmapImage(source),
                     SharedContent.GetCommandString(exercises[i].name), System.Windows.HorizontalAlignment.Left, 
@@ -69,17 +72,19 @@ namespace KinAid_Attempt1
                 }
             }
 
-            AudioMessageBox amb = new AudioMessageBox("Do you wish to calibrate the exercise?", MessageBoxButton.OK);
+            AudioMessageBox amb = new AudioMessageBox("Do you wish to calibrate the exercise?", MessageBoxButton.YesNo);
             amb.Owner = (Window)ScreenManager.GetHost();
             bool? dialogResult = amb.ShowDialog();
 
             if (dialogResult.HasValue && dialogResult == true)
             {
+                unregisterSpeechCommands();
                 SharedContent.IsCalibrated = true;
                 ScreenManager.SetScreen(new CalibratingView(ExerciseFactory.GetExercises()[exerciseIndex]));
             }
             else if (dialogResult.HasValue && dialogResult == false)
             {
+                unregisterSpeechCommands();
                 SharedContent.IsCalibrated = false;
                 ScreenManager.SetScreen(new ExercisePreview(ExerciseFactory.GetExercises()[exerciseIndex]));
             }
@@ -106,17 +111,52 @@ namespace KinAid_Attempt1
         }
 #endif
 
-        private void selectedAddExercise(object sender, RoutedEventArgs e)
-        {
 #if AUDIOUI
-            AudioMessageBox amb = new AudioMessageBox("This feature has not yet been implemented", MessageBoxButton.OK);
-            amb.Owner = (Window)ScreenManager.GetHost();
-            amb.ShowDialog();
-#elif BUTTONUI
-            MessageBoxResult notImplemented =
-                MessageBox.Show("This feature has not yet been implemented", "KinAid", MessageBoxButton.OK);
-#endif
+        private void selectedResponse(string response)
+        {
+            if (response.Equals(SharedContent.GetCommandString(SharedContent.Commands.AddExercise)))
+            {
+                unregisterSpeechCommands();
+
+                AudioMessageBox amb = new AudioMessageBox("This feature has not yet been implemented", MessageBoxButton.OK);
+                amb.Owner = (Window)ScreenManager.GetHost();
+                amb.ShowDialog();
+
+                registerSpeechCommands();
+            }
+            else if (response.Equals(SharedContent.GetCommandString(SharedContent.Commands.Exit)))
+            {
+                Environment.Exit(0);
+            }
         }
 
+        private void registerSpeechCommands()
+        {
+            Exercise[] exercises = ExerciseFactory.GetExercises();
+            for (int i = 0; i < exercises.Length; i++)
+            {
+                SharedContent.Sr.registerSpeechCommand(exercises[i].name, selectedExercise);
+            }
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.AddExercise, selectedResponse);
+            SharedContent.Sr.registerSpeechCommand(SharedContent.Commands.Exit, selectedResponse);
+        }
+
+        private void unregisterSpeechCommands()
+        {
+            Exercise[] exercises = ExerciseFactory.GetExercises();
+            for (int i = 0; i < exercises.Length; i++)
+            {
+                SharedContent.Sr.unregisterSpeechCommand(exercises[i].name);
+            }
+            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.AddExercise);
+            SharedContent.Sr.unregisterSpeechCommand(SharedContent.Commands.Exit);
+        }
+#elif BUTTONUI
+        private void selectedAddExercise(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult notImplemented =
+                MessageBox.Show("This feature has not yet been implemented", "KinAid", MessageBoxButton.OK);
+        }
+#endif
     }
 }

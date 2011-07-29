@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,6 +32,9 @@ namespace KinAid_Attempt1
 
         Exercise ex;
 
+        SoundPlayer passSound;
+        SoundPlayer failSound;
+
         public UIElement element
         {
             get
@@ -54,6 +58,11 @@ namespace KinAid_Attempt1
             this.ex = ex;
 
             statusText.Text = ex.statusMessage;
+
+            passSound = new SoundPlayer("Sounds/ExercisePass.wav");
+            passSound.LoadAsync();
+            failSound = new SoundPlayer("Sounds/ExerciseFail.wav");
+            failSound.LoadAsync();
 
 #if DEBUG
             lastTime = DateTime.Now;
@@ -201,6 +210,8 @@ namespace KinAid_Attempt1
 
             if (statusInfo.exerciseStatus == ExerciseStatus.Failed)
             {
+                failSound.Play();
+
                 SharedContent.Nui.SkeletonFrameReady -= nuiSkeletonFrameReady;
                 Uri source = new Uri("Images/CheckboxFail.bmp", UriKind.Relative);
                 statusImage.Source = new BitmapImage(source);
@@ -210,6 +221,8 @@ namespace KinAid_Attempt1
             }
             else if (statusInfo.exerciseStatus == ExerciseStatus.Complete)
             {
+                passSound.Play();
+
                 SharedContent.Nui.SkeletonFrameReady -= nuiSkeletonFrameReady;
                 Uri source = new Uri("Images/CheckboxPass.bmp", UriKind.Relative);
                 statusImage.Source = new BitmapImage(source);

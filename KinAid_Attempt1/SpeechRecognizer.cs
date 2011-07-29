@@ -39,7 +39,7 @@ namespace KinAid_Attempt1
             }
         }
 
-        public void initialize()
+        private void initialize()
         {
             Choices choices = new Choices();
             foreach (string command in SharedContent.CommandStrings)
@@ -84,13 +84,20 @@ namespace KinAid_Attempt1
 
         public void stopListeningCommands()
         {
+            audioSource.Dispose();
             sre.RecognizeAsyncCancel();
             sre.RecognizeAsyncStop();
-            audioSource.Dispose();
+            sre.Dispose();
+            sre = null;
         }
 
         public void registerSpeechCommand(SharedContent.Commands searchedCommand, SpeechCommandReceived commandDelegate)
         {
+            if (sre == null)
+            {
+                initialize();
+            }
+
             string searchedCommandString = SharedContent.GetCommandString(searchedCommand);
             for (int i = 0; i < commandDelegates.Length; i++)
             {
